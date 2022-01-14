@@ -5,6 +5,8 @@ import DBAccess.DBAContact;
 import DBAccess.DBACustomer;
 import DBAccess.DBAUser;
 import Utility.UserLoginSession;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -71,9 +73,20 @@ public class UpdateAppointmentController implements Initializable {
 
     private Appointment tempAppointment;
 
+    @FXML
+    private ComboBox<String> endTimeComboBx;
+
+    @FXML
+    private ComboBox<String> startTimeComboBx;
+
+    ObservableList<String> startTimes = FXCollections.observableArrayList("8:00", "8:30", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "01:00", "02:00", "2:30", "3:00", "3:30", "04:00", "04:30");
+    ObservableList<String> endTimes = FXCollections.observableArrayList("8:30", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "01:00", "02:00", "2:30", "3:00", "3:30", "04:00", "04:30", "05:00");
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        startTimeComboBx.setItems(startTimes);
+        endTimeComboBx.setItems(endTimes);
         javafx.util.Callback<DatePicker, DateCell> dayCellFactory= (javafx.util.Callback<DatePicker, DateCell>) this.getDayCellFactory();
         apptDatePicker.setDayCellFactory(dayCellFactory);
     }
@@ -242,13 +255,14 @@ public class UpdateAppointmentController implements Initializable {
             public DateCell call(final DatePicker datePicker) {
                 return new DateCell() {
                     @Override
-                    public void updateItem(LocalDate item, boolean empty) {
-                        super.updateItem(item, empty);
+                    public void updateItem(LocalDate date, boolean empty) {
+                        super.updateItem(date, empty);
 
+                        LocalDate today = LocalDate.now();
                         // Disable Monday, Tueday, Wednesday.
-                        if (item.getDayOfWeek() == DayOfWeek.SATURDAY //
-                                || item.getDayOfWeek() == DayOfWeek.SUNDAY){ //
-                            //|| item.getDayOfWeek() == DayOfWeek.WEDNESDAY) {
+                        if (date.getDayOfWeek() == DayOfWeek.SATURDAY //
+                                || date.getDayOfWeek() == DayOfWeek.SUNDAY //
+                                || date.compareTo(today) < 0) {
                             setDisable(true);
                             setStyle("-fx-background-color: #ffc0cb;");
                         }
@@ -258,4 +272,5 @@ public class UpdateAppointmentController implements Initializable {
         };
         return dayCellFactory;
     }
+
 }

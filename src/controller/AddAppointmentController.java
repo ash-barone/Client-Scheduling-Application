@@ -67,6 +67,7 @@ public class AddAppointmentController implements Initializable {
     @FXML
     private TextField apptStartTimeTxt;
 
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -100,6 +101,8 @@ public class AddAppointmentController implements Initializable {
                 LocalDate apptDate = apptDatePicker.getValue();
                 LocalDateTime apptStartUser = LocalDateTime.of(apptDate, LocalTime.parse(apptStartTimeTxt.getText()));
                 LocalDateTime apptEndUser = LocalDateTime.of(apptDate, LocalTime.parse(apptEndTimeTxt.getText()));
+
+
                 ZonedDateTime apptStartUserZone = ZonedDateTime.of(apptStartUser, UserLoginSession.getLoggedInUserTimeZone());
                 ZonedDateTime apptEndUserZone = ZonedDateTime.of(apptEndUser, UserLoginSession.getLoggedInUserTimeZone());
                 ZonedDateTime apptStart = apptStartUserZone.withZoneSameInstant(ZoneOffset.UTC);
@@ -178,13 +181,14 @@ public class AddAppointmentController implements Initializable {
             public DateCell call(final DatePicker datePicker) {
                 return new DateCell() {
                     @Override
-                    public void updateItem(LocalDate item, boolean empty) {
-                        super.updateItem(item, empty);
+                    public void updateItem(LocalDate date, boolean empty) {
+                        super.updateItem(date, empty);
 
+                        LocalDate today = LocalDate.now();
                         // Disable Monday, Tueday, Wednesday.
-                        if (item.getDayOfWeek() == DayOfWeek.SATURDAY //
-                                || item.getDayOfWeek() == DayOfWeek.SUNDAY){ //
-                                //|| item.getDayOfWeek() == DayOfWeek.WEDNESDAY) {
+                        if (date.getDayOfWeek() == DayOfWeek.SATURDAY //
+                                || date.getDayOfWeek() == DayOfWeek.SUNDAY //
+                                || date.compareTo(today) < 0) {
                             setDisable(true);
                             setStyle("-fx-background-color: #ffc0cb;");
                         }

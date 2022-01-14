@@ -4,6 +4,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
@@ -13,7 +14,7 @@
       <Label layoutX="337.0" layoutY="139.0" style="-fx-text-fill: #1b1e23;" text="Contact Name:" />
       <Label layoutX="335.0" layoutY="103.0" style="-fx-text-fill: #1b1e23;" text="User Name:" />
       <Label layoutX="332.0" layoutY="69.0" style="-fx-text-fill: #1b1e23;" text="Customer Name:" />
-      <Label layoutX="36.0" layoutY="316.0" style="-fx-text-fill: #1b1e23;" text="Start Time:" />
+      <Label layoutX="187.0" layoutY="316.0" style="-fx-text-fill: #1b1e23;" text="Start Time:" />
       <Label layoutX="187.0" layoutY="272.0" style="-fx-text-fill: #1b1e23;" text="Appointment Date:" />
       <Label layoutX="37.0" layoutY="219.0" style="-fx-text-fill: #1b1e23;" text="Type:" />
       <Label layoutX="38.0" layoutY="175.0" style="-fx-text-fill: #1b1e23;" text="Location:" />
@@ -32,17 +33,19 @@
       <ComboBox fx:id="appointmentUserNameComboBx" layoutX="433.0" layoutY="99.0" prefWidth="150.0" promptText="User Name" style="-fx-text-fill: #1b1e23; -fx-background-color: #f8e4bf;" />
       <ComboBox fx:id="appointmentContactNameComboBx" layoutX="433.0" layoutY="135.0" prefWidth="150.0" promptText="Contact Name" style="-fx-text-fill: #1b1e23; -fx-background-color: #f8e4bf;" />
       <ComboBox fx:id="appointmentTypeComboBx" layoutX="138.0" layoutY="215.0" prefWidth="150.0" promptText="Type" style="-fx-text-fill: #1b1e23; -fx-background-color: #f8e4bf;" />
-      <Label layoutX="340.0" layoutY="316.0" style="-fx-text-fill: #1b1e23;" text="End Time:" />
+      <Label layoutX="357.0" layoutY="316.0" style="-fx-text-fill: #1b1e23;" text="End Time:" />
       <DatePicker fx:id="apptDatePicker" layoutX="328.0" layoutY="268.0" promptText="Start Date" style="-fx-text-fill: #1b1e23;" />
       <Button fx:id="addAppointmentBtn" layoutX="433.0" layoutY="361.0" mnemonicParsing="false" onAction="#onActionAddAppointment" style="-fx-background-color: #f8bfd3;" text="Add Appointment" />
       <Button fx:id="cancelBtn" layoutX="569.0" layoutY="361.0" mnemonicParsing="false" onAction="#onActionCancelToAppointmentView" style="-fx-background-color: #d3f8bf;" text="Cancel" />
       <TextField fx:id="appointmentIdTxt" editable="false" layoutX="139.0" layoutY="65.0" promptText="auto-gen ID" style="-fx-text-fill: #1b1e23;" />
-      <TextField fx:id="apptEndTimeTxt" layoutX="434.0" layoutY="312.0" promptText="End Time" style="-fx-text-fill: #1b1e23;" />
-      <TextField fx:id="apptStartTimeTxt" layoutX="136.0" layoutY="312.0" promptText="Start Time" style="-fx-text-fill: #1b1e23;" />
-      <Label layoutX="139.0" layoutY="351.0" text="Appointments must be in 24hr time format!" textFill="#000000d6">
+      <TextField fx:id="apptEndTimeTxt" layoutX="461.0" layoutY="236.0" promptText="End Time" style="-fx-text-fill: #1b1e23;" />
+      <TextField fx:id="apptStartTimeTxt" layoutX="461.0" layoutY="203.0" promptText="Start Time" style="-fx-text-fill: #1b1e23;" />
+      <Label layoutX="18.0" layoutY="364.0" text="Appointments must be in 24hr time format!" textFill="#000000d6">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
+      <Spinner fx:id="startTimeSpinner" layoutX="257.0" layoutY="312.0" prefHeight="25.0" prefWidth="79.0" />
+      <Spinner fx:id="endTimeSpinner" layoutX="424.0" layoutY="312.0" prefHeight="25.0" prefWidth="79.0" />
    </children>
 </AnchorPane>
