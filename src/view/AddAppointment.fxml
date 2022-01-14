@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="635.0" style="-fx-background-color: #bfd3f8;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddAppointmentController">
+   <children>
+      <Label layoutX="337.0" layoutY="139.0" style="-fx-text-fill: #1b1e23;" text="Contact Name:" />
+      <Label layoutX="335.0" layoutY="103.0" style="-fx-text-fill: #1b1e23;" text="User Name:" />
+      <Label layoutX="332.0" layoutY="69.0" style="-fx-text-fill: #1b1e23;" text="Customer Name:" />
+      <Label layoutX="36.0" layoutY="316.0" style="-fx-text-fill: #1b1e23;" text="Start Time:" />
+      <Label layoutX="187.0" layoutY="272.0" style="-fx-text-fill: #1b1e23;" text="Appointment Date:" />
+      <Label layoutX="37.0" layoutY="219.0" style="-fx-text-fill: #1b1e23;" text="Type:" />
+      <Label layoutX="38.0" layoutY="175.0" style="-fx-text-fill: #1b1e23;" text="Location:" />
+      <Label layoutX="38.0" layoutY="139.0" style="-fx-text-fill: #1b1e23;" text="Description:" />
+      <Label layoutX="38.0" layoutY="103.0" style="-fx-text-fill: #1b1e23;" text="Title:" />
+      <Label layoutX="38.0" layoutY="69.0" style="-fx-text-fill: #1b1e23;" text="Appointment ID:" />
+      <Label layoutX="210.0" layoutY="14.0" style="-fx-text-fill: #1b1e23;" text="Add New Appointment">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <TextField fx:id="appointmentTitleTxt" layoutX="139.0" layoutY="99.0" promptText="Title" style="-fx-text-fill: #1b1e23;" />
+      <TextField fx:id="appointmentDescriptionTxt" layoutX="139.0" layoutY="135.0" promptText="Description" style="-fx-text-fill: #1b1e23;" />
+      <TextField fx:id="appointmentLocationTxt" layoutX="139.0" layoutY="171.0" promptText="Location" style="-fx-text-fill: #1b1e23;" />
+      <ComboBox fx:id="appointmentCustomerNameComboBx" layoutX="433.0" layoutY="65.0" prefWidth="150.0" promptText="Customer Name" style="-fx-text-fill: #1b1e23; -fx-background-color: #f8e4bf;" />
+      <ComboBox fx:id="appointmentUserNameComboBx" layoutX="433.0" layoutY="99.0" prefWidth="150.0" promptText="User Name" style="-fx-text-fill: #1b1e23; -fx-background-color: #f8e4bf;" />
+      <ComboBox fx:id="appointmentContactNameComboBx" layoutX="433.0" layoutY="135.0" prefWidth="150.0" promptText="Contact Name" style="-fx-text-fill: #1b1e23; -fx-background-color: #f8e4bf;" />
+      <ComboBox fx:id="appointmentTypeComboBx" layoutX="138.0" layoutY="215.0" prefWidth="150.0" promptText="Type" style="-fx-text-fill: #1b1e23; -fx-background-color: #f8e4bf;" />
+      <Label layoutX="340.0" layoutY="316.0" style="-fx-text-fill: #1b1e23;" text="End Time:" />
+      <DatePicker fx:id="apptDatePicker" layoutX="328.0" layoutY="268.0" promptText="Start Date" style="-fx-text-fill: #1b1e23;" />
+      <Button fx:id="addAppointmentBtn" layoutX="433.0" layoutY="361.0" mnemonicParsing="false" onAction="#onActionAddAppointment" style="-fx-background-color: #f8bfd3;" text="Add Appointment" />
+      <Button fx:id="cancelBtn" layoutX="569.0" layoutY="361.0" mnemonicParsing="false" onAction="#onActionCancelToAppointmentView" style="-fx-background-color: #d3f8bf;" text="Cancel" />
+      <TextField fx:id="appointmentIdTxt" editable="false" layoutX="139.0" layoutY="65.0" promptText="auto-gen ID" style="-fx-text-fill: #1b1e23;" />
+      <TextField fx:id="apptEndTimeTxt" layoutX="434.0" layoutY="312.0" promptText="End Time" style="-fx-text-fill: #1b1e23;" />
+      <TextField fx:id="apptStartTimeTxt" layoutX="136.0" layoutY="312.0" promptText="Start Time" style="-fx-text-fill: #1b1e23;" />
+      <Label layoutX="139.0" layoutY="351.0" text="Appointments must be in 24hr time format!" textFill="#000000d6">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
