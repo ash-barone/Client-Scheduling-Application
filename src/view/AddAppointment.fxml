@@ -4,7 +4,6 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
@@ -38,14 +37,14 @@
       <Button fx:id="addAppointmentBtn" layoutX="433.0" layoutY="361.0" mnemonicParsing="false" onAction="#onActionAddAppointment" style="-fx-background-color: #f8bfd3;" text="Add Appointment" />
       <Button fx:id="cancelBtn" layoutX="569.0" layoutY="361.0" mnemonicParsing="false" onAction="#onActionCancelToAppointmentView" style="-fx-background-color: #d3f8bf;" text="Cancel" />
       <TextField fx:id="appointmentIdTxt" editable="false" layoutX="139.0" layoutY="65.0" promptText="auto-gen ID" style="-fx-text-fill: #1b1e23;" />
-      <TextField fx:id="apptEndTimeTxt" layoutX="461.0" layoutY="236.0" promptText="End Time" style="-fx-text-fill: #1b1e23;" />
-      <TextField fx:id="apptStartTimeTxt" layoutX="461.0" layoutY="203.0" promptText="Start Time" style="-fx-text-fill: #1b1e23;" />
-      <Label layoutX="18.0" layoutY="364.0" text="Appointments must be in 24hr time format!" textFill="#000000d6">
+      <TextField fx:id="apptEndTimeTxt" layoutX="422.0" layoutY="312.0" prefHeight="25.0" prefWidth="79.0" promptText="End Time" style="-fx-text-fill: #1b1e23;" />
+      <TextField fx:id="apptStartTimeTxt" layoutX="258.0" layoutY="312.0" prefHeight="25.0" prefWidth="79.0" promptText="Start Time" style="-fx-text-fill: #1b1e23;" />
+      <Label layoutX="14.0" layoutY="365.0" text="Appointment must be in 24hr time format! (HH:mm with leading zeros)" textFill="#000000d6" />
+      <Label layoutX="14.0" layoutY="306.0" style="-fx-text-fill: #1b1e23;" text="Business Hours:">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Spinner fx:id="startTimeSpinner" layoutX="257.0" layoutY="312.0" prefHeight="25.0" prefWidth="79.0" />
-      <Spinner fx:id="endTimeSpinner" layoutX="424.0" layoutY="312.0" prefHeight="25.0" prefWidth="79.0" />
+      <Label layoutX="14.0" layoutY="337.0" style="-fx-text-fill: #1b1e23;" text="08:00AM - 22:00PM EST" />
    </children>
 </AnchorPane>

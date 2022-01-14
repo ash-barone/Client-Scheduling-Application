@@ -139,7 +139,12 @@ public class UpdateAppointmentController implements Initializable {
             String apptContactName = appointmentContactNameComboBx.getValue();
             Integer apptContactId = DBAContact.getContactIdFromName(appointmentContactNameComboBx.getValue());
 
-            if (apptTitle.isEmpty() || apptDescription.isEmpty() || apptLocation.isEmpty() || apptType == null || apptCustomerId == null || apptUserId == null || apptContactName == null || apptContactId == null) {
+            //set business hours to check against input
+            ZonedDateTime businessStartTime = ZonedDateTime.of(apptDatePicker.getValue(), LocalTime.of(8,0), ZoneId.of("America/New_York"));
+            ZonedDateTime businessEndTime = ZonedDateTime.of(apptDatePicker.getValue(), LocalTime.of(22,0), ZoneId.of("America/New_York"));
+
+
+            if (apptStart.isAfter(businessEndTime) || apptStart.isBefore(businessStartTime) || apptEnd.isAfter(businessEndTime) || apptEnd.isBefore(businessStartTime) ||apptTitle.isEmpty() || apptDescription.isEmpty() || apptLocation.isEmpty() || apptType == null || apptCustomerId == null || apptUserId == null || apptContactName == null || apptContactId == null) {
                 Alert alert = new Alert((Alert.AlertType.ERROR));
                 alert.setTitle("Error");
                 alert.setContentText("Please ensure all values are correct.");

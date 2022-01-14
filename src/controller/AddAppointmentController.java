@@ -101,12 +101,18 @@ public class AddAppointmentController implements Initializable {
                 LocalDate apptDate = apptDatePicker.getValue();
                 LocalDateTime apptStartUser = LocalDateTime.of(apptDate, LocalTime.parse(apptStartTimeTxt.getText()));
                 LocalDateTime apptEndUser = LocalDateTime.of(apptDate, LocalTime.parse(apptEndTimeTxt.getText()));
-
+                //test
+                System.out.println("start: " + apptStartUser + " end: " + apptEndUser);
 
                 ZonedDateTime apptStartUserZone = ZonedDateTime.of(apptStartUser, UserLoginSession.getLoggedInUserTimeZone());
                 ZonedDateTime apptEndUserZone = ZonedDateTime.of(apptEndUser, UserLoginSession.getLoggedInUserTimeZone());
+                //test
+                System.out.println("start in zone: " + apptStartUserZone + " end in zone: " + apptEndUserZone);
+
                 ZonedDateTime apptStart = apptStartUserZone.withZoneSameInstant(ZoneOffset.UTC);
                 ZonedDateTime apptEnd = apptEndUserZone.withZoneSameInstant(ZoneOffset.UTC);
+                //test
+                System.out.println("start in UTC: " + apptStart + " end in UTC: " + apptEnd);
 
 
             //last updated
@@ -120,7 +126,12 @@ public class AddAppointmentController implements Initializable {
             //Integer apptContactId = Integer.parseInt(appointmentContactIdTxt.getText());
             Integer apptContactId = DBAContact.getContactIdFromName(apptContactName);
 
-            if (apptTitle.isEmpty() || apptDescription.isEmpty() || apptLocation.isEmpty() || apptType == null || apptCustomerId == null || apptUserId == null || apptContactName == null || apptContactId == null) {
+            //set business hours to check against input
+            ZonedDateTime businessStartTime = ZonedDateTime.of(apptDatePicker.getValue(), LocalTime.of(8,0), ZoneId.of("America/New_York"));
+            ZonedDateTime businessEndTime = ZonedDateTime.of(apptDatePicker.getValue(), LocalTime.of(22,0), ZoneId.of("America/New_York"));
+
+
+            if (apptEnd.compareTo(apptStart) <= 0 || apptStart.isAfter(businessEndTime) || apptStart.isBefore(businessStartTime) || apptEnd.isAfter(businessEndTime) || apptEnd.isBefore(businessStartTime) ||apptTitle.isEmpty() || apptDescription.isEmpty() || apptLocation.isEmpty() || apptType == null || apptCustomerId == null || apptUserId == null || apptContactName == null || apptContactId == null) {
                 Alert alert = new Alert((Alert.AlertType.ERROR));
                 alert.setTitle("Error");
                 alert.setContentText("Please ensure all values are correct.");
