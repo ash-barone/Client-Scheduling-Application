@@ -24,6 +24,7 @@ import java.sql.SQLException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class UpdateAppointmentController implements Initializable {
@@ -144,7 +145,19 @@ public class UpdateAppointmentController implements Initializable {
             ZonedDateTime businessEndTime = ZonedDateTime.of(apptDatePicker.getValue(), LocalTime.of(22,0), ZoneId.of("America/New_York"));
 
 
-            if (apptStart.isAfter(businessEndTime) || apptStart.isBefore(businessStartTime) || apptEnd.isAfter(businessEndTime) || apptEnd.isBefore(businessStartTime) ||apptTitle.isEmpty() || apptDescription.isEmpty() || apptLocation.isEmpty() || apptType == null || apptCustomerId == null || apptUserId == null || apptContactName == null || apptContactId == null) {
+            if (!DBAAppointment.checkForOverlappingCustomerAppointments(apptCustomerId, apptStartDate, apptStartUser, apptEndUser)) {
+                Alert alert = new Alert((Alert.AlertType.ERROR));
+                alert.setTitle("Error");
+                alert.setContentText("Please ensure appointment does not overlap with any existing appointments.\n");
+                alert.showAndWait();
+            }
+            else if (apptEnd.compareTo(apptStart) <= 0 || apptStart.isAfter(businessEndTime) || apptStart.isBefore(businessStartTime) || apptEnd.isAfter(businessEndTime) || apptEnd.isBefore(businessStartTime)){
+                Alert alert = new Alert((Alert.AlertType.ERROR));
+                alert.setTitle("Error");
+                alert.setContentText("Please ensure appointment is scheduled within business hours listed on form.\n");
+                alert.showAndWait();
+            }
+            else if (apptStart.isAfter(businessEndTime) || apptStart.isBefore(businessStartTime) || apptEnd.isAfter(businessEndTime) || apptEnd.isBefore(businessStartTime) ||apptTitle.isEmpty() || apptDescription.isEmpty() || apptLocation.isEmpty() || apptType == null || apptCustomerId == null || apptUserId == null || apptContactName == null || apptContactId == null) {
                 Alert alert = new Alert((Alert.AlertType.ERROR));
                 alert.setTitle("Error");
                 alert.setContentText("Please ensure all values are correct.");

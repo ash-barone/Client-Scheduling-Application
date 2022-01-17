@@ -5,6 +5,7 @@ import DBAccess.DBAContact;
 import DBAccess.DBACustomer;
 import DBAccess.DBAUser;
 import Utility.UserLoginSession;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -131,7 +132,20 @@ public class AddAppointmentController implements Initializable {
             ZonedDateTime businessEndTime = ZonedDateTime.of(apptDatePicker.getValue(), LocalTime.of(22,0), ZoneId.of("America/New_York"));
 
 
-            if (apptEnd.compareTo(apptStart) <= 0 || apptStart.isAfter(businessEndTime) || apptStart.isBefore(businessStartTime) || apptEnd.isAfter(businessEndTime) || apptEnd.isBefore(businessStartTime) ||apptTitle.isEmpty() || apptDescription.isEmpty() || apptLocation.isEmpty() || apptType == null || apptCustomerId == null || apptUserId == null || apptContactName == null || apptContactId == null) {
+
+            if (!DBAAppointment.checkForOverlappingCustomerAppointments(apptCustomerId, apptDate, apptStartUser, apptEndUser)) {
+                Alert alert = new Alert((Alert.AlertType.ERROR));
+                alert.setTitle("Error");
+                alert.setContentText("Please ensure appointment does not overlap with any existing appointments.\n");
+                alert.showAndWait();
+            }
+            else if (apptEnd.compareTo(apptStart) <= 0 || apptStart.isAfter(businessEndTime) || apptStart.isBefore(businessStartTime) || apptEnd.isAfter(businessEndTime) || apptEnd.isBefore(businessStartTime)){
+                Alert alert = new Alert((Alert.AlertType.ERROR));
+                alert.setTitle("Error");
+                alert.setContentText("Please ensure appointment is scheduled within business hours listed on form.\n");
+                alert.showAndWait();
+            }
+            else if (apptTitle.isEmpty() || apptDescription.isEmpty() || apptLocation.isEmpty() || apptType == null || apptCustomerId == null || apptUserId == null || apptContactName == null || apptContactId == null){
                 Alert alert = new Alert((Alert.AlertType.ERROR));
                 alert.setTitle("Error");
                 alert.setContentText("Please ensure all values are correct.");
@@ -157,9 +171,9 @@ public class AddAppointmentController implements Initializable {
             //back to customer view after update
 
 
-        } catch (DateTimeParseException throwables2){
+        } catch (DateTimeParseException throwables){
             //throwables.printStackTrace();
-            throwables2.printStackTrace();
+            //throwables.printStackTrace();
             Alert alert = new Alert((Alert.AlertType.ERROR));
             alert.setTitle("Error");
             alert.setContentText("Could not add appointment. Ensure all values are correct.");

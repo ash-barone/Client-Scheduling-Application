@@ -1,6 +1,7 @@
 package DBAccess;
 
 import Utility.UserLoginSession;
+import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Appointment;
@@ -336,7 +337,7 @@ public class DBAAppointment {
 
         ObservableList<Appointment> selectedCustomerAppointmentByDateList = FXCollections.observableArrayList();
 
-        PreparedStatement ps = JDBC.getConnection().prepareStatement("SELECT * FROM appointments JOIN contacts ON appointment.Contact_ID = contacts.Contact_ID WHERE datediff(appointments.Start, ?) = 0 AND Customer_ID = ?");
+        PreparedStatement ps = JDBC.getConnection().prepareStatement("SELECT * FROM appointments JOIN contacts ON appointments.Contact_ID = contacts.Contact_ID WHERE datediff(appointments.Start, ?) = 0 AND Customer_ID = ?");
 
         ps.setString(1, dateOfAppointment.toString());
         ps.setInt(2, customerID);
@@ -447,4 +448,55 @@ public class DBAAppointment {
 
     }
 
+    public static ObservableList<Appointment> getCustomerAppointmentsByDate(int apptCustomerID, LocalDate apptStartDate) throws SQLException {
+
+        ObservableList<Appointment> allCustomerAppointmentsByDate = FXCollections.observableArrayList();
+        PreparedStatement ps = JDBC.getConnection().prepareStatement("SELECT * from appointments JOIN contacts ON appointments.Contact_ID = contacts.Contact_ID WHERE Customer_ID = ? AND DATEDIFF(appointments.Start, ?) = 0;");
+
+        ps.setInt(1, apptCustomerID);
+        ps.setString(2, String.valueOf(apptStartDate));
+
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            int apptId = rs.getInt("Appointment_ID");
+            String apptTitle = rs.getString("Title");
+            String apptDescription = rs.getString("Description");
+            String apptLocation = rs.getString("Location");
+            String apptType = rs.getString("Type");
+            Timestamp apptStartDateTime = rs.getTimestamp("Start");
+            Timestamp apptEndDateTime = rs.getTimestamp("End");
+            /*Timestamp apptCreateDate = rs.getTimestamp("Create_Date");
+            String apptCreatedBy = rs.getString("Created_By") ;
+            Timestamp apptLastUpdate = rs.getTimestamp("Last_Update");
+            String apptLastUpdatedBy = rs.getString("Last_Updated_By");*/
+            int apptCustomerId = rs.getInt("Customer_ID");
+            int apptUserId = rs.getInt("User_ID");
+            int apptContactId = rs.getInt("Contact_ID");
+            String apptContactName = rs.getString("Contact_Name");
+
+            Appointment eachAppt = new Appointment(apptId, apptTitle, apptDescription, apptLocation, apptType, apptStartDateTime, apptEndDateTime/*, apptCreateDate, apptCreatedBy, apptLastUpdate, apptLastUpdatedBy*/, apptCustomerId, apptUserId, apptContactId, apptContactName);
+            allCustomerAppointmentsByDate.add(eachAppt);
+            System.out.println("Appointment Start: " + apptStartDateTime + " Appointment ID: " + apptId + "\n");
+        }
+
+        return allCustomerAppointmentsByDate;
+    }
+
+    public static Boolean checkForOverlappingCustomerAppointments(int apptCustomerID, LocalDate apptStartDate, LocalDateTime apptStartUser, LocalDateTime apptEndUser) throws SQLException {
+        ObservableList<Appointment> allCustomerAppointmentsByDate = getAllSelectedCustomerAppointmentsByDate(apptCustomerID, apptStartDate);
+
+        for (Appointment appointment : allCustomerAppointmentsByDate) {
+            LocalDateTime existingApptStart = appointment.getApptStartDateTime().toLocalDateTime();
+            LocalDateTime existingApptEnd = appointment.getApptEndDateTime().toLocalDateTime();
+
+            if ((existingApptEnd.isAfter(apptStartUser) & existingApptEnd.isBefore(apptEndUser)) || (existingApptEnd.isAfter(apptEndUser) & existingApptStart.isBefore(apptStartUser)) || (existingApptStart.isAfter(apptStartUser) & existingApptStart.isBefore(apptEndUser))) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+        return true;
+    }
 }
