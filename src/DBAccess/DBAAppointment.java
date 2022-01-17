@@ -31,6 +31,7 @@ public class DBAAppointment {
         ObservableList<Appointment> allAppointmentsList = FXCollections.observableArrayList();
 
         try {
+            //sql statement to get all appts
             String sql = "SELECT * from appointments JOIN contacts ON appointments.Contact_ID = contacts.Contact_ID";
 
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
@@ -54,7 +55,7 @@ public class DBAAppointment {
                 allAppointmentsList.add(appointment);
 
                 //test
-                System.out.println(" Get All Appointments ::: Appt ID: " + apptId + " Appt Title: " + apptTitle + "Appt Description: " + apptDescription + "\n");
+                //System.out.println(" Get All Appointments ::: Appt ID: " + apptId + " Appt Title: " + apptTitle + "Appt Description: " + apptDescription + "\n");
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -84,8 +85,10 @@ public class DBAAppointment {
             //set date pattern to match db table
             DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-            //sql statement
-            PreparedStatement ps = JDBC.getConnection().prepareStatement("UPDATE appointments SET Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Last_Update = ?, Last_Updated_By = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ? WHERE Appointment_ID = ?");
+            //sql statement to update appt
+            String sql = "UPDATE appointments SET Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Last_Update = ?, Last_Updated_By = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ? WHERE Appointment_ID = ?";
+
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
             ps.setString(1, apptTitle);
             ps.setString(2, apptDescription);
@@ -102,7 +105,9 @@ public class DBAAppointment {
 
 
             ps.executeUpdate();
-            System.out.println("Updated appt: " + apptID + "\n");
+
+            //test
+            // System.out.println("Updated appt: " + apptID + "\n");
 
             return true;
         } catch (SQLException throwables) {
@@ -132,8 +137,10 @@ public class DBAAppointment {
             //set date pattern to match db table
             DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-            //sql statement
-            PreparedStatement ps = JDBC.getConnection().prepareStatement("INSERT INTO appointments (Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            //sql statement to add new appt
+            String sql = "INSERT INTO appointments (Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
             ps.setString(1, apptTitle);
             ps.setString(2, apptDescription);
@@ -169,12 +176,18 @@ public class DBAAppointment {
     public static boolean deleteAppointment(int apptID){
 
         try{
-            PreparedStatement ps = JDBC.getConnection().prepareStatement("DELETE FROM appointments WHERE Appointment_ID = ?");
+            //sql statement for deleting appt
+            String sql = "DELETE FROM appointments WHERE Appointment_ID = ?";
+
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
             ps.setInt(1, apptID);
 
             ps.executeUpdate();
-            System.out.println("Appointment Deleted: " + apptID + "\n");
+
+            //test
+            // System.out.println("Appointment Deleted: " + apptID + "\n");
+
             return true;
 
         } catch (SQLException throwables) {
@@ -189,26 +202,32 @@ public class DBAAppointment {
      * @return
      */
     public static ObservableList<Appointment> getAppointmentsIn15Minutes(){
-        //TODO figure this one out lol appt in 15 minutes
+
         ObservableList<Appointment> appointmentsIn15MinutesList = FXCollections.observableArrayList();
+
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         int userID = UserLoginSession.getUserLoggedIn().getUserId();
-        System.out.println("User ID: " + userID + "\n");
-        LocalDateTime timeNow = LocalDateTime.now();
-        ZonedDateTime timeNowForUser = timeNow.atZone(UserLoginSession.getLoggedInUserTimeZone());
-        ZonedDateTime timeNowUTC = timeNowForUser.withZoneSameInstant(ZoneOffset.UTC);
-        ZonedDateTime timeNowUTCAdd15Minutes = timeNowUTC.plusMinutes(15);
-        String start = timeNowUTC.format(dateTimeFormatter);
-        String end = timeNowUTCAdd15Minutes.format(dateTimeFormatter);
+
+        //test
+        //System.out.println("User ID: " + userID + "\n");
+
+        //get now time and build to convert to string for sql statement
+        LocalDateTime timeNow = LocalDateTime.now(); //local time now
+        ZonedDateTime timeNowForUser = timeNow.atZone(UserLoginSession.getLoggedInUserTimeZone()); //local time in user time zone
+        ZonedDateTime timeNowUTC = timeNowForUser.withZoneSameInstant(ZoneOffset.UTC); //offset time above to UTC
+        ZonedDateTime timeNowUTCAdd15Minutes = timeNowUTC.plusMinutes(15); //add 15 minutes to above
+        String start = timeNowUTC.format(dateTimeFormatter); //format date time to now time in UTC
+        String end = timeNowUTCAdd15Minutes.format(dateTimeFormatter); // format date time for 15 minutes added to now time UTC
 
 
         try{
-            PreparedStatement ps = JDBC.getConnection().prepareStatement("SELECT * FROM appointments JOIN contacts ON appointments.Contact_ID = contacts.Contact_ID WHERE User_ID = ? AND Start BETWEEN ? AND ?");
+            //sql statement to select appointments within a 15 minutes range
+            String sql = "SELECT * FROM appointments JOIN contacts ON appointments.Contact_ID = contacts.Contact_ID WHERE User_ID = ? AND Start BETWEEN ? AND ?";
+
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
             ps.setInt(1, userID);
-            //LocalDateTime timeNow = LocalDateTime.now();
-            //ZonedDateTime timeNowForUser = timeNow.atZone(UserLoginSession.getLoggedInUserTimeZone());
             ps.setString(2, start);
             ps.setString(3, end);
 
@@ -228,8 +247,11 @@ public class DBAAppointment {
                 String apptContactName = rs.getString("Contact_Name");
 
                 Appointment eachAppt = new Appointment(apptId, apptTitle, apptDescription, apptLocation, apptType, apptStartDateTime, apptEndDateTime/*, apptCreateDate, apptCreatedBy, apptLastUpdate, apptLastUpdatedBy*/, apptCustomerId, apptUserId, apptContactId, apptContactName);
+
                 appointmentsIn15MinutesList.add(eachAppt);
-                System.out.println("Appointment in 15 Minutes ID: " + apptId + " Start: " + apptStartDateTime );
+
+                //test
+                // System.out.println("Appointment in 15 Minutes ID: " + apptId + " Start: " + apptStartDateTime );
             }
 
         } catch (SQLException throwables) {
@@ -252,7 +274,10 @@ public class DBAAppointment {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         try{
-            PreparedStatement ps = JDBC.getConnection().prepareStatement("SELECT * FROM appointments JOIN contacts ON appointments.Contact_ID = contacts.Contact_ID WHERE Start BETWEEN ? AND ?");
+            //sql statement to select appts within a date range for diff tableviews
+            String sql = "SELECT * FROM appointments JOIN contacts ON appointments.Contact_ID = contacts.Contact_ID WHERE Start BETWEEN ? AND ?";
+
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
             ps.setString(1, String.valueOf(start));
             ps.setString(2, String.valueOf(end));
@@ -274,7 +299,9 @@ public class DBAAppointment {
 
                 Appointment eachAppointment = new Appointment(apptId, apptTitle, apptDescription, apptLocation, apptType, apptStartDateTime, apptEndDateTime,apptCustomerId, apptUserId, apptContactId, apptContactName);
                 appointmentsByDateRangeList.add(eachAppointment);
-                System.out.println("Each Appt :" + apptId + " Appt Start: " + apptStartDateTime + " Appt End: " + apptEndDateTime);
+
+                //test
+                // System.out.println("Each Appt :" + apptId + " Appt Start: " + apptStartDateTime + " Appt End: " + apptEndDateTime);
             }
 
         } catch (SQLException throwables) {
@@ -293,9 +320,11 @@ public class DBAAppointment {
 
         ObservableList<Appointment> selectedCustomerAppointments = FXCollections.observableArrayList();
 
-        PreparedStatement ps = JDBC.getConnection().prepareStatement("SELECT * FROM appointments JOIN contacts ON appointments.Contact_ID = contacts.Contact_ID WHERE Customer_ID = ?");
+        //sql statement to get all selected customer appts
+        String sql = "SELECT * FROM appointments JOIN contacts ON appointments.Contact_ID = contacts.Contact_ID WHERE Customer_ID = ?";
 
-        //ps.setString(1, dateOfAppointment.toString());
+        PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+
         ps.setInt(1, customerID);
 
         ResultSet rs = ps.executeQuery();
@@ -308,16 +337,13 @@ public class DBAAppointment {
             String apptType = rs.getString("Type");
             Timestamp apptStartDateTime = rs.getTimestamp("Start");
             Timestamp apptEndDateTime = rs.getTimestamp("End");
-            /*Timestamp apptCreateDate = rs.getTimestamp("Create_Date");
-            String apptCreatedBy = rs.getString("Created_By") ;
-            Timestamp apptLastUpdate = rs.getTimestamp("Last_Update");
-            String apptLastUpdatedBy = rs.getString("Last_Updated_By");*/
             int apptCustomerId = rs.getInt("Customer_ID");
             int apptUserId = rs.getInt("User_ID");
             int apptContactId = rs.getInt("Contact_ID");
             String apptContactName = rs.getString("Contact_Name");
 
             Appointment eachAppt = new Appointment(apptId, apptTitle, apptDescription, apptLocation, apptType, apptStartDateTime, apptEndDateTime/*, apptCreateDate, apptCreatedBy, apptLastUpdate, apptLastUpdatedBy*/, apptCustomerId, apptUserId, apptContactId, apptContactName);
+
             selectedCustomerAppointments.add(eachAppt);
 
             //test
@@ -328,19 +354,22 @@ public class DBAAppointment {
 
     /**
      * method to check for all customer appointments for specific date for use when adding new appointment
-     * @param customerID the customer id to check appointments for
-     * @param dateOfAppointment the date to check appointments for
+     * @param apptCustomerID the customer id to check appointments for
+     * @param apptStartDate the date to check appointments for
      * @return list of all appointments on the same date as the input appointment
      * @throws SQLException
      */
-    public static ObservableList<Appointment> getAllSelectedCustomerAppointmentsByDate(int customerID, LocalDate dateOfAppointment) throws SQLException {
+    public static ObservableList<Appointment> getAllSelectedCustomerAppointmentsByDate(int apptCustomerID, LocalDate apptStartDate) throws SQLException {
 
         ObservableList<Appointment> selectedCustomerAppointmentByDateList = FXCollections.observableArrayList();
 
-        PreparedStatement ps = JDBC.getConnection().prepareStatement("SELECT * FROM appointments JOIN contacts ON appointments.Contact_ID = contacts.Contact_ID WHERE datediff(appointments.Start, ?) = 0 AND Customer_ID = ?");
+        //sql statement for getting all selected customer appointments by date
+        String sql = "SELECT * FROM appointments JOIN contacts ON appointments.Contact_ID = contacts.Contact_ID WHERE Customer_ID = ? AND datediff(appointments.Start, ?) = 0";
 
-        ps.setString(1, dateOfAppointment.toString());
-        ps.setInt(2, customerID);
+        PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+
+        ps.setInt(1, apptCustomerID);
+        ps.setString(2, apptStartDate.toString());
 
         ResultSet rs = ps.executeQuery();
 
@@ -352,27 +381,61 @@ public class DBAAppointment {
             String apptType = rs.getString("Type");
             Timestamp apptStartDateTime = rs.getTimestamp("Start");
             Timestamp apptEndDateTime = rs.getTimestamp("End");
-            /*Timestamp apptCreateDate = rs.getTimestamp("Create_Date");
-            String apptCreatedBy = rs.getString("Created_By") ;
-            Timestamp apptLastUpdate = rs.getTimestamp("Last_Update");
-            String apptLastUpdatedBy = rs.getString("Last_Updated_By");*/
             int apptCustomerId = rs.getInt("Customer_ID");
             int apptUserId = rs.getInt("User_ID");
             int apptContactId = rs.getInt("Contact_ID");
             String apptContactName = rs.getString("Contact_Name");
 
             Appointment eachAppt = new Appointment(apptId, apptTitle, apptDescription, apptLocation, apptType, apptStartDateTime, apptEndDateTime/*, apptCreateDate, apptCreatedBy, apptLastUpdate, apptLastUpdatedBy*/, apptCustomerId, apptUserId, apptContactId, apptContactName);
+
             selectedCustomerAppointmentByDateList.add(eachAppt);
-            System.out.println("Appointment Start: " + apptStartDateTime + " Appointment ID: " + apptId + "\n");
+
+            //test
+            // System.out.println("Appointment Start: " + apptStartDateTime + " Appointment ID: " + apptId + "\n");
         }
         return selectedCustomerAppointmentByDateList;
     }
 
+    /**
+     * method to check for overlapping appointments time when adding new appointment
+     * @param apptCustomerID
+     * @param apptStartDate
+     * @param apptStartUser
+     * @param apptEndUser
+     * @return
+     * @throws SQLException
+     */
+    public static Boolean checkForOverlappingCustomerAppointments(int apptCustomerID, LocalDate apptStartDate, LocalDateTime apptStartUser, LocalDateTime apptEndUser) throws SQLException {
+        ObservableList<Appointment> allCustomerAppointmentsByDate = getAllSelectedCustomerAppointmentsByDate(apptCustomerID, apptStartDate);
+
+        for (Appointment appointment : allCustomerAppointmentsByDate) {
+            //set var for appt start and end for each appointment in list to compare to a new appts start and end
+            LocalDateTime existingApptStart = appointment.getApptStartDateTime().toLocalDateTime();
+            LocalDateTime existingApptEnd = appointment.getApptEndDateTime().toLocalDateTime();
+
+            //check for any overlap in new appt with existing appts
+            if ((existingApptEnd.isAfter(apptStartUser) & existingApptEnd.isBefore(apptEndUser)) || (existingApptEnd.isAfter(apptEndUser) & existingApptStart.isBefore(apptStartUser)) || (existingApptStart.isAfter(apptStartUser) & existingApptStart.isBefore(apptEndUser))) {
+                return false; //there is overlap
+            }
+            else {
+                return true; //there is no overlap
+            }
+        }
+        return true;
+    }
+
+    /**
+     * method to get all distinct appt types
+     * @return
+     */
     public static ObservableList<String> getAllApptTypes() {
         ObservableList<String> allApptTypes = FXCollections.observableArrayList();
 
         try {
-            PreparedStatement ps = JDBC.getConnection().prepareStatement("SELECT DISTINCT Type FROM appointments");
+            //sql statement to get each distinct appt type for combo box
+            String sql = "SELECT DISTINCT Type FROM appointments";
+
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
             ResultSet rs = ps.executeQuery();
 
@@ -387,36 +450,47 @@ public class DBAAppointment {
         }
         return allApptTypes;
     }
-        /**
+
+    /**
      * method to return a report of appointments by type and month
      * @return
      */
     public static ObservableList<String> getTotalAppointmentsByTypeAndMonth(){
         ObservableList<String> totalAppointmentsByTypeAndMonth = FXCollections.observableArrayList();
-        totalAppointmentsByTypeAndMonth.add("Appointments By Type and Month Report: \n");
+
+        totalAppointmentsByTypeAndMonth.add("Appointments By Distinct Type and Month:");
 
         try{
-            PreparedStatement psType = JDBC.getConnection().prepareStatement("SELECT Type, COUNT(Type) FROM appointments GROUP BY Type");
+            //sql statement for getting a count of each type of appointment //TODO make sure this works
+            String sql = "SELECT DISTINCT Type, COUNT(Type) FROM appointments GROUP BY Type";
 
-            PreparedStatement psMonth = JDBC.getConnection().prepareStatement("SELECT MONTHNAME(Start), COUNT(MONTH(Start)) FROM appointments GROUP BY MONTHNAME(Start)");
+            //sql statement for getting count of all appointments in each month //TODO make sure this works.
+            String sql2 = "SELECT MONTHNAME(Start), COUNT(MONTH(Start)) FROM appointments GROUP BY MONTHNAME(Start)";
+
+            PreparedStatement psType = JDBC.getConnection().prepareStatement(sql);
+
+            PreparedStatement psMonth = JDBC.getConnection().prepareStatement(sql2);
 
             ResultSet rsType = psType.executeQuery();
+
             ResultSet rsMonth = psMonth.executeQuery();
 
             while (rsType.next()) {
-                String eachType = "Appointment Type: " + rsType.getString("Type") + "\n" + "Number of " + rsType.getString("Type") + " Appointments: " + rsType.getString("COUNT(Type)") + "\n";
+                String eachType = "\nAppointment Type: " + rsType.getString("Type") + "\n" + "Number of " + rsType.getString("Type") + " Appointments: " + rsType.getString("COUNT(Type)") + "\n";
+
                 totalAppointmentsByTypeAndMonth.add(eachType);
 
                 //test
-                System.out.println(eachType);
+                //System.out.println(eachType);
             }
 
             while(rsMonth.next()) {
-                String eachMonth = "Appointment Month: " + rsMonth.getString("MONTHNAME(start)") + "\n" + "Number of " + rsMonth.getString("MONTHNAME(Start)") + " Appointments: " + rsMonth.getString("COUNT(MONTH(Start))") +"\n";
+                String eachMonth = "\nAppointment Month: " + rsMonth.getString("MONTHNAME(start)") + "\n" + "Number of " + rsMonth.getString("MONTHNAME(Start)") + " Appointments: " + rsMonth.getString("COUNT(MONTH(Start))") +"\n";
+
                 totalAppointmentsByTypeAndMonth.add(eachMonth);
 
                 //test
-                System.out.println(eachMonth);
+                //System.out.println(eachMonth);
             }
 
         } catch (SQLException throwables) {
@@ -434,11 +508,15 @@ public class DBAAppointment {
     public static boolean deleteAllSelectedCustomerAppointments(int customerID){
 
         try{
-            PreparedStatement ps = JDBC.getConnection().prepareStatement("DELETE FROM appointments WHERE Customer_ID = ?");
+            //sql statement to delete appts for specific customer id
+            String sql = "DELETE FROM appointments WHERE Customer_ID = ?";
+
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
             ps.setInt(1, customerID);
 
             ps.executeUpdate();
+
             return true;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -446,57 +524,5 @@ public class DBAAppointment {
         }
         //return true;
 
-    }
-
-    public static ObservableList<Appointment> getCustomerAppointmentsByDate(int apptCustomerID, LocalDate apptStartDate) throws SQLException {
-
-        ObservableList<Appointment> allCustomerAppointmentsByDate = FXCollections.observableArrayList();
-        PreparedStatement ps = JDBC.getConnection().prepareStatement("SELECT * from appointments JOIN contacts ON appointments.Contact_ID = contacts.Contact_ID WHERE Customer_ID = ? AND DATEDIFF(appointments.Start, ?) = 0;");
-
-        ps.setInt(1, apptCustomerID);
-        ps.setString(2, String.valueOf(apptStartDate));
-
-        ResultSet rs = ps.executeQuery();
-
-        while (rs.next()) {
-            int apptId = rs.getInt("Appointment_ID");
-            String apptTitle = rs.getString("Title");
-            String apptDescription = rs.getString("Description");
-            String apptLocation = rs.getString("Location");
-            String apptType = rs.getString("Type");
-            Timestamp apptStartDateTime = rs.getTimestamp("Start");
-            Timestamp apptEndDateTime = rs.getTimestamp("End");
-            /*Timestamp apptCreateDate = rs.getTimestamp("Create_Date");
-            String apptCreatedBy = rs.getString("Created_By") ;
-            Timestamp apptLastUpdate = rs.getTimestamp("Last_Update");
-            String apptLastUpdatedBy = rs.getString("Last_Updated_By");*/
-            int apptCustomerId = rs.getInt("Customer_ID");
-            int apptUserId = rs.getInt("User_ID");
-            int apptContactId = rs.getInt("Contact_ID");
-            String apptContactName = rs.getString("Contact_Name");
-
-            Appointment eachAppt = new Appointment(apptId, apptTitle, apptDescription, apptLocation, apptType, apptStartDateTime, apptEndDateTime/*, apptCreateDate, apptCreatedBy, apptLastUpdate, apptLastUpdatedBy*/, apptCustomerId, apptUserId, apptContactId, apptContactName);
-            allCustomerAppointmentsByDate.add(eachAppt);
-            System.out.println("Appointment Start: " + apptStartDateTime + " Appointment ID: " + apptId + "\n");
-        }
-
-        return allCustomerAppointmentsByDate;
-    }
-
-    public static Boolean checkForOverlappingCustomerAppointments(int apptCustomerID, LocalDate apptStartDate, LocalDateTime apptStartUser, LocalDateTime apptEndUser) throws SQLException {
-        ObservableList<Appointment> allCustomerAppointmentsByDate = getAllSelectedCustomerAppointmentsByDate(apptCustomerID, apptStartDate);
-
-        for (Appointment appointment : allCustomerAppointmentsByDate) {
-            LocalDateTime existingApptStart = appointment.getApptStartDateTime().toLocalDateTime();
-            LocalDateTime existingApptEnd = appointment.getApptEndDateTime().toLocalDateTime();
-
-            if ((existingApptEnd.isAfter(apptStartUser) & existingApptEnd.isBefore(apptEndUser)) || (existingApptEnd.isAfter(apptEndUser) & existingApptStart.isBefore(apptStartUser)) || (existingApptStart.isAfter(apptStartUser) & existingApptStart.isBefore(apptEndUser))) {
-                return false;
-            }
-            else {
-                return true;
-            }
-        }
-        return true;
     }
 }

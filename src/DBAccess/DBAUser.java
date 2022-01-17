@@ -11,6 +11,11 @@ import java.sql.SQLException;
 
 public class DBAUser {
 
+    /**
+     * method to get all users
+     * unused.
+     * @return
+     */
     public static ObservableList<User> getAllUser() {
 
         ObservableList<User> allUsersList = FXCollections.observableArrayList();
@@ -37,6 +42,10 @@ public class DBAUser {
         return allUsersList;
     }
 
+    /**
+     * method to get all user ids
+     * @return
+     */
     public static ObservableList<Integer> getAllUserIds() {
 
         ObservableList<Integer> allUserIdsList = FXCollections.observableArrayList();
@@ -55,7 +64,7 @@ public class DBAUser {
                 //String password = rs.getString("Password");
 
                 //User user = new User(userId, userName, password);
-                System.out.println(userId + "\n");
+                //System.out.println(userId + "\n");
                 allUserIdsList.add(userId);
             }
         } catch (SQLException throwables) {
@@ -65,19 +74,27 @@ public class DBAUser {
         return allUserIdsList;
     }
 
+    /**
+     * method to get user name from id
+     * @param userId
+     * @return
+     */
     public static String getUserNameFromId(int userId) {
 
         String userName = " ";
         int userID;
         try {
-            PreparedStatement ps = JDBC.getConnection().prepareStatement("SELECT User_Name, User_ID FROM users WHERE User_ID = ?");
+            String sql = "SELECT User_Name FROM users WHERE User_ID = ?";
+
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+
             ps.setInt(1, userId);
 
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
                 userName = rs.getString("User_Name");
-                userID = rs.getInt("User_ID");
+                //userID = rs.getInt("User_ID"); //for testing
 
             }
 
@@ -87,9 +104,14 @@ public class DBAUser {
         return userName;
     }
 
+    /**
+     * method to get all user names
+     * @return
+     */
     public static ObservableList<String> getAllUserNames() {
 
         ObservableList<String> allUserNamesList = FXCollections.observableArrayList();
+
         try {
             String sql = "SELECT User_Name from users";
 
@@ -104,7 +126,7 @@ public class DBAUser {
                 allUserNamesList.add(userName);
 
                 //test
-                System.out.println("User Name: " + userName);
+                //System.out.println("User Name: " + userName);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -116,17 +138,28 @@ public class DBAUser {
         return allUserNamesList;
     }
 
+    /**
+     * method to get user id from name
+     * @param username
+     * @return
+     */
     public static Integer getUserIdFromName(String username) {
-        String userName = " ";
+        //String userName = " ";
         int userID = 0;
+
         try {
-            PreparedStatement ps = JDBC.getConnection().prepareStatement("SELECT User_Name, User_ID FROM users WHERE User_Name = ?");
+
+            String sql = "SELECT User_ID FROM users WHERE User_Name = ?";
+
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+
             ps.setString(1, username);
 
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                userName = rs.getString("User_Name");
+                //userName = rs.getString("User_Name"); //for testing
+
                 userID = rs.getInt("User_ID");
 
             }

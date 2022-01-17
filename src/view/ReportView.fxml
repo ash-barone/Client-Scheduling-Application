@@ -6,19 +6,19 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="430.0" prefWidth="300.0" style="-fx-background-color: #bfd3f8;" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.ReportViewController">
+<AnchorPane prefHeight="430.0" prefWidth="528.0" style="-fx-background-color: #bfd3f8;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ReportViewController">
    <children>
-      <Button layoutX="23.0" layoutY="139.0" mnemonicParsing="false" onAction="#onActionShowReport3" prefHeight="20.0" prefWidth="150.0" style="-fx-background-color: #6495ed; -fx-text-fill: #0a0f18;" text="Report 3">
+      <Button layoutX="23.0" layoutY="139.0" mnemonicParsing="false" onAction="#onActionShowReport3" prefHeight="27.0" prefWidth="273.0" style="-fx-background-color: #6495ed; -fx-text-fill: #0a0f18;" text="Report 3">
          <font>
             <Font size="13.0" />
          </font>
       </Button>
-      <Button layoutX="23.0" layoutY="59.0" mnemonicParsing="false" onAction="#onActionShowReport1" prefHeight="20.0" prefWidth="150.0" style="-fx-background-color: #6495ed; -fx-text-fill: #0a0f18;" text="Report 1">
+      <Button layoutX="23.0" layoutY="59.0" mnemonicParsing="false" onAction="#onActionShowTypeAndMonthReport" prefHeight="27.0" prefWidth="273.0" style="-fx-background-color: #6495ed; -fx-text-fill: #0a0f18;" text="Appointments By Type And Month Report">
          <font>
             <Font size="13.0" />
          </font>
       </Button>
-      <Button layoutX="23.0" layoutY="99.0" mnemonicParsing="false" onAction="#onActionShowReport2" prefHeight="20.0" prefWidth="150.0" style="-fx-background-color: #6495ed; -fx-text-fill: #0a0f18;" text="Report 2">
+      <Button layoutX="23.0" layoutY="99.0" mnemonicParsing="false" onAction="#onActionShowContactSchedule" prefHeight="27.0" prefWidth="273.0" style="-fx-background-color: #6495ed; -fx-text-fill: #0a0f18;" text="Appointment Schedule for Selected Contact">
          <font>
             <Font size="13.0" />
          </font>
@@ -28,8 +28,8 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <TextArea fx:id="reportTxtArea" layoutX="23.0" layoutY="179.0" prefHeight="200.0" prefWidth="255.0" />
-      <Button fx:id="backBtn" layoutX="230.0" layoutY="389.0" mnemonicParsing="false" onAction="#onActionBackToMainMenu" prefHeight="27.0" prefWidth="48.0" style="-fx-background-color: #6a64ed; -fx-text-fill: #0a0f18;" text="Back">
+      <TextArea fx:id="reportTxtArea" layoutX="23.0" layoutY="179.0" prefHeight="200.0" prefWidth="481.0" />
+      <Button fx:id="backBtn" layoutX="456.0" layoutY="389.0" mnemonicParsing="false" onAction="#onActionBackToMainMenu" prefHeight="27.0" prefWidth="48.0" style="-fx-background-color: #6a64ed; -fx-text-fill: #0a0f18;" text="Back">
          <font>
             <Font size="13.0" />
          </font>

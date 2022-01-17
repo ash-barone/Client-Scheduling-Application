@@ -22,6 +22,7 @@ public class DBAContact {
         ObservableList<Contact> allContactsList = FXCollections.observableArrayList();
 
         try {
+            //sql statement to get all contacts
             String sql = "SELECT * from contacts";
 
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
@@ -37,7 +38,7 @@ public class DBAContact {
                 allContactsList.add(contact);
 
                 //test
-                System.out.println("Contact ID: " + contactId + " Name: " + contactName + " Contact Email: " + contactEmail);
+                //System.out.println("Contact ID: " + contactId + " Name: " + contactName + " Contact Email: " + contactEmail);
 
             }
         } catch (SQLException throwables) {
@@ -55,6 +56,7 @@ public class DBAContact {
         ObservableList<String> allContactNamesList = FXCollections.observableArrayList();
 
         try {
+            //sql statement to get contact names
             String sql = "SELECT Contact_Name from contacts";
 
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
@@ -66,7 +68,7 @@ public class DBAContact {
 
                 allContactNamesList.add(contactName);
 
-                System.out.println("Contact Name: " + contactName);
+                //System.out.println("Contact Name: " + contactName);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -75,12 +77,21 @@ public class DBAContact {
         return allContactNamesList;
     }
 
+    /**
+     * method to get contact id from name
+     * @param contactName
+     * @return
+     * @throws SQLException
+     */
     public static int getContactIdFromName(String contactName) throws SQLException {
 
         int contactId = 0;
+
         try {
-            //sql statement to select division id from customer table where customer id is specific thing
-            PreparedStatement ps = JDBC.getConnection().prepareStatement("SELECT Contact_Name, Contact_ID FROM contacts WHERE Contact_Name = ?");
+            //sql statement to get contact id from name
+            String sql = "SELECT Contact_ID FROM contacts WHERE Contact_Name = ?";
+
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
             ps.setString(1, contactName);
 
@@ -91,13 +102,41 @@ public class DBAContact {
                 contactId = rs.getInt("Contact_ID");
 
                 //test
-                System.out.println("Contact ID: " + contactId + " Contact Name: " + contactName);
+                //System.out.println("Contact ID: " + contactId + " Contact Name: " + contactName);
             }
             ;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         return contactId;
+    }
+
+    public static String getContactNameFromId(int contactId) throws SQLException {
+
+        String contactName = " ";
+
+        try {
+            //sql statement to get contact name from id
+            String sql = "SELECT Contact_Name FROM contacts WHERE Contact_ID = ?";
+
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+
+            ps.setInt(1, contactId);
+
+            //int divisionId;
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                contactName = rs.getString("Contact_Name");
+
+                //test
+                //System.out.println("Contact ID: " + contactId + " Contact Name: " + contactName);
+            }
+            ;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return contactName;
     }
 
     /**
@@ -108,6 +147,7 @@ public class DBAContact {
         ObservableList<Integer> allContactIdsList = FXCollections.observableArrayList();
 
         try {
+            //sql statement to get all contact ids
             String sql = "SELECT Contact_ID from contacts";
 
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
@@ -119,7 +159,7 @@ public class DBAContact {
 
                 allContactIdsList.add(contactId);
 
-                System.out.println("Contact ID: " + contactId);
+                //System.out.println("Contact ID: " + contactId);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -133,15 +173,20 @@ public class DBAContact {
      * @param contactID
      * @return list of all appts for that contact
      */
-    public static ObservableList<String> getAllAppointmentsForContact(int contactID){
+    public static ObservableList<String> getAllAppointmentsForContact(int contactID) throws SQLException {
         ObservableList<String> allAppointmentsForContactList = FXCollections.observableArrayList();
+
+        String contactName = DBAContact.getContactNameFromId(contactID);
+
+        allAppointmentsForContactList.add("Appointments for " + contactName + ": ");
+
         try {
-            // did not work for setString() String sql = "SELECT * FROM appointments WHERE Contact_ID = ?";
+            //sql statement to select appts for specific contact
+            String sql = "SELECT * FROM appointments WHERE Contact_ID = ?";
 
-            PreparedStatement ps = JDBC.getConnection().prepareStatement("SELECT * FROM appointments WHERE Contact_ID = " + contactID);
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
-            //works for ? in sql statement NVM just changed string structure
-            //ps.setInt(1, contactID);
+            ps.setInt(1, contactID);
 
             ResultSet rs = ps.executeQuery();
 
@@ -155,8 +200,8 @@ public class DBAContact {
                 String customerId = rs.getString("Customer_ID");
                 String contactId = rs.getString("Contact_ID");
 
-                String eachAppt = "Appointment ID: " + apptId + " Title: " + apptTitle + " Description: " + apptDescription + " Type: " + apptType + " Start: " + apptStart + " End: " + apptEnd + " Customer ID: " + customerId + " Contact ID: " + contactId + "\n";
-                System.out.println("Appointment info: " + eachAppt);
+                String eachAppt = "\nAppointment ID: " + apptId + " Title: " + apptTitle + " Description: " + apptDescription + " Type: " + apptType + " Start: " + apptStart + " End: " + apptEnd + " Customer ID: " + customerId + " Contact ID: " + contactId + "\n";
+                //System.out.println("Appointment info: " + eachAppt);
 
                 allAppointmentsForContactList.add(eachAppt);
 
