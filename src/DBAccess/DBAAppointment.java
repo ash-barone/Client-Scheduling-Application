@@ -476,7 +476,10 @@ public class DBAAppointment {
             ResultSet rsMonth = psMonth.executeQuery();
 
             while (rsType.next()) {
-                String eachType = "\nAppointment Type: " + rsType.getString("Type") + "\n" + "Number of " + rsType.getString("Type") + " Appointments: " + rsType.getString("COUNT(Type)") + "\n";
+                String apptType = rsType.getString("Type");
+                String apptTypeCount = rsType.getString("COUNT(Type)");
+
+                String eachType = "\nAppointment Type: " + apptType + "\n" + "Number of " + apptType + " Appointments: " + apptTypeCount + "\n";
 
                 totalAppointmentsByTypeAndMonth.add(eachType);
 
@@ -485,7 +488,10 @@ public class DBAAppointment {
             }
 
             while(rsMonth.next()) {
-                String eachMonth = "\nAppointment Month: " + rsMonth.getString("MONTHNAME(start)") + "\n" + "Number of " + rsMonth.getString("MONTHNAME(Start)") + " Appointments: " + rsMonth.getString("COUNT(MONTH(Start))") +"\n";
+                String monthName = rsMonth.getString("MONTHNAME(start)");
+                String monthNameAppts = rsMonth.getString("COUNT(MONTH(Start))");
+
+                String eachMonth = "\nAppointment Month: " + monthName + "\n" + "Number of " + monthName + " Appointments: " + monthNameAppts +"\n";
 
                 totalAppointmentsByTypeAndMonth.add(eachMonth);
 

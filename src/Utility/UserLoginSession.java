@@ -62,9 +62,9 @@ public class UserLoginSession {
             String password = " "; //move to outside?
 
             try {
-                //String sql = "SELECT * FROM users WHERE User_Name LIKE '%1%' AND Password LIKE '%2%'";
+                String sql = "SELECT * FROM users WHERE User_Name = ? AND Password = ?";
 
-                PreparedStatement ps = JDBC.getConnection().prepareStatement("SELECT * FROM users WHERE User_Name = ? AND Password = ?");
+                PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
                 ps.setString(1, username);
                 ps.setString(2, pass);
@@ -75,19 +75,16 @@ public class UserLoginSession {
                     userName = rs.getString("User_Name");
                     password = rs.getString("Password");
 
-                    System.out.println("before catch and if statement userName: " + userName + " password: " + password);
-               /* if (username == userName && pass == password) {
-                    User user = new User(userId, userName, password);
-                    System.out.println("ID: " + userId + "Name: " + userName + "password: " + password);
-                    return true;
-                }*/
+                    //test
+                    // .out.println("before catch and if statement userName: " + userName + " password: " + password);
                 }
             } catch(SQLException throwables){
                 throwables.printStackTrace();
             }
             if (username.equals(userName) && pass.equals(password)) {
                 User user = new User(userId, userName, password);
-                System.out.println("ID: " + userId + " username: " + userName + " password: " + password);
+                //test
+                // System.out.println("ID: " + userId + " username: " + userName + " password: " + password);
 
                 //set current logged in user info for insert and updates plus locale stuff i might use?
                 userLoggedIn = new User(userId, userName, password);
@@ -95,12 +92,12 @@ public class UserLoginSession {
                 loggedInUserLocale = Locale.getDefault();
 
                 //test for user info
-                System.out.println("Logged in: " + userLoggedIn.getUserName() + " User Time Zone: " + loggedInUserTimeZone + " User Locale: " + loggedInUserLocale);
+                //System.out.println("Logged in: " + userLoggedIn.getUserName() + " User Time Zone: " + loggedInUserTimeZone + " User Locale: " + loggedInUserLocale);
                 return true;
             }
             else{
                 //test for no user
-                System.out.println(" User Time Zone: " + loggedInUserTimeZone + " User Locale: " + loggedInUserLocale);
+                //System.out.println(" User Time Zone: " + loggedInUserTimeZone + " User Locale: " + loggedInUserLocale);
 
                 return false;
             }
@@ -116,7 +113,7 @@ public class UserLoginSession {
         loggedInUserLocale = null;
 
         //test confirm user info cleared
-        System.out.println(" User Time Zone: " + loggedInUserTimeZone + " User Locale: " + loggedInUserLocale);
+        //System.out.println(" User Time Zone: " + loggedInUserTimeZone + " User Locale: " + loggedInUserLocale);
 
     }
 }

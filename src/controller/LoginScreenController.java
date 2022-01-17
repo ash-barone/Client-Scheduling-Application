@@ -63,9 +63,11 @@ public class LoginScreenController implements Initializable {
             userNameLbl.setText(rb.getString("Username"));
             passwordLbl.setText(rb.getString("Password"));
             loginBtn.setText(rb.getString("SignIn"));
-            System.out.println("language detected " + Locale.getDefault().getLanguage());
+            //test
+            // System.out.println("language detected " + Locale.getDefault().getLanguage());
         } else {
-            System.out.println("language not detected");
+            //test
+            // System.out.println("language not detected");
         }
 
         userZoneIdLbl.setText(String.valueOf(ZoneID.getDefault()));
@@ -88,7 +90,8 @@ public class LoginScreenController implements Initializable {
 
         boolean successfulLogin = UserLoginSession.attemptToLogInUser(username, pass);
 
-        System.out.println("user: " + username + " " + "pass: " + pass);
+        //test
+        // System.out.println("user: " + username + " " + "pass: " + pass);
         if (successfulLogin == true) {
 
             ObservableList<Appointment> appointmentsIn15 = DBAAppointment.getAppointmentsIn15Minutes();

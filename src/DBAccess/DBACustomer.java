@@ -482,5 +482,34 @@ public class DBACustomer {
         }
         return customerID;
     }
+
+    public static ObservableList<String> getAllCustomerCountByDivision() {
+
+        ObservableList<String> customerCountByDivision = FXCollections.observableArrayList();
+
+        customerCountByDivision.add("Customers by Distinct Division: \n");
+
+        try{
+            //sql statement to get number of customers per distinct divisions
+            String sql = "SELECT first_level_divisions.Division, COUNT(customers.Division_ID) FROM first_level_divisions JOIN customers ON first_level_divisions.Division_ID = customers.Division_ID GROUP BY customers.Division_ID;\n";
+
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                String divisionName = rs.getString("first_level_divisions.Division");
+                String customerCount = rs.getString("COUNT(customers.Division_ID)");
+
+                String eachDivision = "\nDivision: " + divisionName + "\n" + "Number of " + divisionName + " Customers: " + customerCount +"\n";
+
+                customerCountByDivision.add(eachDivision);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    return customerCountByDivision;
+    }
 }
 

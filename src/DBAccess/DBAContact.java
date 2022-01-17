@@ -200,7 +200,7 @@ public class DBAContact {
                 String customerId = rs.getString("Customer_ID");
                 String contactId = rs.getString("Contact_ID");
 
-                String eachAppt = "\nAppointment ID: " + apptId + " Title: " + apptTitle + " Description: " + apptDescription + " Type: " + apptType + " Start: " + apptStart + " End: " + apptEnd + " Customer ID: " + customerId + " Contact ID: " + contactId + "\n";
+                String eachAppt = "\nAppointment ID: " + apptId + " Title: " + apptTitle + " Description: " + apptDescription + " Type: " + apptType + " Start: " + apptStart + " End: " + apptEnd + " Customer ID: " + customerId;
                 //System.out.println("Appointment info: " + eachAppt);
 
                 allAppointmentsForContactList.add(eachAppt);
