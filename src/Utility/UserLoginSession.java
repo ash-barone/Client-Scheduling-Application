@@ -3,6 +3,7 @@ package Utility;
 import DBAccess.JDBC;
 import model.User;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,6 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.Locale;
 
 /**
@@ -123,14 +126,19 @@ public class UserLoginSession {
     public static void logUserActivity(boolean attemptToLogInUser, String username) throws IOException {
 
         try {
-            FileWriter fw = new FileWriter("login_activity.txt", true);
+            FileWriter fw = new FileWriter("login_activity.txt",true);
             PrintWriter ps = new PrintWriter(fw);
             LocalDateTime nowTime = LocalDateTime.now();
-            ps.append("Attempted Log-in By User: " + username + " at: " + nowTime + " Successful: " + attemptToLogInUser + "\n");
+            ZonedDateTime nowTimeZoned = ZonedDateTime.of(nowTime, ZoneId.systemDefault());
+            ZonedDateTime nowTimeUTC = nowTimeZoned.withZoneSameInstant(ZoneOffset.UTC);
+            if (username == ""){
+                username = "NO USERNAME ENTERED";
+            }
+            ps.append("Attempted Log-in By User: " + username + " :: Time: " + nowTimeUTC + " UTC :: Successful: " + attemptToLogInUser + "\n");
             ps.close();
 
             //test
-            System.out.println(" usename: " + username + " Time: " + nowTime + " success?: " + attemptToLogInUser);
+            System.out.println(" usename: " + username + " Time: " + nowTimeUTC + " success?: " + attemptToLogInUser);
         } catch (IOException e) {
             e.printStackTrace();
         }

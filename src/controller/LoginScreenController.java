@@ -43,7 +43,7 @@ public class LoginScreenController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //testing
         //set language
-        ResourceBundle rb = ResourceBundle.getBundle(/*string is the rb prop file name*/ "Utility/languageproperties", Locale.getDefault());
+        ResourceBundle rb = ResourceBundle.getBundle("Utility/languageproperties", Locale.getDefault());
 
         if (Locale.getDefault().getLanguage().equals("fr") || Locale.getDefault().getLanguage().equals("en")) {
             welcomeLbl.setText(rb.getString("Welcome!"));
