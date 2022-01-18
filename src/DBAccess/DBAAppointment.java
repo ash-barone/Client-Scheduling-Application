@@ -167,6 +167,32 @@ public class DBAAppointment {
     }
 
     /**
+     * method to delete all appointments for a selected customer
+     * @param customerID the selected customer is
+     * @return all appointments for the selected customer
+     */
+    public static boolean deleteAllSelectedCustomerAppointments(int customerID){
+
+        try{
+            //sql statement to delete appts for specific customer id
+            String sql = "DELETE FROM appointments WHERE Customer_ID = ?";
+
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+
+            ps.setInt(1, customerID);
+
+            ps.executeUpdate();
+
+            return true;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return false;
+        }
+        //return true;
+
+    }
+
+    /**
      * method to delete appointments
      * @param apptID the appt id to search for delete
      * @return bool for if it worked
@@ -262,23 +288,22 @@ public class DBAAppointment {
 
     /**
      * method to get all appointment within a date range for use in tableview for month and week display
-     * @param start the start date
-     * @param end the end date
+     *
      * @return list of appointments for tableview by month or week
      */
-    public static ObservableList<Appointment> getAppointmentsByDateRange(ZonedDateTime start, ZonedDateTime end){
-        ObservableList<Appointment> appointmentsByDateRangeList = FXCollections.observableArrayList();
+    public static ObservableList<Appointment> getAppointmentsByDateRangeWeek(){
+        ObservableList<Appointment> appointmentsByDateRangeWeekList = FXCollections.observableArrayList();
 
         //DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         try{
             //sql statement to select appts within a date range for diff tableviews
-            String sql = "SELECT * FROM appointments JOIN contacts ON appointments.Contact_ID = contacts.Contact_ID WHERE Start BETWEEN ? AND ?";
+            String sql = "SELECT * FROM appointments JOIN contacts ON appointments.Contact_ID = contacts.Contact_ID WHERE YEAR(Start) = YEAR(CURDATE()) AND MONTH(Start) = MONTH(CURDATE()) AND WEEK(Start) = WEEK(CURDATE());";
 
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
-            ps.setString(1, String.valueOf(start));
-            ps.setString(2, String.valueOf(end));
+            //ps.setString(1, String.valueOf(start));
+            //ps.setString(2, String.valueOf(end));
 
             ResultSet rs = ps.executeQuery();
 
@@ -296,7 +321,7 @@ public class DBAAppointment {
                 String apptContactName = rs.getString("Contact_Name"); //when using join for contact name
 
                 Appointment eachAppointment = new Appointment(apptId, apptTitle, apptDescription, apptLocation, apptType, apptStartDateTime, apptEndDateTime,apptCustomerId, apptUserId, apptContactId, apptContactName);
-                appointmentsByDateRangeList.add(eachAppointment);
+                appointmentsByDateRangeWeekList.add(eachAppointment);
 
                 //test
                 // System.out.println("Each Appt :" + apptId + " Appt Start: " + apptStartDateTime + " Appt End: " + apptEndDateTime);
@@ -305,7 +330,51 @@ public class DBAAppointment {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return appointmentsByDateRangeList;
+        return appointmentsByDateRangeWeekList;
+    }
+
+    /**
+     * method to get all appointment within a date range for use in tableview for month and week display
+     *
+     * @return list of appointments for tableview by month or week
+     */
+    public static ObservableList<Appointment> getAppointmentsByDateRangeMonth(){
+        ObservableList<Appointment> appointmentsByDateRangeMonthList = FXCollections.observableArrayList();
+
+        //DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        try{
+            //sql statement to select appts within a date range for diff tableviews
+            String sql = "SELECT * FROM appointments JOIN contacts ON appointments.Contact_ID = contacts.Contact_ID WHERE YEAR(Start) = YEAR(CURDATE()) AND MONTH(Start) = MONTH(CURDATE())";//Start BETWEEN ? AND ?";
+
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int apptId = rs.getInt("Appointment_ID");
+                String apptTitle = rs.getString("Title");
+                String apptDescription = rs.getString("Description");
+                String apptLocation = rs.getString("Location");
+                String apptType = rs.getString("Type");
+                Timestamp apptStartDateTime = rs.getTimestamp("Start");
+                Timestamp apptEndDateTime = rs.getTimestamp("End");
+                int apptCustomerId = rs.getInt("Customer_ID");
+                int apptUserId = rs.getInt("User_ID");
+                int apptContactId = rs.getInt("Contact_ID");
+                String apptContactName = rs.getString("Contact_Name"); //when using join for contact name
+
+                Appointment eachAppointment = new Appointment(apptId, apptTitle, apptDescription, apptLocation, apptType, apptStartDateTime, apptEndDateTime,apptCustomerId, apptUserId, apptContactId, apptContactName);
+                appointmentsByDateRangeMonthList.add(eachAppointment);
+
+                //test
+                // System.out.println("Each Appt :" + apptId + " Appt Start: " + apptStartDateTime + " Appt End: " + apptEndDateTime);
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return appointmentsByDateRangeMonthList;
     }
 
     /**
@@ -357,17 +426,18 @@ public class DBAAppointment {
      * @return list of all appointments on the same date as the input appointment
      * @throws SQLException exception
      */
-    public static ObservableList<Appointment> getAllSelectedCustomerAppointmentsByDate(int apptCustomerID, LocalDate apptStartDate) throws SQLException {
+    public static ObservableList<Appointment> getAllSelectedCustomerAppointmentsByDate(int apptID, int apptCustomerID, LocalDate apptStartDate) throws SQLException {
 
         ObservableList<Appointment> selectedCustomerAppointmentByDateList = FXCollections.observableArrayList();
 
         //sql statement for getting all selected customer appointments by date
-        String sql = "SELECT * FROM appointments JOIN contacts ON appointments.Contact_ID = contacts.Contact_ID WHERE Customer_ID = ? AND DATEDIFF(appointments.Start, ?) = 0";
+        String sql = "SELECT * FROM appointments JOIN contacts ON appointments.Contact_ID = contacts.Contact_ID WHERE Customer_ID = ? AND DATEDIFF(appointments.Start, ?) = 0 AND appointments.Appointment_ID <> ?";
 
         PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
         ps.setInt(1, apptCustomerID);
         ps.setString(2, apptStartDate.toString());
+        ps.setInt(3, apptID);
 
         ResultSet rs = ps.executeQuery();
 
@@ -403,8 +473,8 @@ public class DBAAppointment {
      * @return boolean
      * @throws SQLException exception
      */
-    public static Boolean checkForOverlappingCustomerAppointments(int apptCustomerID, LocalDate apptStartDate, LocalDateTime apptStartUser, LocalDateTime apptEndUser) throws SQLException {
-        ObservableList<Appointment> allCustomerAppointmentsByDate = getAllSelectedCustomerAppointmentsByDate(apptCustomerID, apptStartDate);
+    public static Boolean checkForOverlappingCustomerAppointments(int apptID, int apptCustomerID, LocalDate apptStartDate, LocalDateTime apptStartUser, LocalDateTime apptEndUser) throws SQLException {
+        ObservableList<Appointment> allCustomerAppointmentsByDate = getAllSelectedCustomerAppointmentsByDate(apptID, apptCustomerID, apptStartDate);
 
         for (Appointment appointment : allCustomerAppointmentsByDate) {
             //set var for appt start and end for each appointment in list to compare to a new appts start and end
@@ -460,24 +530,25 @@ public class DBAAppointment {
 
         try{
             //sql statement for getting a count of each type of appointment
-            String sql = "SELECT DISTINCT Type, COUNT(Type) FROM appointments GROUP BY Type";
+            String sql = "SELECT DISTINCT Type, COUNT(Type), MONTHNAME(Start) FROM appointments GROUP BY MONTHNAME(Start), Type;";
 
-            //sql statement for getting count of all appointments in each month
-            String sql2 = "SELECT MONTHNAME(Start), COUNT(MONTH(Start)) FROM appointments GROUP BY MONTHNAME(Start)";
+            //sql statement for getting count of all appointments in each month // no longer needed because of report cleanup
+            //String sql2 = "SELECT MONTHNAME(Start), COUNT(MONTH(Start)) FROM appointments GROUP BY MONTHNAME(Start)";
 
             PreparedStatement psType = JDBC.getConnection().prepareStatement(sql);
 
-            PreparedStatement psMonth = JDBC.getConnection().prepareStatement(sql2);
+            //PreparedStatement psMonth = JDBC.getConnection().prepareStatement(sql2);
 
             ResultSet rsType = psType.executeQuery();
 
-            ResultSet rsMonth = psMonth.executeQuery();
+            //ResultSet rsMonth = psMonth.executeQuery();
 
             while (rsType.next()) {
                 String apptType = rsType.getString("Type");
                 String apptTypeCount = rsType.getString("COUNT(Type)");
+                String apptMonthName = rsType.getString("MONTHNAME(Start)");
 
-                String eachType = "\nAppointment Type: " + apptType + "\n" + "Number of " + apptType + " Appointments: " + apptTypeCount + "\n";
+                String eachType = "\nMonth: " + apptMonthName + "\nAppointment Type: " + apptType + "\n" + "Number of " + apptType + " Appointments in " + apptMonthName + ": " + apptTypeCount + "\n";
 
                 totalAppointmentsByTypeAndMonth.add(eachType);
 
@@ -485,7 +556,7 @@ public class DBAAppointment {
                 //System.out.println(eachType);
             }
 
-            while(rsMonth.next()) {
+            /*while(rsMonth.next()) {
                 String monthName = rsMonth.getString("MONTHNAME(start)");
                 String monthNameAppts = rsMonth.getString("COUNT(MONTH(Start))");
 
@@ -495,38 +566,12 @@ public class DBAAppointment {
 
                 //test
                 //System.out.println(eachMonth);
-            }
+            }*/
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 
         return totalAppointmentsByTypeAndMonth;
-    }
-
-    /**
-     * method to delete all appointments for a selected customer
-     * @param customerID the selected customer is
-     * @return all appointments for the selected customer
-     */
-    public static boolean deleteAllSelectedCustomerAppointments(int customerID){
-
-        try{
-            //sql statement to delete appts for specific customer id
-            String sql = "DELETE FROM appointments WHERE Customer_ID = ?";
-
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-
-            ps.setInt(1, customerID);
-
-            ps.executeUpdate();
-
-            return true;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            return false;
-        }
-        //return true;
-
     }
 }

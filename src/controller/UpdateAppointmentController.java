@@ -118,7 +118,7 @@ public class UpdateAppointmentController implements Initializable {
             ZonedDateTime businessEndTime = ZonedDateTime.of(apptDatePicker.getValue(), LocalTime.of(22,0), ZoneId.of("America/New_York"));
 
 
-            if (!DBAAppointment.checkForOverlappingCustomerAppointments(apptCustomerId, apptStartDate, apptStartUser, apptEndUser)) {
+            if (!DBAAppointment.checkForOverlappingCustomerAppointments(apptId, apptCustomerId, apptStartDate, apptStartUser, apptEndUser)) {
                 Alert alert = new Alert((Alert.AlertType.ERROR));
                 alert.setTitle("Error");
                 alert.setContentText("Please ensure appointment does not overlap with any existing appointments.\n");
@@ -218,16 +218,16 @@ public class UpdateAppointmentController implements Initializable {
         return new Callback<>() {
 
             @Override
-            public DateCell call(final DatePicker datePicker) {
+            public DateCell call(final DatePicker dP) {
                 return new DateCell() {
                     @Override
-                    public void updateItem(LocalDate date, boolean empty) {
-                        super.updateItem(date, empty);
+                    public void updateItem(LocalDate theDay, boolean blank) {
+                        super.updateItem(theDay, blank);
 
                         LocalDate today = LocalDate.now();
-                        if (date.getDayOfWeek() == DayOfWeek.SATURDAY || date.getDayOfWeek() == DayOfWeek.SUNDAY || date.compareTo(today) < 0) {
+                        if (theDay.getDayOfWeek() == DayOfWeek.SATURDAY || theDay.getDayOfWeek() == DayOfWeek.SUNDAY || theDay.compareTo(today) < 0) {
                             setDisable(true);
-                            setStyle("-fx-background-color: #ffc0cb;");
+                            setStyle("-fx-background-color: #c2bff8;");
                         }
                     }
                 };

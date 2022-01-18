@@ -114,7 +114,9 @@ public class AddAppointmentController implements Initializable {
             ZonedDateTime businessStartTime = ZonedDateTime.of(apptDatePicker.getValue(), LocalTime.of(8,0), ZoneId.of("America/New_York"));
             ZonedDateTime businessEndTime = ZonedDateTime.of(apptDatePicker.getValue(), LocalTime.of(22,0), ZoneId.of("America/New_York"));
 
-            if (!DBAAppointment.checkForOverlappingCustomerAppointments(apptCustomerId, apptDate, apptStartUser, apptEndUser)) {
+            int apptID = 0; //0 bc adding new appointment there is not yet an appt id
+
+            if (!DBAAppointment.checkForOverlappingCustomerAppointments(apptID, apptCustomerId, apptDate, apptStartUser, apptEndUser)) {
                 Alert alert = new Alert((Alert.AlertType.ERROR));
                 alert.setTitle("Error");
                 alert.setContentText("Please ensure appointment does not overlap with any existing appointments.\n");
@@ -185,13 +187,13 @@ public class AddAppointmentController implements Initializable {
             public DateCell call(final DatePicker datePicker) {
                 return new DateCell() {
                     @Override
-                    public void updateItem(LocalDate date, boolean empty) {
-                        super.updateItem(date, empty);
+                    public void updateItem(LocalDate theDay, boolean blank) {
+                        super.updateItem(theDay, blank);
 
                         LocalDate today = LocalDate.now();
-                        if (date.getDayOfWeek() == DayOfWeek.SATURDAY || date.getDayOfWeek() == DayOfWeek.SUNDAY || date.compareTo(today) < 0) {
+                        if (theDay.getDayOfWeek() == DayOfWeek.SATURDAY || theDay.getDayOfWeek() == DayOfWeek.SUNDAY || theDay.compareTo(today) < 0) {
                             setDisable(true);
-                            setStyle("-fx-background-color: #ffc0cb;");
+                            setStyle("-fx-background-color: #c2bff8;");
                         }
                     }
                 };

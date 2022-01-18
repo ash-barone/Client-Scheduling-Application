@@ -78,11 +78,10 @@ public class ReportViewController {
 
         ObservableList<String> report = FXCollections.observableArrayList();
 
-        report.add("Appointments By Contact: \n");
-        //reportTxtArea.appendText("Appointments By Contact: \n");
+        report.add("Appointment Schedules For Each Contact: \n");
 
         allContactNames.forEach(contactName -> {
-            report.add("\nContact Name: " + contactName + "\n");
+            report.add("\nContact Name: " + contactName + " :: Appointment Schedule:" );
 
             ObservableList<String> allContactAppointments = DBAContact.getAllAppointmentsForContact(DBAContact.getContactIdFromName(contactName));
 

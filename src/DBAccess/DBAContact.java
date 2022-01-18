@@ -114,7 +114,7 @@ public class DBAContact {
 
         String contactName = DBAContact.getContactNameFromId(contactID);
 
-        allAppointmentsForContactList.add("Appointments for " + contactName + ":");
+        //allAppointmentsForContactList.add("Appointment Schedule:");// + contactName + ":");
 
         try {
             //sql statement to select appts for specific contact
@@ -145,6 +145,10 @@ public class DBAContact {
             throwables.printStackTrace();
         }
 
+        if (allAppointmentsForContactList.isEmpty()){
+            String noAppts = "\nContact does not have any appointments currently scheduled.";
+            allAppointmentsForContactList.add(noAppts);
+        }
         return allAppointmentsForContactList;
     }
 

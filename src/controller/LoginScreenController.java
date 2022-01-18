@@ -61,7 +61,7 @@ public class LoginScreenController implements Initializable {
     }
 
     /**
-     * Lambda expression used in place of a for loop to go through each appointment in the appointmenst in 15 minutes list to display and alert for each
+     * Lambda expression used in place of a for loop to go through each appointment in the appointments in 15 minutes list to display and alert for each appointment occuring in the next 15 minutes for that logged in user
      * @param event the event of clicking the sign-in button to attempt a log-in and write the attempt to login_activity.txt
      * @throws Exception exception
      */

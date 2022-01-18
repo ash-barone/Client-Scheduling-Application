@@ -8,17 +8,17 @@
 
 <AnchorPane prefHeight="430.0" prefWidth="528.0" style="-fx-background-color: #bfd3f8;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ReportViewController">
    <children>
-      <Button layoutX="23.0" layoutY="97.0" mnemonicParsing="false" onAction="#onActionShowCustomersByDivision" prefHeight="27.0" prefWidth="273.0" style="-fx-background-color: #83aaf0; -fx-text-fill: #0a0f18;" text="Customers By Division Report">
+      <Button layoutX="23.0" layoutY="97.0" mnemonicParsing="false" onAction="#onActionShowCustomersByDivision" prefHeight="27.0" prefWidth="273.0" style="-fx-background-color: #83aaf0; -fx-text-fill: #0a0f18;" text="Total Customers By Division">
          <font>
             <Font size="13.0" />
          </font>
       </Button>
-      <Button layoutX="23.0" layoutY="59.0" mnemonicParsing="false" onAction="#onActionShowTypeAndMonthReport" prefHeight="27.0" prefWidth="273.0" style="-fx-background-color: #83aaf0; -fx-text-fill: #0a0f18;" text="Appointments By Type And Month Report">
+      <Button layoutX="23.0" layoutY="59.0" mnemonicParsing="false" onAction="#onActionShowTypeAndMonthReport" prefHeight="27.0" prefWidth="273.0" style="-fx-background-color: #83aaf0; -fx-text-fill: #0a0f18;" text="Total Appointments By Type And Month">
          <font>
             <Font size="13.0" />
          </font>
       </Button>
-      <Button layoutX="23.0" layoutY="137.0" mnemonicParsing="false" onAction="#onActionShowContactSchedule" prefHeight="27.0" prefWidth="273.0" style="-fx-background-color: #83aaf0; -fx-text-fill: #0a0f18;" text="Appointment Schedule for Selected Contact">
+      <Button layoutX="23.0" layoutY="137.0" mnemonicParsing="false" onAction="#onActionShowContactSchedule" prefHeight="27.0" prefWidth="273.0" style="-fx-background-color: #83aaf0; -fx-text-fill: #0a0f18;" text="Appointment Schedule For All Contacts">
          <font>
             <Font size="13.0" />
          </font>

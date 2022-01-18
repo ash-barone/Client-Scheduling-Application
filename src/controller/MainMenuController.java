@@ -38,6 +38,7 @@ public class MainMenuController {
         Parent root = FXMLLoader.load(getClass().getResource("/view/CustomerView.fxml"));
         Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
+        stage.centerOnScreen();
         stage.setTitle("Customer View");
         stage.setScene(scene);
         stage.show();

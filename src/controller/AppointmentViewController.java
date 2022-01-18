@@ -1,7 +1,6 @@
 package controller;
 
 import DBAccess.DBAAppointment;
-import Utility.UserLoginSession;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -66,6 +65,7 @@ public class AppointmentViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+
         appointmentsTableView.setStyle("-fx-selection-bar: #c2bff8");
         allAppointmentsRBtn.setStyle("-fx-selected-color: #c2bff8");
         appointmentsByMonthRBtn.setStyle("-fx-selected-color: #c2bff8");
@@ -121,7 +121,7 @@ public class AppointmentViewController implements Initializable {
             DBAAppointment.deleteAppointment(selectedAppointment.getApptId());
             Alert alert2 = new Alert((Alert.AlertType.CONFIRMATION));
             alert2.setTitle("Appointment Cancelled");
-            alert2.setContentText("Appointment with ID " + selectedAppointment.getApptId() + " has been cancelled.");
+            alert2.setContentText("Appointment with ID: " + selectedAppointment.getApptId() + " and Type: " + selectedAppointment.getApptType() + " has been cancelled.");
             alert2.showAndWait();
         } else {
             alert.close();
@@ -130,30 +130,23 @@ public class AppointmentViewController implements Initializable {
 
         if (allAppointmentsRBtn.isSelected()) {
             allAppointmentsRBtn.setSelected(true);
+
             //ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
             ObservableList<Appointment> allAppointments = DBAAppointment.getAllAppointments();
             displayAppointments(allAppointments);
         }
         else if (appointmentsByMonthRBtn.isSelected()){
             appointmentsByMonthRBtn.setSelected(true);
-            ZonedDateTime start = ZonedDateTime.now(UserLoginSession.getLoggedInUserTimeZone());
-            ZonedDateTime end = start.plusMonths(1);
-            ZonedDateTime startUTC = start.withZoneSameInstant(ZoneOffset.UTC);
-            ZonedDateTime endUTC = end.withZoneSameInstant(ZoneOffset.UTC);
 
             //ObservableList<Appointment> allAppointmentsByMonth = FXCollections.observableArrayList();
-            ObservableList<Appointment> allAppointmentsByMonth = DBAAppointment.getAppointmentsByDateRange(startUTC, endUTC);
+            ObservableList<Appointment> allAppointmentsByMonth = DBAAppointment.getAppointmentsByDateRangeMonth();
             displayAppointments(allAppointmentsByMonth);
         }
         else if (appointmentsByWeekRBtn.isSelected()){
-
-            ZonedDateTime start = ZonedDateTime.now(UserLoginSession.getLoggedInUserTimeZone());
-            ZonedDateTime end = start.plusWeeks(1);
-            ZonedDateTime startUTC = start.withZoneSameInstant(ZoneOffset.UTC);
-            ZonedDateTime endUTC = end.withZoneSameInstant(ZoneOffset.UTC);
+            appointmentsByWeekRBtn.setSelected(true);
 
             //ObservableList<Appointment> allAppointmentsByWeek = FXCollections.observableArrayList();
-            ObservableList<Appointment> allAppointmentsByWeek = DBAAppointment.getAppointmentsByDateRange(startUTC, endUTC);
+            ObservableList<Appointment> allAppointmentsByWeek = DBAAppointment.getAppointmentsByDateRangeWeek();
             displayAppointments(allAppointmentsByWeek);
         }
     }
@@ -199,13 +192,9 @@ public class AppointmentViewController implements Initializable {
     void onActionDisplayAppointmentsByMonth(ActionEvent event) {
 
         appointmentsByMonthRBtn.setSelected(true);
-        ZonedDateTime start = ZonedDateTime.now(UserLoginSession.getLoggedInUserTimeZone());
-        ZonedDateTime end = start.plusMonths(1);
-        ZonedDateTime startUTC = start.withZoneSameInstant(ZoneOffset.UTC);
-        ZonedDateTime endUTC = end.withZoneSameInstant(ZoneOffset.UTC);
 
         //ObservableList<Appointment> allAppointmentsByMonth = FXCollections.observableArrayList();
-        ObservableList<Appointment> allAppointmentsByMonth = DBAAppointment.getAppointmentsByDateRange(startUTC, endUTC);
+        ObservableList<Appointment> allAppointmentsByMonth = DBAAppointment.getAppointmentsByDateRangeMonth();
         displayAppointments(allAppointmentsByMonth);
     }
 
@@ -217,13 +206,9 @@ public class AppointmentViewController implements Initializable {
     void onActionDisplayAppointmentsByWeek(ActionEvent event) {
 
         appointmentsByWeekRBtn.setSelected(true);
-        ZonedDateTime start = ZonedDateTime.now(UserLoginSession.getLoggedInUserTimeZone());
-        ZonedDateTime end = start.plusWeeks(1);
-        ZonedDateTime startUTC = start.withZoneSameInstant(ZoneOffset.UTC);
-        ZonedDateTime endUTC = end.withZoneSameInstant(ZoneOffset.UTC);
 
         //ObservableList<Appointment> allAppointmentsByWeek = FXCollections.observableArrayList();
-        ObservableList<Appointment> allAppointmentsByWeek = DBAAppointment.getAppointmentsByDateRange(startUTC, endUTC);
+        ObservableList<Appointment> allAppointmentsByWeek = DBAAppointment.getAppointmentsByDateRangeWeek();
         displayAppointments(allAppointmentsByWeek);
     }
 
@@ -265,7 +250,8 @@ public class AppointmentViewController implements Initializable {
         loader.load();
 
         UpdateAppointmentController UAController = loader.getController();
-        System.out.println("selectedAppointment: " + selectedAppointment);
+        //test
+        // System.out.println("selectedAppointment: " + selectedAppointment);
         UAController.sendAppointment(appointmentsTableView.getSelectionModel().getSelectedItem());
 
         Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
