@@ -72,6 +72,7 @@ public class LoginScreenController implements Initializable {
 
         boolean successfulLogin = UserLoginSession.attemptToLogInUser(username, pass);
 
+        UserLoginSession.logUserActivity(successfulLogin, username);
         //test
         // System.out.println("user: " + username + " " + "pass: " + pass);
         if (successfulLogin) {
