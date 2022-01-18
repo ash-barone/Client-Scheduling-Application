@@ -456,7 +456,7 @@ public class DBAAppointment {
     public static ObservableList<String> getTotalAppointmentsByTypeAndMonth(){
         ObservableList<String> totalAppointmentsByTypeAndMonth = FXCollections.observableArrayList();
 
-        totalAppointmentsByTypeAndMonth.add("Appointments By Distinct Type and Month:");
+        totalAppointmentsByTypeAndMonth.add("Appointments By Distinct Type and Month:\n");
 
         try{
             //sql statement for getting a count of each type of appointment

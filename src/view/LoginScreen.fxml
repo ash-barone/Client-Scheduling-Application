@@ -6,9 +6,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="200.0" prefWidth="350.0" style="-fx-background-color: #bfd3f8;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginScreenController">
+<AnchorPane prefHeight="200.0" prefWidth="350.0" style="-fx-background-color: #bfd3f8;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginScreenController">
    <children>
-      <Button fx:id="loginBtn" layoutX="47.0" layoutY="146.0" mnemonicParsing="false" onAction="#onActionAttemptLogin" prefHeight="40.0" prefWidth="256.0" style="-fx-background-color: #6495ed; -fx-text-fill: #0a0f18;" text="Sign In">
+      <Button fx:id="loginBtn" layoutX="47.0" layoutY="146.0" mnemonicParsing="false" onAction="#onActionAttemptLogin" prefHeight="40.0" prefWidth="256.0" style="-fx-background-color: #83aaf0; -fx-text-fill: #0a0f18;" text="Sign In">
          <font>
             <Font size="16.0" />
          </font>

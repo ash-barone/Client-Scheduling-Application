@@ -112,7 +112,7 @@ public class AddAppointmentController implements Initializable {
 
             //set business hours to check against input
             ZonedDateTime businessStartTime = ZonedDateTime.of(apptDatePicker.getValue(), LocalTime.of(8,0), ZoneId.of("America/New_York"));
-            ZonedDateTime businessEndTime = ZonedDateTime.of(apptDatePicker.getValue(), LocalTime.of(23,59), ZoneId.of("America/New_York"));
+            ZonedDateTime businessEndTime = ZonedDateTime.of(apptDatePicker.getValue(), LocalTime.of(22,0), ZoneId.of("America/New_York"));
 
             if (!DBAAppointment.checkForOverlappingCustomerAppointments(apptCustomerId, apptDate, apptStartUser, apptEndUser)) {
                 Alert alert = new Alert((Alert.AlertType.ERROR));

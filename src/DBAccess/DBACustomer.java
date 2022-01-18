@@ -242,7 +242,7 @@ public class DBACustomer {
         //Boolean cannotDelete = true;
         boolean deleted;
 
-        if (!DBAAppointment.getAllSelectedCustomerAppointments(customerID).isEmpty()) {
+        /*if (!DBAAppointment.getAllSelectedCustomerAppointments(customerID).isEmpty()) {
             Alert alert = new Alert((Alert.AlertType.WARNING));
             alert.setTitle("Cannot delete customer");
             alert.setContentText("Cannot delete a customer to has active appointments. \n Please delete all customer appointments first.");
@@ -250,7 +250,7 @@ public class DBACustomer {
             deleted = false;
         } else {
             deleted = true;
-        }
+        }*/
 
         if (DBAAppointment.getAllSelectedCustomerAppointments(customerID).isEmpty()) {
 

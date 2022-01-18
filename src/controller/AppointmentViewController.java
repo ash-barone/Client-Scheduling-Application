@@ -66,6 +66,10 @@ public class AppointmentViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        appointmentsTableView.setStyle("-fx-selection-bar: #c2bff8");
+        allAppointmentsRBtn.setStyle("-fx-selected-color: #c2bff8");
+        appointmentsByMonthRBtn.setStyle("-fx-selected-color: #c2bff8");
+        appointmentsByWeekRBtn.setStyle("-fx-selected-color: #c2bff8");
         allAppointmentsRBtn.setSelected(true);
 
         //ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
@@ -108,22 +112,21 @@ public class AppointmentViewController implements Initializable {
         }
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirm Deletion");
+        alert.setTitle("Confirm Cancellation");
         alert.setHeaderText("You are about to cancel Appointment with ID " + selectedAppointment.getApptId() +".");
         alert.setContentText("Are you sure?");
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.orElseThrow() == ButtonType.OK){
             DBAAppointment.deleteAppointment(selectedAppointment.getApptId());
+            Alert alert2 = new Alert((Alert.AlertType.CONFIRMATION));
+            alert2.setTitle("Appointment Cancelled");
+            alert2.setContentText("Appointment with ID " + selectedAppointment.getApptId() + " has been cancelled.");
+            alert2.showAndWait();
         } else {
             alert.close();
         }
         //DBAAppointment.deleteAppointment(selectedAppointment.getApptId());
-
-        Alert alert2 = new Alert((Alert.AlertType.CONFIRMATION));
-        alert2.setTitle("Appointment Cancelled");
-        alert2.setContentText("Appointment with ID " + selectedAppointment.getApptId() + " has been cancelled.");
-        alert2.showAndWait();
 
         if (allAppointmentsRBtn.isSelected()) {
             allAppointmentsRBtn.setSelected(true);

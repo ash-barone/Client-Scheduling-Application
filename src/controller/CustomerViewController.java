@@ -46,6 +46,8 @@ public class CustomerViewController implements Initializable {
 
         //ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
         //ObservableList<Customer> allCustomers = DBACustomer.getAllCustomers();
+        customerTableView.setStyle("-fx-selection-bar: #c2bff8");
+
         ObservableList<Customer> allCustomers = DBACustomer.getAllCustomers();
 
         displayCustomers(allCustomers);
@@ -123,15 +125,40 @@ public class CustomerViewController implements Initializable {
     @FXML
     void onActionDeleteSelectedCustomer(ActionEvent event) throws SQLException {
 
-
         Customer selectedCustomer = customerTableView.getSelectionModel().getSelectedItem();
         //DBACustomer.deleteCustomer(selectedCustomer.getCustomerId());
 
-        if (DBACustomer.deleteCustomer((selectedCustomer.getCustomerId()))){
-            Alert alert = new Alert((Alert.AlertType.CONFIRMATION));
-            alert.setTitle("Customer Deleted");
-            alert.setContentText("Customer " + selectedCustomer.getCustomerName() + " has been deleted.");
+        if(selectedCustomer == null){
+            Alert alert= new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Please select a customer.");
             alert.showAndWait();
+
+            return;
+        }
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Deletion");
+        alert.setHeaderText("You are about to delete Customer with name " + selectedCustomer.getCustomerName() +".");
+        alert.setContentText("Are you sure?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.orElseThrow() == ButtonType.OK){
+            if (!DBAAppointment.getAllSelectedCustomerAppointments(selectedCustomer.getCustomerId()).isEmpty()) {
+                Alert alert3 = new Alert((Alert.AlertType.WARNING));
+                alert3.setTitle("Cannot delete customer");
+                alert3.setContentText("Cannot delete a customer to has active appointments. \n Please delete all customer appointments first.");
+                alert3.showAndWait();
+            }
+            else {
+                DBACustomer.deleteCustomer(selectedCustomer.getCustomerId());
+                Alert alert2 = new Alert((Alert.AlertType.CONFIRMATION));
+                alert2.setTitle("Customer Deleted");
+                alert2.setContentText("Customer " + selectedCustomer.getCustomerName() + " has been deleted.");
+                alert2.showAndWait();
+            }
+        } else {
+            alert.close();
         }
 
         //ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
