@@ -45,6 +45,7 @@ public class CustomerViewController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         //ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
+        //ObservableList<Customer> allCustomers = DBACustomer.getAllCustomers();
         ObservableList<Customer> allCustomers = DBACustomer.getAllCustomers();
 
         displayCustomers(allCustomers);

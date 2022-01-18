@@ -138,7 +138,7 @@ public class UserLoginSession {
             ps.close();
 
             //test
-            System.out.println(" usename: " + username + " Time: " + nowTimeUTC + " success?: " + attemptToLogInUser);
+            //System.out.println(" username: " + username + " Time: " + nowTimeUTC + " success?: " + attemptToLogInUser);
         } catch (IOException e) {
             e.printStackTrace();
         }

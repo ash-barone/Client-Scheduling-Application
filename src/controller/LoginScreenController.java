@@ -61,6 +61,7 @@ public class LoginScreenController implements Initializable {
     }
 
     /**
+     * Lambda expression used in place of a for loop to go through each appointment in the appointmenst in 15 minutes list to display and alert for each
      * @param event the event of clicking the sign-in button to attempt a log-in and write the attempt to login_activity.txt
      * @throws Exception exception
      */
@@ -78,12 +79,19 @@ public class LoginScreenController implements Initializable {
         if (successfulLogin) {
 
             ObservableList<Appointment> appointmentsIn15 = DBAAppointment.getAppointmentsIn15Minutes();
-            for(Appointment appt : appointmentsIn15) {
+
+            appointmentsIn15.forEach(appt -> {
                 String str = "Appointments In The Next 15 Minutes: \nAppointment ID: " + appt.getApptId() + " Appointment Start: " + appt.getApptStartDateTime().toString();
                 ButtonType btn = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
                 Alert alert = new Alert(Alert.AlertType.WARNING, str, btn);
                 alert.showAndWait();
-            }
+            });
+            /*for(Appointment appt : appointmentsIn15) {
+                String str = "Appointments In The Next 15 Minutes: \nAppointment ID: " + appt.getApptId() + " Appointment Start: " + appt.getApptStartDateTime().toString();
+                ButtonType btn = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+                Alert alert = new Alert(Alert.AlertType.WARNING, str, btn);
+                alert.showAndWait();
+            }*/
 
             if (appointmentsIn15.isEmpty()) {
                 ButtonType btn = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);

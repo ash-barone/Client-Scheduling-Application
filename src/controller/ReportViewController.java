@@ -64,6 +64,11 @@ public class ReportViewController {
         reportTxtArea.appendText(report);
     }
 
+    /**
+     * Lambda expression used in place of for loop to go through each contact in list and list their appointments.
+     * @param event the event of clicking the report button
+     * @throws SQLException
+     */
     @FXML
     void onActionShowContactSchedule(ActionEvent event) throws SQLException {
 
@@ -76,7 +81,7 @@ public class ReportViewController {
         report.add("Appointments By Contact: \n");
         //reportTxtArea.appendText("Appointments By Contact: \n");
 
-        for (String contactName : allContactNames) {
+        allContactNames.forEach(contactName -> {
             report.add("\nContact Name: " + contactName + "\n");
 
             ObservableList<String> allContactAppointments = DBAContact.getAllAppointmentsForContact(DBAContact.getContactIdFromName(contactName));
@@ -85,7 +90,17 @@ public class ReportViewController {
                 report.addAll(allContactAppointments);
                 report.add("\n");
             }
-        }
+        });
+        /*for (String contactName : allContactNames) {
+            report.add("\nContact Name: " + contactName + "\n");
+
+            ObservableList<String> allContactAppointments = DBAContact.getAllAppointmentsForContact(DBAContact.getContactIdFromName(contactName));
+
+            if (!allContactAppointments.isEmpty()) {
+                report.addAll(allContactAppointments);
+                report.add("\n");
+            }
+        }*/
 
         //format string of report
         String reportString = String.valueOf(report);
