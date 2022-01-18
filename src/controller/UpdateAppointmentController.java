@@ -5,8 +5,6 @@ import DBAccess.DBAContact;
 import DBAccess.DBACustomer;
 import DBAccess.DBAUser;
 import Utility.UserLoginSession;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,24 +15,16 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import model.Appointment;
-
-import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class UpdateAppointmentController implements Initializable {
 
-    //TODO fill in all the ? below
     @FXML
     private ComboBox<String> appointmentContactNameComboBx;
-
-    @FXML
-    private TextField appointmentContactIdTxt;
 
     @FXML
     private ComboBox<String> appointmentCustomerNameComboBx;
@@ -58,9 +48,6 @@ public class UpdateAppointmentController implements Initializable {
     private ComboBox<String> appointmentUserNameComboBx;
 
     @FXML
-    private Button cancelBtn;
-
-    @FXML
     private TextField apptEndTimeTxt;
 
     @FXML
@@ -69,33 +56,17 @@ public class UpdateAppointmentController implements Initializable {
     @FXML
     private TextField apptStartTimeTxt;
 
-    @FXML
-    private Button updateAppointmentBtn;
-
-    private Appointment tempAppointment;
-
-    @FXML
-    private ComboBox<String> endTimeComboBx;
-
-    @FXML
-    private ComboBox<String> startTimeComboBx;
-
-    ObservableList<String> startTimes = FXCollections.observableArrayList("8:00", "8:30", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "01:00", "02:00", "2:30", "3:00", "3:30", "04:00", "04:30");
-    ObservableList<String> endTimes = FXCollections.observableArrayList("8:30", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "01:00", "02:00", "2:30", "3:00", "3:30", "04:00", "04:30", "05:00");
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        startTimeComboBx.setItems(startTimes);
-        endTimeComboBx.setItems(endTimes);
-        javafx.util.Callback<DatePicker, DateCell> dayCellFactory= (javafx.util.Callback<DatePicker, DateCell>) this.getDayCellFactory();
+        javafx.util.Callback<DatePicker, DateCell> dayCellFactory= this.getDayCellFactory();
         apptDatePicker.setDayCellFactory(dayCellFactory);
     }
 
     /**
      *
      * @param event the event of clicking on the cancel button to return to the appointment view screen
-     * @throws Exception
+     * @throws Exception exceptions
      */
     @FXML
     void onActionCancelToAppointmentView(ActionEvent event) throws Exception {
@@ -110,12 +81,11 @@ public class UpdateAppointmentController implements Initializable {
     /**
      *
      * @param event the event of clicking on the update appointment button to update the appointment in the db then go back to the appointment view screen
-     * @throws Exception
+     * @throws Exception exceptions
      */
     @FXML
     void onActionUpdateAppointment(ActionEvent event) throws Exception {
 
-        //TODO the actual update statement and stuff
         try {
 
             int apptId = Integer.parseInt(appointmentIdTxt.getText());
@@ -135,10 +105,13 @@ public class UpdateAppointmentController implements Initializable {
             String lastUpdatedBy = UserLoginSession.getUserLoggedIn().getUserName();
 
 
-            Integer apptCustomerId = DBACustomer.getCustomerIdFromName(appointmentCustomerNameComboBx.getValue());
-            Integer apptUserId = DBAUser.getUserIdFromName(appointmentUserNameComboBx.getValue());
+            int apptCustomerId = 0;
+            apptCustomerId = DBACustomer.getCustomerIdFromName(appointmentCustomerNameComboBx.getValue());
+            int apptUserId = 0;
+            apptUserId = DBAUser.getUserIdFromName(appointmentUserNameComboBx.getValue());
             String apptContactName = appointmentContactNameComboBx.getValue();
-            Integer apptContactId = DBAContact.getContactIdFromName(appointmentContactNameComboBx.getValue());
+            int apptContactId = 0;
+            apptContactId = DBAContact.getContactIdFromName(appointmentContactNameComboBx.getValue());
 
             //set business hours to check against input
             ZonedDateTime businessStartTime = ZonedDateTime.of(apptDatePicker.getValue(), LocalTime.of(8,0), ZoneId.of("America/New_York"));
@@ -157,7 +130,7 @@ public class UpdateAppointmentController implements Initializable {
                 alert.setContentText("Please ensure appointment is scheduled within business hours listed on form.\n");
                 alert.showAndWait();
             }
-            else if (apptStart.isAfter(businessEndTime) || apptStart.isBefore(businessStartTime) || apptEnd.isAfter(businessEndTime) || apptEnd.isBefore(businessStartTime) ||apptTitle.isEmpty() || apptDescription.isEmpty() || apptLocation.isEmpty() || apptType == null || apptCustomerId == null || apptUserId == null || apptContactName == null || apptContactId == null) {
+            else if (apptStart.isAfter(businessEndTime) || apptStart.isBefore(businessStartTime) || apptEnd.isAfter(businessEndTime) || apptEnd.isBefore(businessStartTime) ||apptTitle.isEmpty() || apptDescription.isEmpty() || apptLocation.isEmpty() || apptType == null || apptCustomerId == 0 || apptUserId == 0 || apptContactName == null || apptContactId == 0) {
                 Alert alert = new Alert((Alert.AlertType.ERROR));
                 alert.setTitle("Error");
                 alert.setContentText("Please ensure all values are correct.");
@@ -189,87 +162,62 @@ public class UpdateAppointmentController implements Initializable {
             alert.setTitle("Error");
             alert.setContentText("Could not update appointment.");
             alert.showAndWait();
-            return;
+            //return;
 
         }
     }
 
-    public void sendAppointment (Appointment appointment) throws SQLException {
+    public void sendAppointment (Appointment appointment) {
 
         //set temp part to be passed for removal upon saving
         //convert times to get able to set text for text fields
         try {
-            tempAppointment = appointment;
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-            ZonedDateTime startDateTimeUTC = tempAppointment.getApptStartDateTime().toInstant().atZone(ZoneOffset.UTC);
+            ZonedDateTime startDateTimeUTC = appointment.getApptStartDateTime().toInstant().atZone(ZoneOffset.UTC);
             ZonedDateTime startDateTimeUser = startDateTimeUTC.withZoneSameInstant(UserLoginSession.getLoggedInUserTimeZone());
             String apptStartTimeText = startDateTimeUser.format(dateTimeFormatter);
-            ZonedDateTime endDateTimeUTC = tempAppointment.getApptEndDateTime().toInstant().atZone(ZoneOffset.UTC);
+            ZonedDateTime endDateTimeUTC = appointment.getApptEndDateTime().toInstant().atZone(ZoneOffset.UTC);
             ZonedDateTime endDateTimeUser = endDateTimeUTC.withZoneSameInstant(UserLoginSession.getLoggedInUserTimeZone());
             String apptEndTimeText = endDateTimeUser.format(dateTimeFormatter);
 
 
-            /**
-             * get index for part so that modified part can maintain its same index after modified
-             */
-            //id = DBACustomer.ge;
-            //System.out.println(index + " is the index");
-
             //fill in all your labels
-            appointmentIdTxt.setText(String.valueOf(tempAppointment.getApptId()));
-            appointmentTitleTxt.setText(tempAppointment.getApptTitle());
-            appointmentDescriptionTxt.setText(tempAppointment.getApptDescription());
-            appointmentLocationTxt.setText(tempAppointment.getApptLocation());
-            //appointmentContactIdTxt.setText(String.valueOf(appointment.getApptContactId()));
-            //appointmentContactNameTxt.setText((appointment.()));
+            appointmentIdTxt.setText(String.valueOf(appointment.getApptId()));
+            appointmentTitleTxt.setText(appointment.getApptTitle());
+            appointmentDescriptionTxt.setText(appointment.getApptDescription());
+            appointmentLocationTxt.setText(appointment.getApptLocation());
 
-            //set country combo box
+
+            //set combo boxes
             appointmentTypeComboBx.setItems(DBAAppointment.getAllApptTypes());
             appointmentCustomerNameComboBx.setItems(DBACustomer.getAllCustomerNames());
             appointmentUserNameComboBx.setItems(DBAUser.getAllUserNames());
             appointmentContactNameComboBx.setItems(DBAContact.getAllContactNames());
 
-            appointmentTypeComboBx.getSelectionModel().select(tempAppointment.getApptType());
-            appointmentCustomerNameComboBx.getSelectionModel().select(DBACustomer.getCustomerNameFromId(tempAppointment.getApptCustomerId()));
-            appointmentUserNameComboBx.getSelectionModel().select(DBAUser.getUserNameFromId(tempAppointment.getApptUserId()));
-            appointmentContactNameComboBx.getSelectionModel().select(tempAppointment.getApptContactName());
+            appointmentTypeComboBx.getSelectionModel().select(appointment.getApptType());
+            appointmentCustomerNameComboBx.getSelectionModel().select(DBACustomer.getCustomerNameFromId(appointment.getApptCustomerId()));
+            appointmentUserNameComboBx.getSelectionModel().select(DBAUser.getUserNameFromId(appointment.getApptUserId()));
+            appointmentContactNameComboBx.getSelectionModel().select(appointment.getApptContactName());
 
             //test
-            System.out.println("User ID: " + tempAppointment.getApptUserId());
-            System.out.println("Customer ID: " + tempAppointment.getApptCustomerId());
+            //System.out.println("User ID: " + appointment.getApptUserId());
+            //System.out.println("Customer ID: " + appointment.getApptCustomerId());
 
             //time stuff
-            apptDatePicker.setValue(tempAppointment.getApptStartDateTime().toLocalDateTime().toLocalDate());
+            apptDatePicker.setValue(appointment.getApptStartDateTime().toLocalDateTime().toLocalDate());
             apptStartTimeTxt.setText(apptStartTimeText);
             apptEndTimeTxt.setText(apptEndTimeText);
 
         } catch (NumberFormatException throwables){
             throwables.printStackTrace();
         }
-
-
-
-        //String tempTitle = tempAppointment.getApptTitle();
-        //System.out.println("tempCountry = " + tempTitle + "\n");
-        //ObservableList<String> tempDivisionsByCountry = FXCollections.observableArrayList();
-        //tempDivisionsByCountry = DBACustomer.getDivisionsByCountry(tempCountry);
-        //System.out.println("tempDivisionByCountry = " +tempDivisionsByCountry);
-
-        //System.out.println("tempCustomer's Divison: " + tempCustomer.getCustomerDivisionName());
-        //set division combo box
-        //customerDivisionComboBox.setItems(tempDivisionsByCountry);
-        //customerDivisionComboBox.getSelectionModel().select(tempCustomer.getCustomerDivisionName());
-
-
-        //customerDivisionComboBox.setItems(DBACustomer.getDivisionsByCountry(tempCustomer.getCustomerCountry()));
-        //customerDivisionComboBox.getSelectionModel().select(tempCustomer.getCustomerDivisionName());
     }
 
     private javafx.util.Callback<DatePicker, DateCell> getDayCellFactory() {
 
-        final javafx.util.Callback<DatePicker, DateCell> dayCellFactory = new Callback<DatePicker, DateCell>() {
+        return new Callback<>() {
 
-            //@Override
+            @Override
             public DateCell call(final DatePicker datePicker) {
                 return new DateCell() {
                     @Override
@@ -277,10 +225,7 @@ public class UpdateAppointmentController implements Initializable {
                         super.updateItem(date, empty);
 
                         LocalDate today = LocalDate.now();
-                        // Disable Monday, Tueday, Wednesday.
-                        if (date.getDayOfWeek() == DayOfWeek.SATURDAY //
-                                || date.getDayOfWeek() == DayOfWeek.SUNDAY //
-                                || date.compareTo(today) < 0) {
+                        if (date.getDayOfWeek() == DayOfWeek.SATURDAY || date.getDayOfWeek() == DayOfWeek.SUNDAY || date.compareTo(today) < 0) {
                             setDisable(true);
                             setStyle("-fx-background-color: #ffc0cb;");
                         }
@@ -288,7 +233,6 @@ public class UpdateAppointmentController implements Initializable {
                 };
             }
         };
-        return dayCellFactory;
     }
 
 }

@@ -1,9 +1,9 @@
 package controller;
 
 import DBAccess.DBACustomer;
-import javafx.beans.value.ChangeListener;
+/*import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
+import javafx.collections.FXCollections;*/ //used before change to lambda
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,20 +16,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import model.Customer;
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class AddCustomerController implements Initializable {
-
-    @FXML
-    private Button addCustomerBtn;
-
-    @FXML
-    private Button cancelBtn;
 
     @FXML
     private TextField customerAddressTxt;
@@ -41,9 +33,6 @@ public class AddCustomerController implements Initializable {
     private ComboBox<String> customerDivisionComboBx;
 
     @FXML
-    private TextField customerIdTxt;
-
-    @FXML
     private TextField customerNameTxt;
 
     @FXML
@@ -52,9 +41,11 @@ public class AddCustomerController implements Initializable {
     @FXML
     private TextField customerPostalCodeTxt;
 
-    private Customer tempCustomer;
-
-
+    /**
+     * Lambda Expression for combo box listener. changes division combo box items based on selection in country combo box
+     * @param url the url
+     * @param resourceBundle the resource bundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -63,22 +54,18 @@ public class AddCustomerController implements Initializable {
 
             customerDivisionComboBx.setItems(DBACustomer.getDivisionsByCountry(customerCountryComboBx.getValue()));
 
-            customerCountryComboBx.valueProperty().addListener(new ChangeListener<String>() {
-                @Override
-                public void changed(ObservableValue ov, String t, String t1) {
-                    if (t1 == null){
-                        customerDivisionComboBx.getItems().clear();
-                    }
-                    else {
+            customerCountryComboBx.valueProperty().addListener((observableValue, oldValue, newValue) -> {
+                if (newValue == null){
+                    customerDivisionComboBx.getItems().clear();
+                }
+                else {
 
-                        String tempCountry = customerCountryComboBx.getValue();
-                        ObservableList<String> tempDivisionsByCountry = FXCollections.observableArrayList();
-                        tempDivisionsByCountry = DBACustomer.getDivisionsByCountry(tempCountry);
+                    String tempCountry = customerCountryComboBx.getValue();
 
-                        customerDivisionComboBx.setItems(tempDivisionsByCountry);
-                        //customerDivisionComboBx.getSelectionModel().select(tempCustomer.getCustomerDivisionName());
+                    ObservableList<String> tempDivisionsByCountry = DBACustomer.getDivisionsByCountry(tempCountry);
 
-                    }
+                    customerDivisionComboBx.setItems(tempDivisionsByCountry);
+
                 }
             });
         } catch (SQLException throwables) {
@@ -91,12 +78,11 @@ public class AddCustomerController implements Initializable {
     /**
      *
      * @param event the event of clicking on the add customer button to add customer to db and return to the customer view screen
-     * @throws Exception
+     * @throws Exception exceptions
      */
     @FXML
     void onActionAddCustomer(ActionEvent event) throws Exception {
 
-        //TODO Add customer stuff only thing done is navigation back to customer view
         try {
 
             //int customerId = Integer.parseInt(customerIdTxt.getText());
@@ -106,7 +92,8 @@ public class AddCustomerController implements Initializable {
             String customerPhoneNumber = customerPhoneTxt.getText();
             String customerCountry = customerCountryComboBx.getValue();
             String customerDivision = customerDivisionComboBx.getValue();
-            System.out.println("Country: " + customerCountry + " Division: " + customerDivision);
+            //test
+            // System.out.println("Country: " + customerCountry + " Division: " + customerDivision);
 
             if (customerName.isEmpty() || customerAddress.isEmpty() || customerPostalCode.isEmpty() || customerPhoneNumber.isEmpty() || customerCountry == null || customerDivision == null) {
                 Alert alert = new Alert((Alert.AlertType.ERROR));
@@ -142,7 +129,7 @@ public class AddCustomerController implements Initializable {
             alert.setTitle("Error");
             alert.setContentText("Could not add customer.");
             alert.showAndWait();
-            return;
+            //return;
 
         }
     }
@@ -150,7 +137,7 @@ public class AddCustomerController implements Initializable {
     /**
      *
      * @param event the event of clicking the cancel button to return to the customer view screen
-     * @throws Exception
+     * @throws Exception exceptions
      */
     @FXML
     void onActionCancelToCustomerView(ActionEvent event) throws Exception {

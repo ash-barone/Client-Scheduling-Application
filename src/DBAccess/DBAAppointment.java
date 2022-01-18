@@ -1,11 +1,9 @@
 package DBAccess;
 
 import Utility.UserLoginSession;
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Appointment;
-import model.Customer;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -130,7 +128,7 @@ public class DBAAppointment {
      * @param customerID the appt customer id
      * @param userID the appt user id
      * @param contactID the appt contact id
-     * @return bool for whether or not the appt was added
+     * @return bool for if the appt was added
      */
     public static boolean addAppointment(String apptTitle, String apptDescription, String apptLocation, String apptType, ZonedDateTime apptStart, ZonedDateTime apptEnd, String createdBy, String lastUpdatedBy, int customerID, int userID, int contactID){
         try{
@@ -171,7 +169,7 @@ public class DBAAppointment {
     /**
      * method to delete appointments
      * @param apptID the appt id to search for delete
-     * @return bool for whether or not it worked
+     * @return bool for if it worked
      */
     public static boolean deleteAppointment(int apptID){
 
@@ -199,7 +197,7 @@ public class DBAAppointment {
 
     /**
      * method to get appointments within 15 minutes of login
-     * @return
+     *
      */
     public static ObservableList<Appointment> getAppointmentsIn15Minutes(){
 
@@ -271,7 +269,7 @@ public class DBAAppointment {
     public static ObservableList<Appointment> getAppointmentsByDateRange(ZonedDateTime start, ZonedDateTime end){
         ObservableList<Appointment> appointmentsByDateRangeList = FXCollections.observableArrayList();
 
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        //DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         try{
             //sql statement to select appts within a date range for diff tableviews
@@ -314,7 +312,7 @@ public class DBAAppointment {
      * method to find all appointments for a select customer for checking before deleting a customer
      * @param customerID the customer to check for
      * @return list of all appts for customer
-     * @throws SQLException
+     * @throws SQLException exception
      */
     public static ObservableList<Appointment> getAllSelectedCustomerAppointments(int customerID) throws SQLException {
 
@@ -357,14 +355,14 @@ public class DBAAppointment {
      * @param apptCustomerID the customer id to check appointments for
      * @param apptStartDate the date to check appointments for
      * @return list of all appointments on the same date as the input appointment
-     * @throws SQLException
+     * @throws SQLException exception
      */
     public static ObservableList<Appointment> getAllSelectedCustomerAppointmentsByDate(int apptCustomerID, LocalDate apptStartDate) throws SQLException {
 
         ObservableList<Appointment> selectedCustomerAppointmentByDateList = FXCollections.observableArrayList();
 
         //sql statement for getting all selected customer appointments by date
-        String sql = "SELECT * FROM appointments JOIN contacts ON appointments.Contact_ID = contacts.Contact_ID WHERE Customer_ID = ? AND datediff(appointments.Start, ?) = 0";
+        String sql = "SELECT * FROM appointments JOIN contacts ON appointments.Contact_ID = contacts.Contact_ID WHERE Customer_ID = ? AND DATEDIFF(appointments.Start, ?) = 0";
 
         PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
@@ -398,12 +396,12 @@ public class DBAAppointment {
 
     /**
      * method to check for overlapping appointments time when adding new appointment
-     * @param apptCustomerID
-     * @param apptStartDate
-     * @param apptStartUser
-     * @param apptEndUser
-     * @return
-     * @throws SQLException
+     * @param apptCustomerID the customer id
+     * @param apptStartDate the start date for appointment
+     * @param apptStartUser the start time for appointment in user time zone
+     * @param apptEndUser the end time for appointment in user time zone
+     * @return boolean
+     * @throws SQLException exception
      */
     public static Boolean checkForOverlappingCustomerAppointments(int apptCustomerID, LocalDate apptStartDate, LocalDateTime apptStartUser, LocalDateTime apptEndUser) throws SQLException {
         ObservableList<Appointment> allCustomerAppointmentsByDate = getAllSelectedCustomerAppointmentsByDate(apptCustomerID, apptStartDate);
@@ -414,7 +412,7 @@ public class DBAAppointment {
             LocalDateTime existingApptEnd = appointment.getApptEndDateTime().toLocalDateTime();
 
             //check for any overlap in new appt with existing appts
-            if ((existingApptEnd.isAfter(apptStartUser) & existingApptEnd.isBefore(apptEndUser)) || (existingApptEnd.isAfter(apptEndUser) & existingApptStart.isBefore(apptStartUser)) || (existingApptStart.isAfter(apptStartUser) & existingApptStart.isBefore(apptEndUser))) {
+            if ((existingApptEnd.isAfter(apptStartUser) & existingApptEnd.isBefore(apptEndUser)) || (existingApptEnd.isAfter(apptEndUser) & existingApptStart.isBefore(apptStartUser)) || (existingApptStart.isAfter(apptStartUser) & existingApptStart.isBefore(apptEndUser)) || existingApptStart.isEqual(apptStartUser) || existingApptEnd.isEqual(apptEndUser)) {
                 return false; //there is overlap
             }
             else {
@@ -426,7 +424,7 @@ public class DBAAppointment {
 
     /**
      * method to get all distinct appt types
-     * @return
+     *
      */
     public static ObservableList<String> getAllApptTypes() {
         ObservableList<String> allApptTypes = FXCollections.observableArrayList();
@@ -453,7 +451,7 @@ public class DBAAppointment {
 
     /**
      * method to return a report of appointments by type and month
-     * @return
+     *
      */
     public static ObservableList<String> getTotalAppointmentsByTypeAndMonth(){
         ObservableList<String> totalAppointmentsByTypeAndMonth = FXCollections.observableArrayList();
@@ -461,10 +459,10 @@ public class DBAAppointment {
         totalAppointmentsByTypeAndMonth.add("Appointments By Distinct Type and Month:");
 
         try{
-            //sql statement for getting a count of each type of appointment //TODO make sure this works
+            //sql statement for getting a count of each type of appointment
             String sql = "SELECT DISTINCT Type, COUNT(Type) FROM appointments GROUP BY Type";
 
-            //sql statement for getting count of all appointments in each month //TODO make sure this works.
+            //sql statement for getting count of all appointments in each month
             String sql2 = "SELECT MONTHNAME(Start), COUNT(MONTH(Start)) FROM appointments GROUP BY MONTHNAME(Start)";
 
             PreparedStatement psType = JDBC.getConnection().prepareStatement(sql);

@@ -9,7 +9,6 @@ import model.Customer;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -101,7 +100,7 @@ public class DBACustomer {
     /**
      * method to add customer to db table
      *
-     * @return bool for whether or not it worked
+     * @return bool for if it worked
      */
     public static boolean addCustomer(String customerName, String customerAddress, String customerPostalCode, String customerPhoneNumber, int customerDivisionId) {
 
@@ -118,9 +117,9 @@ public class DBACustomer {
             ps.setString(2, customerAddress);
             ps.setString(3, customerPostalCode);
             ps.setString(4, customerPhoneNumber);
-            ps.setString(5, ZonedDateTime.now(ZoneOffset.UTC).format(dateTimeFormat).toString());
+            ps.setString(5, ZonedDateTime.now(ZoneOffset.UTC).format(dateTimeFormat));
             ps.setString(6, UserLoginSession.getUserLoggedIn().getUserName());
-            ps.setString(7, ZonedDateTime.now(ZoneOffset.UTC).format(dateTimeFormat).toString());
+            ps.setString(7, ZonedDateTime.now(ZoneOffset.UTC).format(dateTimeFormat));
             ps.setString(8, UserLoginSession.getUserLoggedIn().getUserName());
             ps.setInt(9, customerDivisionId);
 
@@ -133,42 +132,6 @@ public class DBACustomer {
         }
 
         //return true;
-    }
-
-    /**
-     * method to get all customer ids
-     * unused. from before when combo boxes used id and not names for add and update forms
-     * @return list of customer ids
-     */
-    public static ObservableList<Integer> getAllCustomerIds() {
-
-        ObservableList<Integer> allCustomerIdsList = FXCollections.observableArrayList();
-
-        try {
-            //sql statement to get all customer ids
-            String sql = "SELECT Customer_ID from customers";
-
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-
-                int customerId = rs.getInt("Customer_ID");
-
-                allCustomerIdsList.add(customerId);
-
-                //test
-                //System.out.println("Customer ID: " + customerId);
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        //test
-        //System.out.println("returned ids list");
-
-        return allCustomerIdsList;
     }
 
     /**
@@ -208,7 +171,7 @@ public class DBACustomer {
 
         ObservableList<String> divisionsByCountryList = FXCollections.observableArrayList();
 
-        String divisionByCountry = " ";
+        String divisionByCountry;
 
         try {
             //sql statement to get all divisions for specific country
@@ -232,51 +195,15 @@ public class DBACustomer {
             throwables.printStackTrace();
         }
 
-        //sql statement will be join of countries and first_level_divisions on country_id match
-
         return divisionsByCountryList;
     }
-
-    /**
-     * method to get customer division id
-     * unused. from before using name instead of id
-     * @return the specific customer division id
-     */
-    public static int getCustomerDivisionId(int customerID) throws SQLException {
-
-        int divisionId = 0;
-
-        try {
-            //sql statement to select division id from customer table where customer id is specific thing
-            String sql = "SELECT Division_ID FROM customers WHERE Customer_ID = ?";
-
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-
-            ps.setInt(1, customerID);
-
-            //int divisionId;
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                divisionId = rs.getInt("Division_ID");
-
-                //test
-                //System.out.println("Customer ID: " + customerID + " Division ID: " + divisionId);
-            }
-            ;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return divisionId;
-    }
-
 
     /**
      * method to get name of a division using the name input
      *
      * @param division the name of the division
      * @return the division id
-     * @throws SQLException
+     * @throws SQLException exception
      */
     public static int getDivisionIDFromName(String division) throws SQLException {
 
@@ -306,49 +233,14 @@ public class DBACustomer {
     }
 
     /**
-     * method to get division name from an id
-     * unused. integrated into send now
-     * @param customerDivisionId
-     * @return
-     */
-    private static String getDivisionNameFromId(int customerDivisionId) {
-
-        String divisionName = " ";
-
-        try {
-            //sql statement to select division name from id
-            String sql = "SELECT Division FROM first_level_divisions WHERE Division_ID = ?";
-
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-
-            ps.setInt(1, customerDivisionId);
-
-            //int divisionId;
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                divisionName = rs.getString("Division_ID");
-
-                //test
-                //System.out.println("Division Name: " + divisionName + " Division ID: " + customerDivisionId);
-            }
-            ;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return divisionName;
-    }
-
-
-    /**
      * method to delete customer from db table
      *
-     * @return bool for whether or not it worked
+     * @return bool for if it worked
      */
     public static boolean deleteCustomer(int customerID) throws SQLException {
 
-        Boolean cannotDelete = true;
-        Boolean deleted = false;
+        //Boolean cannotDelete = true;
+        boolean deleted;
 
         if (!DBAAppointment.getAllSelectedCustomerAppointments(customerID).isEmpty()) {
             Alert alert = new Alert((Alert.AlertType.WARNING));
@@ -388,7 +280,7 @@ public class DBACustomer {
 
     /**
      * method to get customer names for use in combo box
-     * @return
+     *
      */
     public static ObservableList<String> getAllCustomerNames() {
         ObservableList<String> allCustomerNamesList = FXCollections.observableArrayList();
@@ -422,8 +314,8 @@ public class DBACustomer {
 
     /**
      * method to get customer name from id for combo boxes
-     * @param customerId
-     * @return
+     * @param customerId the id of the customer
+     * @return the customer name
      */
     public static String getCustomerNameFromId(int customerId) {
 
@@ -454,8 +346,8 @@ public class DBACustomer {
 
     /**
      * method to get customer id from name for storing
-     * @param apptCustomerName
-     * @return
+     * @param apptCustomerName the name of the customer
+     * @return the customer id
      */
     public static Integer getCustomerIdFromName(String apptCustomerName) {
         //String customerName = " ";

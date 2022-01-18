@@ -5,7 +5,6 @@ import DBAccess.DBAContact;
 import DBAccess.DBACustomer;
 import DBAccess.DBAUser;
 import Utility.UserLoginSession;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,8 +14,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-
-import java.io.IOException;
 import java.net.URL;
 import java.time.*;
 import java.time.format.DateTimeParseException;
@@ -24,25 +21,14 @@ import java.util.ResourceBundle;
 
 public class AddAppointmentController implements Initializable {
 
-    //TODO fill in all ? below
-
-    @FXML
-    private Button addAppointmentBtn;
-
     @FXML
     private ComboBox<String> appointmentContactNameComboBx;
-
-    @FXML
-    private TextField appointmentContactIdTxt;
 
     @FXML
     private ComboBox<String> appointmentCustomerNameComboBx;
 
     @FXML
     private TextField appointmentDescriptionTxt;
-
-    @FXML
-    private TextField appointmentIdTxt;
 
     @FXML
     private TextField appointmentLocationTxt;
@@ -55,9 +41,6 @@ public class AddAppointmentController implements Initializable {
 
     @FXML
     private ComboBox<String> appointmentUserNameComboBx;
-
-    @FXML
-    private Button cancelBtn;
 
     @FXML
     private TextField apptEndTimeTxt;
@@ -77,61 +60,59 @@ public class AddAppointmentController implements Initializable {
         appointmentCustomerNameComboBx.setItems(DBACustomer.getAllCustomerNames());
         appointmentUserNameComboBx.setItems(DBAUser.getAllUserNames());
 
-        javafx.util.Callback<DatePicker, DateCell> dayCellFactory= (javafx.util.Callback<DatePicker, DateCell>) this.getDayCellFactory();
+        javafx.util.Callback<DatePicker, DateCell> dayCellFactory= this.getDayCellFactory();
         apptDatePicker.setDayCellFactory(dayCellFactory);
     }
 
     /**
      *
      * @param event the event of clicking the add appointment button to add appointment to db and return to the appointment view screen
-     * @throws Exception
+     * @throws Exception issues
      */
     @FXML
     void onActionAddAppointment(ActionEvent event) throws Exception {
 
-        //TODO the actual add appointment to db thing
         try {
 
-            //int apptId = Integer.parseInt(appointmentIdTxt.getText());
             String apptTitle = appointmentTitleTxt.getText();
             String apptDescription = appointmentDescriptionTxt.getText();
             String apptLocation = appointmentLocationTxt.getText();
             String apptType = appointmentTypeComboBx.getValue();
 
-            //error when not inputting time //instead of throwing error for incorrect values just show not alert and throws errors
-                LocalDate apptDate = apptDatePicker.getValue();
-                LocalDateTime apptStartUser = LocalDateTime.of(apptDate, LocalTime.parse(apptStartTimeTxt.getText()));
-                LocalDateTime apptEndUser = LocalDateTime.of(apptDate, LocalTime.parse(apptEndTimeTxt.getText()));
-                //test
-                System.out.println("start: " + apptStartUser + " end: " + apptEndUser);
+            //get date and time set
+            LocalDate apptDate = apptDatePicker.getValue();
+            LocalDateTime apptStartUser = LocalDateTime.of(apptDate, LocalTime.parse(apptStartTimeTxt.getText()));
+            LocalDateTime apptEndUser = LocalDateTime.of(apptDate, LocalTime.parse(apptEndTimeTxt.getText()));
 
-                ZonedDateTime apptStartUserZone = ZonedDateTime.of(apptStartUser, UserLoginSession.getLoggedInUserTimeZone());
-                ZonedDateTime apptEndUserZone = ZonedDateTime.of(apptEndUser, UserLoginSession.getLoggedInUserTimeZone());
-                //test
-                System.out.println("start in zone: " + apptStartUserZone + " end in zone: " + apptEndUserZone);
+            //test
+            // System.out.println("start: " + apptStartUser + " end: " + apptEndUser);
 
-                ZonedDateTime apptStart = apptStartUserZone.withZoneSameInstant(ZoneOffset.UTC);
-                ZonedDateTime apptEnd = apptEndUserZone.withZoneSameInstant(ZoneOffset.UTC);
-                //test
-                System.out.println("start in UTC: " + apptStart + " end in UTC: " + apptEnd);
+            ZonedDateTime apptStartUserZone = ZonedDateTime.of(apptStartUser, UserLoginSession.getLoggedInUserTimeZone());
+            ZonedDateTime apptEndUserZone = ZonedDateTime.of(apptEndUser, UserLoginSession.getLoggedInUserTimeZone());
 
+            //test
+            // System.out.println("start in zone: " + apptStartUserZone + " end in zone: " + apptEndUserZone);
 
-            //last updated
+            ZonedDateTime apptStart = apptStartUserZone.withZoneSameInstant(ZoneOffset.UTC);
+            ZonedDateTime apptEnd = apptEndUserZone.withZoneSameInstant(ZoneOffset.UTC);
+
+            //test
+            // System.out.println("start in UTC: " + apptStart + " end in UTC: " + apptEnd);
+
             String lastUpdatedBy = UserLoginSession.getUserLoggedIn().getUserName();
             String createdBy = UserLoginSession.getUserLoggedIn().getUserName();
 
-
-            Integer apptCustomerId = DBACustomer.getCustomerIdFromName(appointmentCustomerNameComboBx.getValue());
-            Integer apptUserId = DBAUser.getUserIdFromName(appointmentUserNameComboBx.getValue());
+            //int apptCustomerId = 0;
+            int apptCustomerId = DBACustomer.getCustomerIdFromName(appointmentCustomerNameComboBx.getValue());
+            //int apptUserId = 0;
+            int apptUserId = DBAUser.getUserIdFromName(appointmentUserNameComboBx.getValue());
             String apptContactName = appointmentContactNameComboBx.getValue();
-            //Integer apptContactId = Integer.parseInt(appointmentContactIdTxt.getText());
-            Integer apptContactId = DBAContact.getContactIdFromName(apptContactName);
+            //int apptContactId = 0;
+            int apptContactId = DBAContact.getContactIdFromName(apptContactName);
 
             //set business hours to check against input
             ZonedDateTime businessStartTime = ZonedDateTime.of(apptDatePicker.getValue(), LocalTime.of(8,0), ZoneId.of("America/New_York"));
             ZonedDateTime businessEndTime = ZonedDateTime.of(apptDatePicker.getValue(), LocalTime.of(22,0), ZoneId.of("America/New_York"));
-
-
 
             if (!DBAAppointment.checkForOverlappingCustomerAppointments(apptCustomerId, apptDate, apptStartUser, apptEndUser)) {
                 Alert alert = new Alert((Alert.AlertType.ERROR));
@@ -145,13 +126,13 @@ public class AddAppointmentController implements Initializable {
                 alert.setContentText("Please ensure appointment is scheduled within business hours listed on form.\n");
                 alert.showAndWait();
             }
-            else if (apptTitle.isEmpty() || apptDescription.isEmpty() || apptLocation.isEmpty() || apptType == null || apptCustomerId == null || apptUserId == null || apptContactName == null || apptContactId == null){
+            else if (apptTitle.isEmpty() || apptDescription.isEmpty() || apptLocation.isEmpty() || apptType == null || apptCustomerId == 0 || apptUserId == 0 || apptContactName == null || apptContactId == 0){
                 Alert alert = new Alert((Alert.AlertType.ERROR));
                 alert.setTitle("Error");
                 alert.setContentText("Please ensure all values are correct.");
                 alert.showAndWait();
             }
-            else { /*String apptTitle, String apptDescription, String apptLocation, String apptType, ZonedDateTime apptStart, ZonedDateTime apptEnd, String createdBy, String lastUpdatedBy, int customerID, int userID, int contactID*/
+            else {
                 DBAAppointment.addAppointment(apptTitle, apptDescription, apptLocation, apptType, apptStart, apptEnd, createdBy, lastUpdatedBy, apptCustomerId, apptUserId, apptContactId);
 
                 Alert alert = new Alert((Alert.AlertType.CONFIRMATION));
@@ -172,21 +153,19 @@ public class AddAppointmentController implements Initializable {
 
 
         } catch (DateTimeParseException throwables){
-            //throwables.printStackTrace();
-            //throwables.printStackTrace();
+
             Alert alert = new Alert((Alert.AlertType.ERROR));
             alert.setTitle("Error");
             alert.setContentText("Could not add appointment. Ensure all values are correct.");
             alert.showAndWait();
-            return;
-
+            //return;
         }
     }
 
     /**
      *
      * @param event the event of clicking on the cancel button to return to the appointment view screen
-     * @throws Exception
+     * @throws Exception exception
      */
     @FXML
     void onActionCancelToAppointmentView(ActionEvent event) throws Exception {
@@ -200,7 +179,7 @@ public class AddAppointmentController implements Initializable {
 
     private javafx.util.Callback<DatePicker, DateCell> getDayCellFactory() {
 
-        final javafx.util.Callback<DatePicker, DateCell> dayCellFactory = new Callback<DatePicker, DateCell>() {
+        return new Callback<>() {
 
             //@Override
             public DateCell call(final DatePicker datePicker) {
@@ -210,10 +189,7 @@ public class AddAppointmentController implements Initializable {
                         super.updateItem(date, empty);
 
                         LocalDate today = LocalDate.now();
-                        // Disable Monday, Tueday, Wednesday.
-                        if (date.getDayOfWeek() == DayOfWeek.SATURDAY //
-                                || date.getDayOfWeek() == DayOfWeek.SUNDAY //
-                                || date.compareTo(today) < 0) {
+                        if (date.getDayOfWeek() == DayOfWeek.SATURDAY || date.getDayOfWeek() == DayOfWeek.SUNDAY || date.compareTo(today) < 0) {
                             setDisable(true);
                             setStyle("-fx-background-color: #ffc0cb;");
                         }
@@ -221,7 +197,6 @@ public class AddAppointmentController implements Initializable {
                 };
             }
         };
-        return dayCellFactory;
     }
 
 }

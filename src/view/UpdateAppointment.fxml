@@ -46,7 +46,5 @@
          </font>
       </Label>
       <Label layoutX="6.0" layoutY="337.0" style="-fx-text-fill: #1b1e23;" text="08:00AM - 22:00PM EST" />
-      <ComboBox fx:id="startTimeComboBx" layoutX="405.0" layoutY="180.0" prefWidth="150.0" promptText="Start Time" />
-      <ComboBox fx:id="endTimeComboBx" layoutX="405.0" layoutY="215.0" prefWidth="150.0" promptText="End Time" />
     </children>
 </AnchorPane>

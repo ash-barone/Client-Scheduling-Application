@@ -1,30 +1,19 @@
 package controller;
 
 import DBAccess.DBAAppointment;
-import DBAccess.DBACustomer;
-import DBAccess.JDBC;
 import Utility.UserLoginSession;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.Appointment;
-import model.User;
-
 import java.net.URL;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.time.ZonedDateTime;
-import java.util.EventObject;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class LoginScreenController implements Initializable {
@@ -50,8 +39,6 @@ public class LoginScreenController implements Initializable {
     @FXML
     private Label welcomeLbl;
 
-    private Locale ZoneID;
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //testing
@@ -70,29 +57,24 @@ public class LoginScreenController implements Initializable {
             // System.out.println("language not detected");
         }
 
-        userZoneIdLbl.setText(String.valueOf(ZoneID.getDefault()));
+        userZoneIdLbl.setText(String.valueOf(Locale.getDefault()));
     }
 
     /**
-     * @param event the event of clicking the sign in button to attempt a log in and write the attempt to login_activity.txt
-     * @throws Exception
+     * @param event the event of clicking the sign-in button to attempt a log-in and write the attempt to login_activity.txt
+     * @throws Exception exception
      */
     @FXML
     void onActionAttemptLogin(ActionEvent event) throws Exception {
 
-        //TODO actually attempt of login based on user data in db
-
         String username = userNameTxt.getText();
         String pass = passwordTxt.getText();
-
-        // can't use bc not user ID User loginUser = new User(username, password)
-        //if statement to check log in success or not
 
         boolean successfulLogin = UserLoginSession.attemptToLogInUser(username, pass);
 
         //test
         // System.out.println("user: " + username + " " + "pass: " + pass);
-        if (successfulLogin == true) {
+        if (successfulLogin) {
 
             ObservableList<Appointment> appointmentsIn15 = DBAAppointment.getAppointmentsIn15Minutes();
             for(Appointment appt : appointmentsIn15) {
@@ -108,37 +90,6 @@ public class LoginScreenController implements Initializable {
                 alert.showAndWait();
 
             }
-            // test add cust
-            //DBACustomer.addCustomer("Ashley Barone", "123 Road Street", "30040", "404-234-2424", 29);
-            //ZonedDateTime start = ZonedDateTime.now().plusMinutes(10);
-            //ZonedDateTime end = ZonedDateTime.now().plusMinutes(30);
-            //DBAAppointment.addAppointment("test title", "test descrip", "test loc","test type", start, end, "test created by", "test updated by", 12, 1, 1);
-
-
-            //test cust after test add
-            //DBACustomer.getAllCustomers();
-
-            //test update customer REMEMBER TO MATCH CUST ID TO ADDED ID
-            //DBACustomer.updateCustomer("Elizabeth Bailey", "345 Street Road", "30004", "404-234-4242", "Georgia", 8);
-
-            // test for all cust after test update
-            //DBACustomer.getAllCustomers();
-
-            //test appt in 15 minutes
-            /*ObservableList<Appointment> appointmentsIn15 = DBAAppointment.getAppointmentsIn15Minutes();
-            for(Appointment appt : appointmentsIn15) {
-                String str = "Appointments In 15 Minutes: \n Appointment ID: " + appt.getApptId() + " Appointment Start: " + appt.getApptStartDateTime().toString();
-                ButtonType btn = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
-                Alert alert = new Alert(Alert.AlertType.WARNING, str, btn);
-                alert.showAndWait();
-            }
-
-            if (appointmentsIn15.isEmpty()) {
-                ButtonType btn = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "No appointments in 15 minutes.", btn);
-                alert.showAndWait();
-
-            }*/
 
             //load new screen
             Parent root = FXMLLoader.load(getClass().getResource("/view/MainMenu.fxml"));
@@ -158,52 +109,9 @@ public class LoginScreenController implements Initializable {
                 alert.setTitle(rb.getString("UnableToLogin"));
                 alert.setContentText(rb.getString("UsernameOfPassIncorrect"));
                 alert.showAndWait();
-                return;
+                //return;
             }
         }
-
-        //TODO printwriter for logging all login attempts
-
-       /* Parent root = FXMLLoader.load(getClass().getResource("/view/MainMenu.fxml"));
-        Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setTitle("Main Menu");
-        stage.setScene(scene);
-        stage.show();*/
     }
-
-    //login success check method
-    //maybe move into a log in session utility?? or in DBAuser?
-    /*public boolean loginAttempt(String username, String pass) {
-
-        int userId = 1;
-        String userName = "1";
-        String password = "1";
-
-        try {
-            String sql = "SELECT * FROM users WHERE User_Name LIKE '%test%' AND Password LIKE '%test%'";
-
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                userId = rs.getInt("User_ID");
-                userName = rs.getString("User_Name");
-                password = rs.getString("Password");
-
-            } catch(SQLException throwables){
-                throwables.printStackTrace();
-            }
-        if (username.equals(userName) && pass.equals(password)) {
-            User user = new User(userId, userName, password);
-            System.out.println("ID: " + userId + "Name: " + userName + "password: " + password);
-            return true;
-        }
-        else{System.out.println("false");
-            return false;
-
-        }
-    }*/
 }
 

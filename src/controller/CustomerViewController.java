@@ -2,7 +2,6 @@ package controller;
 
 import DBAccess.DBAAppointment;
 import DBAccess.DBACustomer;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,23 +12,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import model.Appointment;
 import model.Customer;
-
 import java.net.URL;
 import java.sql.SQLException;
-import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class CustomerViewController implements Initializable {
-
-    //TODO name all the table elements and fields etc
-    @FXML
-    private Button addNewCustomerBtn;
-
-    @FXML
-    private Button backBtn;
 
     @FXML
     private TableColumn<Customer, String> customerAddressCol;
@@ -52,32 +41,23 @@ public class CustomerViewController implements Initializable {
     @FXML
     private TableView<Customer> customerTableView;
 
-    @FXML
-    private Button deleteAllAppointmentForCustomerBtn;
-
-    @FXML
-    private Button deleteCustomerBtn;
-
-    @FXML
-    private Button updateSelectedCustomerBtn;
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
-        allCustomers = DBACustomer.getAllCustomers();
+        //ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
+        ObservableList<Customer> allCustomers = DBACustomer.getAllCustomers();
 
         displayCustomers(allCustomers);
 
     }
 
     public void displayCustomers(ObservableList<Customer> customersList){
-        customerIdCol.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("customerId"));
-        customerNameCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("customerName"));
-        customerAddressCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("customerAddress"));
-        customerPostalCodeCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("customerPostalCode"));
-        customerPhoneCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("customerPhoneNumber"));
-        customerDivisionIdCol.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("customerDivisionId"));
+        customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        customerNameCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+        customerAddressCol.setCellValueFactory(new PropertyValueFactory<>("customerAddress"));
+        customerPostalCodeCol.setCellValueFactory(new PropertyValueFactory<>("customerPostalCode"));
+        customerPhoneCol.setCellValueFactory(new PropertyValueFactory<>("customerPhoneNumber"));
+        customerDivisionIdCol.setCellValueFactory(new PropertyValueFactory<>("customerDivisionId"));
 
         customerTableView.setItems(customersList);
     }
@@ -85,7 +65,7 @@ public class CustomerViewController implements Initializable {
     /**
      *
      * @param event the event of clicking the back button to return to the main menu
-     * @throws Exception
+     * @throws Exception exception
      */
     @FXML
     void onActionBackToMainMenu(ActionEvent event) throws Exception {
@@ -103,9 +83,8 @@ public class CustomerViewController implements Initializable {
      * @param event the event of clicking the delete all appointment button while selecting a customer. deletes all appointments for that customer
      */
     @FXML
-    void onActionDeleteAllAppointmentsForSelectedCustomer(ActionEvent event) throws SQLException {
+    void onActionDeleteAllAppointmentsForSelectedCustomer(ActionEvent event) {
 
-        //TODO sql statement to delete all appointments for the selected customer
         Customer selectedCustomer = customerTableView.getSelectionModel().getSelectedItem();
 
         if(selectedCustomer == null){
@@ -117,12 +96,12 @@ public class CustomerViewController implements Initializable {
         }
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirm Deletion");
-        alert.setHeaderText("You are about to delete all appointments for customer " + selectedCustomer.getCustomerName() +".");
+        alert.setTitle("Confirm Cancellation");
+        alert.setHeaderText("You are about to cancel all appointments for customer " + selectedCustomer.getCustomerName() +".");
         alert.setContentText("Are you sure?");
 
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK){
+        if (result.orElseThrow() == ButtonType.OK){
             DBAAppointment.deleteAllSelectedCustomerAppointments(selectedCustomer.getCustomerId());
         } else {
             alert.close();
@@ -143,7 +122,6 @@ public class CustomerViewController implements Initializable {
     @FXML
     void onActionDeleteSelectedCustomer(ActionEvent event) throws SQLException {
 
-        //TODO sql statement to delete the selected customer
 
         Customer selectedCustomer = customerTableView.getSelectionModel().getSelectedItem();
         //DBACustomer.deleteCustomer(selectedCustomer.getCustomerId());
@@ -155,8 +133,8 @@ public class CustomerViewController implements Initializable {
             alert.showAndWait();
         }
 
-        ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
-        allCustomers = DBACustomer.getAllCustomers();
+        //ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
+        ObservableList<Customer> allCustomers = DBACustomer.getAllCustomers();
 
         displayCustomers(allCustomers);
     }
@@ -164,7 +142,7 @@ public class CustomerViewController implements Initializable {
     /**
      *
      * @param event the event of clicking the add customer button to go to the add customer screen
-     * @throws Exception
+     * @throws Exception exception
      */
     @FXML
     void onActionToAddCustomerScreen(ActionEvent event) throws Exception {
@@ -179,12 +157,10 @@ public class CustomerViewController implements Initializable {
     /**
      *
      * @param event the event of clicking on the update customer button while selecting a customer to update. then send that customer info to update screen to be updated. navigate to update customer screen
-     * @throws Exception
+     * @throws Exception exception
      */
     @FXML
     void onActionToUpdateCustomerScreen(ActionEvent event) throws Exception {
-
-        //TODO send the selected customer info to the next screen to populate the fields
 
         Customer selectedCustomer = customerTableView.getSelectionModel().getSelectedItem();
 

@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="1057.0" style="-fx-background-color: #bfd3f8;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AppointmentViewController">
+<AnchorPane prefHeight="400.0" prefWidth="1057.0" style="-fx-background-color: #bfd3f8;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AppointmentViewController">
    <children>
       <TableView fx:id="appointmentsTableView" layoutX="17.0" layoutY="86.0" prefHeight="200.0" prefWidth="1008.0" style="-fx-border-color: #5d6778;">
         <columns>
@@ -52,7 +52,7 @@
             <Font size="16.0" />
          </font>
       </Button>
-      <Button fx:id="deleteAppointmentBtn" layoutX="80.0" layoutY="304.0" mnemonicParsing="false" onAction="#onActionDeleteSelectedAppointment" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #f8bfd3; -fx-text-fill: #1b1e23;" text="Delete Appointment">
+      <Button fx:id="deleteAppointmentBtn" layoutX="80.0" layoutY="304.0" mnemonicParsing="false" onAction="#onActionDeleteSelectedAppointment" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #f8bfd3; -fx-text-fill: #1b1e23;" text="Cancel Appointment">
          <font>
             <Font size="16.0" />
          </font>

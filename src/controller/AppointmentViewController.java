@@ -2,7 +2,6 @@ package controller;
 
 import DBAccess.DBAAppointment;
 import Utility.UserLoginSession;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,23 +13,13 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointment;
-import model.Customer;
-
 import java.net.URL;
-import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class AppointmentViewController implements Initializable {
-
-    @FXML
-    private ToggleGroup AppointmentsView;
-
-    @FXML
-    private Button addNewAppointmentBtn;
 
     @FXML
     private RadioButton allAppointmentsRBtn;
@@ -40,9 +29,6 @@ public class AppointmentViewController implements Initializable {
 
     @FXML
     private TableColumn<Appointment, Integer> appointmentContactIdCol;
-
-    @FXML
-    private TableColumn<Appointment, String> appointmentContactName;
 
     @FXML
     private TableColumn<Appointment, Integer> appointmentCustomerIdCol;
@@ -77,30 +63,13 @@ public class AppointmentViewController implements Initializable {
     @FXML
     private RadioButton appointmentsByWeekRBtn;
 
-    @FXML
-    private Button backBtn;
-
-    @FXML
-    private Button deleteAppointmentBtn;
-
-    @FXML
-    private Button updateSelectedAppointmentBtn;
-
-    public void appointmentViewToggle() {
-        AppointmentsView = new ToggleGroup();
-
-        allAppointmentsRBtn.setToggleGroup(AppointmentsView);
-        appointmentsByMonthRBtn.setToggleGroup(AppointmentsView);
-        appointmentsByWeekRBtn.setToggleGroup(AppointmentsView);
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         allAppointmentsRBtn.setSelected(true);
 
-        ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
-        allAppointments = DBAAppointment.getAllAppointments();
+        //ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
+        ObservableList<Appointment> allAppointments = DBAAppointment.getAllAppointments();
 
         displayAppointments(allAppointments);
         //System.out.println(allAppointments);
@@ -109,7 +78,7 @@ public class AppointmentViewController implements Initializable {
     /**
      *
      * @param event the event of clicking on the back button to return to the main menu
-     * @throws Exception
+     * @throws Exception exception
      */
     @FXML
     void onActionBackToMainMenu(ActionEvent event) throws Exception {
@@ -140,11 +109,11 @@ public class AppointmentViewController implements Initializable {
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirm Deletion");
-        alert.setHeaderText("You are about to delete Appointments with ID " + selectedAppointment.getApptId() +".");
+        alert.setHeaderText("You are about to cancel Appointment with ID " + selectedAppointment.getApptId() +".");
         alert.setContentText("Are you sure?");
 
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK){
+        if (result.orElseThrow() == ButtonType.OK){
             DBAAppointment.deleteAppointment(selectedAppointment.getApptId());
         } else {
             alert.close();
@@ -158,8 +127,8 @@ public class AppointmentViewController implements Initializable {
 
         if (allAppointmentsRBtn.isSelected()) {
             allAppointmentsRBtn.setSelected(true);
-            ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
-            allAppointments = DBAAppointment.getAllAppointments();
+            //ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
+            ObservableList<Appointment> allAppointments = DBAAppointment.getAllAppointments();
             displayAppointments(allAppointments);
         }
         else if (appointmentsByMonthRBtn.isSelected()){
@@ -169,8 +138,8 @@ public class AppointmentViewController implements Initializable {
             ZonedDateTime startUTC = start.withZoneSameInstant(ZoneOffset.UTC);
             ZonedDateTime endUTC = end.withZoneSameInstant(ZoneOffset.UTC);
 
-            ObservableList<Appointment> allAppointmentsByMonth = FXCollections.observableArrayList();
-            allAppointmentsByMonth = DBAAppointment.getAppointmentsByDateRange(startUTC, endUTC);
+            //ObservableList<Appointment> allAppointmentsByMonth = FXCollections.observableArrayList();
+            ObservableList<Appointment> allAppointmentsByMonth = DBAAppointment.getAppointmentsByDateRange(startUTC, endUTC);
             displayAppointments(allAppointmentsByMonth);
         }
         else if (appointmentsByWeekRBtn.isSelected()){
@@ -180,8 +149,8 @@ public class AppointmentViewController implements Initializable {
             ZonedDateTime startUTC = start.withZoneSameInstant(ZoneOffset.UTC);
             ZonedDateTime endUTC = end.withZoneSameInstant(ZoneOffset.UTC);
 
-            ObservableList<Appointment> allAppointmentsByWeek = FXCollections.observableArrayList();
-            allAppointmentsByWeek = DBAAppointment.getAppointmentsByDateRange(startUTC, endUTC);
+            //ObservableList<Appointment> allAppointmentsByWeek = FXCollections.observableArrayList();
+            ObservableList<Appointment> allAppointmentsByWeek = DBAAppointment.getAppointmentsByDateRange(startUTC, endUTC);
             displayAppointments(allAppointmentsByWeek);
         }
     }
@@ -194,8 +163,8 @@ public class AppointmentViewController implements Initializable {
     void onActionDisplayAllAppointments(ActionEvent event) {
 
         allAppointmentsRBtn.setSelected(true);
-        ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
-        allAppointments = DBAAppointment.getAllAppointments();
+        //ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
+        ObservableList<Appointment> allAppointments = DBAAppointment.getAllAppointments();
         displayAppointments(allAppointments);
     }
 
@@ -205,16 +174,16 @@ public class AppointmentViewController implements Initializable {
      */
     public void displayAppointments(ObservableList<Appointment> appointmentsList) {
 
-        appointmentIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("apptId"));
-        appointmentTitleCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("apptTitle"));
-        appointmentDescriptionCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("apptDescription"));
-        appointmentLocationCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("apptLocation"));
-        appointmentTypeCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("apptType"));
-        appointmentStartCol.setCellValueFactory(new PropertyValueFactory<Appointment, ZonedDateTime>("apptStartDateTime"));
-        appointmentEndCol.setCellValueFactory(new PropertyValueFactory<Appointment, ZonedDateTime>("apptEndDateTime"));
-        appointmentCustomerIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("apptCustomerId"));
-        appointmentUserIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("apptUserId"));
-        appointmentContactIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("apptContactId"));
+        appointmentIdCol.setCellValueFactory(new PropertyValueFactory<>("apptId"));
+        appointmentTitleCol.setCellValueFactory(new PropertyValueFactory<>("apptTitle"));
+        appointmentDescriptionCol.setCellValueFactory(new PropertyValueFactory<>("apptDescription"));
+        appointmentLocationCol.setCellValueFactory(new PropertyValueFactory<>("apptLocation"));
+        appointmentTypeCol.setCellValueFactory(new PropertyValueFactory<>("apptType"));
+        appointmentStartCol.setCellValueFactory(new PropertyValueFactory<>("apptStartDateTime"));
+        appointmentEndCol.setCellValueFactory(new PropertyValueFactory<>("apptEndDateTime"));
+        appointmentCustomerIdCol.setCellValueFactory(new PropertyValueFactory<>("apptCustomerId"));
+        appointmentUserIdCol.setCellValueFactory(new PropertyValueFactory<>("apptUserId"));
+        appointmentContactIdCol.setCellValueFactory(new PropertyValueFactory<>("apptContactId"));
         //appointmentContactName.setCellValueFactory(new PropertyValueFactory<Appointment, String>("apptContactName"));
 
         appointmentsTableView.setItems(appointmentsList);
@@ -232,30 +201,9 @@ public class AppointmentViewController implements Initializable {
         ZonedDateTime startUTC = start.withZoneSameInstant(ZoneOffset.UTC);
         ZonedDateTime endUTC = end.withZoneSameInstant(ZoneOffset.UTC);
 
-        ObservableList<Appointment> allAppointmentsByMonth = FXCollections.observableArrayList();
-        allAppointmentsByMonth = DBAAppointment.getAppointmentsByDateRange(startUTC, endUTC);
+        //ObservableList<Appointment> allAppointmentsByMonth = FXCollections.observableArrayList();
+        ObservableList<Appointment> allAppointmentsByMonth = DBAAppointment.getAppointmentsByDateRange(startUTC, endUTC);
         displayAppointments(allAppointmentsByMonth);
-    }
-
-    /**
-     * redundant method to dsipaly appts but for ease fo reading
-     * @param appointmentsList
-     */
-    public void displayAppointmentsByMonth(ObservableList<Appointment> appointmentsList) {
-
-        appointmentIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("apptId"));
-        appointmentTitleCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("apptTitle"));
-        appointmentDescriptionCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("apptDescription"));
-        appointmentLocationCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("apptLocation"));
-        appointmentTypeCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("apptType"));
-        appointmentStartCol.setCellValueFactory(new PropertyValueFactory<Appointment, ZonedDateTime>("apptStartDateTime"));
-        appointmentEndCol.setCellValueFactory(new PropertyValueFactory<Appointment, ZonedDateTime>("apptEndDateTime"));
-        appointmentCustomerIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("apptCustomerId"));
-        appointmentUserIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("apptUserId"));
-        appointmentContactIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("apptContactId"));
-        //appointmentContactName.setCellValueFactory(new PropertyValueFactory<Appointment, String>("apptContactName"));
-
-        appointmentsTableView.setItems(appointmentsList);
     }
 
     /**
@@ -271,36 +219,15 @@ public class AppointmentViewController implements Initializable {
         ZonedDateTime startUTC = start.withZoneSameInstant(ZoneOffset.UTC);
         ZonedDateTime endUTC = end.withZoneSameInstant(ZoneOffset.UTC);
 
-        ObservableList<Appointment> allAppointmentsByWeek = FXCollections.observableArrayList();
-        allAppointmentsByWeek = DBAAppointment.getAppointmentsByDateRange(startUTC, endUTC);
+        //ObservableList<Appointment> allAppointmentsByWeek = FXCollections.observableArrayList();
+        ObservableList<Appointment> allAppointmentsByWeek = DBAAppointment.getAppointmentsByDateRange(startUTC, endUTC);
         displayAppointments(allAppointmentsByWeek);
-    }
-
-    /**
-     * redundant for ease of reading
-     * @param appointmentsList
-     */
-    public void displayAppointmentsByWeek(ObservableList<Appointment> appointmentsList) {
-
-        appointmentIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("apptId"));
-        appointmentTitleCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("apptTitle"));
-        appointmentDescriptionCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("apptDescription"));
-        appointmentLocationCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("apptLocation"));
-        appointmentTypeCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("apptType"));
-        appointmentStartCol.setCellValueFactory(new PropertyValueFactory<Appointment, ZonedDateTime>("apptStartDateTime"));
-        appointmentEndCol.setCellValueFactory(new PropertyValueFactory<Appointment, ZonedDateTime>("apptEndDateTime"));
-        appointmentCustomerIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("apptCustomerId"));
-        appointmentUserIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("apptUserId"));
-        appointmentContactIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("apptContactId"));
-        //appointmentContactName.setCellValueFactory(new PropertyValueFactory<Appointment, String>("apptContactName"));
-
-        appointmentsTableView.setItems(appointmentsList);
     }
 
     /**
      *
      * @param event of clicking the add appointment button to go to the add appointment screen
-     * @throws Exception
+     * @throws Exception exception
      */
     @FXML
     void onActionToAddAppointmentScreen(ActionEvent event) throws Exception {
@@ -315,12 +242,11 @@ public class AppointmentViewController implements Initializable {
     /**
      *
      * @param event the event of clicking the update appointment screen while having an appointment selected. sends the selected appointment info to update screen to you can update info
-     * @throws Exception
+     * @throws Exception exception
      */
     @FXML
     void onActionToUpdateAppointmentScreen(ActionEvent event) throws Exception {
 
-        //TODO send the selected appointment info to the update screen to populate fields
         Appointment selectedAppointment = appointmentsTableView.getSelectionModel().getSelectedItem();
 
         if(selectedAppointment == null){

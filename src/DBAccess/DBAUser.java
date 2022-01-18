@@ -2,9 +2,6 @@ package DBAccess;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import model.Contact;
-import model.User;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,39 +9,8 @@ import java.sql.SQLException;
 public class DBAUser {
 
     /**
-     * method to get all users
-     * unused.
-     * @return
-     */
-    public static ObservableList<User> getAllUser() {
-
-        ObservableList<User> allUsersList = FXCollections.observableArrayList();
-
-        try {
-            String sql = "SELECT * from users";
-
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                int userId = rs.getInt("User_ID");
-                String userName = rs.getString("User_Name");
-                String password = rs.getString("Password");
-
-                User user = new User(userId, userName, password);
-                allUsersList.add(user);
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        return allUsersList;
-    }
-
-    /**
      * method to get all user ids
-     * @return
+     * @return list of user ids
      */
     public static ObservableList<Integer> getAllUserIds() {
 
@@ -76,13 +42,14 @@ public class DBAUser {
 
     /**
      * method to get user name from id
-     * @param userId
-     * @return
+     * @param userId the id of the user
+     * @return the username
      */
     public static String getUserNameFromId(int userId) {
 
         String userName = " ";
-        int userID;
+        //int userID; //for testing
+
         try {
             String sql = "SELECT User_Name FROM users WHERE User_ID = ?";
 
@@ -105,8 +72,8 @@ public class DBAUser {
     }
 
     /**
-     * method to get all user names
-     * @return
+     * method to get all usernames
+     * @return list of all usernames
      */
     public static ObservableList<String> getAllUserNames() {
 
@@ -140,8 +107,8 @@ public class DBAUser {
 
     /**
      * method to get user id from name
-     * @param username
-     * @return
+     * @param username the name of the user
+     * @return the user id
      */
     public static Integer getUserIdFromName(String username) {
         //String userName = " ";

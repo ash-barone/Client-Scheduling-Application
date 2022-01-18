@@ -1,6 +1,5 @@
 package controller;
 
-import DBAccess.DBACustomer;
 import Utility.UserLoginSession;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,27 +11,13 @@ import javafx.stage.Stage;
 
 public class MainMenuController {
 
-    @FXML
-    private Button appointmentsScreenBtn;
-
-    @FXML
-    private Button customersScreenBtn;
-
-    @FXML
-    private Button logOutBtn;
-
-    @FXML
-    private Button reportsScreenBtn;
-
     /**
      *
      * @param event the event of clicking the Appointments View button that navigates to that screen
-     * @throws Exception
+     * @throws Exception exception
      */
     @FXML
     void onActionToAppointmentsView(ActionEvent event) throws Exception {
-
-        //TODO send appointment info to the table on next screen
 
         Parent root = FXMLLoader.load(getClass().getResource("/view/AppointmentView.fxml"));
         Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
@@ -45,12 +30,10 @@ public class MainMenuController {
     /**
      *
      * @param event the event of clicking the customer view button that navigate to that screen
-     * @throws Exception
+     * @throws Exception exception
      */
     @FXML
     void onActionToCustomerView(ActionEvent event) throws Exception {
-
-        //TODO send customer info to the table on next screen
 
         Parent root = FXMLLoader.load(getClass().getResource("/view/CustomerView.fxml"));
         Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
@@ -63,12 +46,10 @@ public class MainMenuController {
     /**
      *
      * @param event the vent of clicking on the report view button that navigates to that screen
-     * @throws Exception
+     * @throws Exception exception
      */
     @FXML
     void onActionToReportsView(ActionEvent event) throws Exception {
-
-        //TODO send info for reports to next screen? or nah idk yet
 
         Parent root = FXMLLoader.load(getClass().getResource("/view/ReportView.fxml"));
         Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
@@ -80,18 +61,18 @@ public class MainMenuController {
 
     /**
      *
-     * @param event the event of clicking on the sign off button that logs user out and navigates back to the login screen
-     * @throws Exception
+     * @param event the event of clicking on the sign-off button that logs user out and navigates back to the login screen
+     * @throws Exception exception
      */
     @FXML
     void onActionLogUserOut(ActionEvent event) throws Exception {
 
         //user log off action to clear user info
         UserLoginSession.logUserOff();
-        //test to delete added customer test and for delte customer functionality
+        //test to delete added customer test and for delete customer functionality
         //DBACustomer.deleteCustomer(9);
 
-        //navigation back to login screen
+        //navigation back to log-in screen
         Parent root = FXMLLoader.load(getClass().getResource("/view/LoginScreen.fxml"));
         Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);

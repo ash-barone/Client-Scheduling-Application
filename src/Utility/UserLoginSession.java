@@ -3,14 +3,18 @@ package Utility;
 import DBAccess.JDBC;
 import model.User;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Locale;
 
 /**
- * user login utility used to manage logged in user info like time zone, locale, and user id for CRUD operations
+ * user login utility used to manage logged-in user info like time zone, locale, and user id for CRUD operations
  */
 public class UserLoginSession {
 
@@ -52,11 +56,10 @@ public class UserLoginSession {
      *
      * @param username the username from the text field on login screen
      * @param pass the password from the text field on login screen
-     * @return true or false for whether or not the user was logged in successfully
+     * @return true or false for if the user was logged in successfully
      */
     public static boolean attemptToLogInUser(String username, String pass){
 
-        //TODO printwriter for storing each log in attempt
             int userId = 0;
             String userName = " ";
             String password = " "; //move to outside?
@@ -76,17 +79,17 @@ public class UserLoginSession {
                     password = rs.getString("Password");
 
                     //test
-                    // .out.println("before catch and if statement userName: " + userName + " password: " + password);
+                    // System.out.println("before catch and if statement userName: " + userName + " password: " + password);
                 }
             } catch(SQLException throwables){
                 throwables.printStackTrace();
             }
             if (username.equals(userName) && pass.equals(password)) {
-                User user = new User(userId, userName, password);
+                //User user = new User(userId, userName, password);
                 //test
                 // System.out.println("ID: " + userId + " username: " + userName + " password: " + password);
 
-                //set current logged in user info for insert and updates plus locale stuff i might use?
+                //set current logged-in user info for insert and updates plus locale
                 userLoggedIn = new User(userId, userName, password);
                 loggedInUserTimeZone = ZoneId.systemDefault();
                 loggedInUserLocale = Locale.getDefault();
@@ -104,7 +107,7 @@ public class UserLoginSession {
     }
 
     /**
-     * method to clear logged in user info
+     * method to clear logged-in user info
      */
     public static void logUserOff(){
 
@@ -115,5 +118,21 @@ public class UserLoginSession {
         //test confirm user info cleared
         //System.out.println(" User Time Zone: " + loggedInUserTimeZone + " User Locale: " + loggedInUserLocale);
 
+    }
+
+    public static void logUserActivity(boolean attemptToLogInUser, String username) throws IOException {
+
+        try {
+            FileWriter fw = new FileWriter("login_activity.txt", true);
+            PrintWriter ps = new PrintWriter(fw);
+            LocalDateTime nowTime = LocalDateTime.now();
+            ps.append("Attempted Log-in By User: " + username + " at: " + nowTime + " Successful: " + attemptToLogInUser + "\n");
+            ps.close();
+
+            //test
+            System.out.println(" usename: " + username + " Time: " + nowTime + " success?: " + attemptToLogInUser);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

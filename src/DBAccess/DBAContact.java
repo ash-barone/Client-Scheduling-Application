@@ -2,8 +2,6 @@ package DBAccess;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import model.Contact;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,41 +10,6 @@ import java.sql.SQLException;
  * class for access methods for contacts
  */
 public class DBAContact {
-
-    /**
-     * method to get all contacts
-     * @return all contacts
-     */
-    public static ObservableList<Contact> getAllContacts() {
-
-        ObservableList<Contact> allContactsList = FXCollections.observableArrayList();
-
-        try {
-            //sql statement to get all contacts
-            String sql = "SELECT * from contacts";
-
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                int contactId = rs.getInt("Contact_ID");
-                String contactName = rs.getString("Contact_Name");
-                String contactEmail = rs.getString("Email");
-
-                Contact contact = new Contact(contactId, contactName, contactEmail);
-                allContactsList.add(contact);
-
-                //test
-                //System.out.println("Contact ID: " + contactId + " Name: " + contactName + " Contact Email: " + contactEmail);
-
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        return allContactsList;
-    }
 
     /**
      * method to get all contact names
@@ -79,11 +42,10 @@ public class DBAContact {
 
     /**
      * method to get contact id from name
-     * @param contactName
-     * @return
-     * @throws SQLException
+     * @param contactName the name of the contact
+     * @return contact id int
      */
-    public static int getContactIdFromName(String contactName) throws SQLException {
+    public static int getContactIdFromName(String contactName) {
 
         int contactId = 0;
 
@@ -104,14 +66,18 @@ public class DBAContact {
                 //test
                 //System.out.println("Contact ID: " + contactId + " Contact Name: " + contactName);
             }
-            ;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         return contactId;
     }
 
-    public static String getContactNameFromId(int contactId) throws SQLException {
+    /**
+     * method to get contact name from an id
+     * @param contactId the id of the contact
+     * @return the name of the contact
+     */
+    public static String getContactNameFromId(int contactId) {
 
         String contactName = " ";
 
@@ -132,7 +98,6 @@ public class DBAContact {
                 //test
                 //System.out.println("Contact ID: " + contactId + " Contact Name: " + contactName);
             }
-            ;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -140,45 +105,16 @@ public class DBAContact {
     }
 
     /**
-     * method to get all contact ids
-     * @return all contact ids
-     */
-    public static ObservableList<Integer> getAllContactIds(){
-        ObservableList<Integer> allContactIdsList = FXCollections.observableArrayList();
-
-        try {
-            //sql statement to get all contact ids
-            String sql = "SELECT Contact_ID from contacts";
-
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                int contactId = rs.getInt("Contact_ID");
-
-                allContactIdsList.add(contactId);
-
-                //System.out.println("Contact ID: " + contactId);
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        return allContactIdsList;
-    }
-
-    /**
      * method to get all appointments for a specific contact
-     * @param contactID
+     * @param contactID the id of the contact
      * @return list of all appts for that contact
      */
-    public static ObservableList<String> getAllAppointmentsForContact(int contactID) throws SQLException {
+    public static ObservableList<String> getAllAppointmentsForContact(int contactID) {
         ObservableList<String> allAppointmentsForContactList = FXCollections.observableArrayList();
 
         String contactName = DBAContact.getContactNameFromId(contactID);
 
-        allAppointmentsForContactList.add("Appointments for " + contactName + ": ");
+        allAppointmentsForContactList.add("Appointments for " + contactName + ":");
 
         try {
             //sql statement to select appts for specific contact
@@ -198,7 +134,6 @@ public class DBAContact {
                 String apptStart = rs.getString("Start");
                 String apptEnd = rs.getString("End");
                 String customerId = rs.getString("Customer_ID");
-                String contactId = rs.getString("Contact_ID");
 
                 String eachAppt = "\nAppointment ID: " + apptId + " Title: " + apptTitle + " Description: " + apptDescription + " Type: " + apptType + " Start: " + apptStart + " End: " + apptEnd + " Customer ID: " + customerId;
                 //System.out.println("Appointment info: " + eachAppt);

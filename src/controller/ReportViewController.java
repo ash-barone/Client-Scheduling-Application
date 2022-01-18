@@ -11,7 +11,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
@@ -20,17 +19,11 @@ import java.sql.SQLException;
 public class ReportViewController {
 
     @FXML
-    private Button backBtn;
-
-    @FXML
     private TextArea reportTxtArea;
-
-    @FXML
-    private ComboBox<String> contactNameComboBox;
 
     /**
      * @param event the event of clicking on the back button to navigate back to main menu
-     * @throws Exception
+     * @throws Exception exception
      */
     @FXML
     void onActionBackToMainMenu(ActionEvent event) throws Exception {
@@ -46,6 +39,7 @@ public class ReportViewController {
     void onActionShowTypeAndMonthReport(ActionEvent event) {
 
         reportTxtArea.clear();
+
         ObservableList<String> appointmentsByTypeAndMonth = DBAAppointment.getTotalAppointmentsByTypeAndMonth();
 
         //format report string
@@ -59,6 +53,7 @@ public class ReportViewController {
     void onActionShowCustomersByDivision(ActionEvent event) {
 
         reportTxtArea.clear();
+
         ObservableList<String> customersByDivision = DBACustomer.getAllCustomerCountByDivision();
 
         //format string of report
@@ -72,7 +67,6 @@ public class ReportViewController {
     @FXML
     void onActionShowContactSchedule(ActionEvent event) throws SQLException {
 
-        //TODO ignoring combo box rn then figuring out if i want to use it
         reportTxtArea.clear();
 
         ObservableList<String> allContactNames = DBAContact.getAllContactNames();
@@ -88,12 +82,8 @@ public class ReportViewController {
             ObservableList<String> allContactAppointments = DBAContact.getAllAppointmentsForContact(DBAContact.getContactIdFromName(contactName));
 
             if (!allContactAppointments.isEmpty()) {
-                for (String contactAppointment : allContactAppointments) {
-                    report.add(contactAppointment);
-                }
+                report.addAll(allContactAppointments);
                 report.add("\n");
-            } else if (allContactAppointments.isEmpty()) {
-                report.add("\n This contact has no scheduled appointments.\n");
             }
         }
 
