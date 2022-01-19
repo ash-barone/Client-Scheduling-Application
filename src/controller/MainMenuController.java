@@ -9,12 +9,16 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
+/**
+ * This class is the controller for the Main Menu. Included are navigation methods for accessing the Customer View, Appointment View, and Reports View.
+ * Navigation back to log-in screen is also included which will log the current user out.
+ */
 public class MainMenuController {
 
     /**
-     *
-     * @param event the event of clicking the Appointments View button that navigates to that screen
-     * @throws Exception exception
+     * Method for navigating to the Appointment View screen.
+     * @param event The event of clicking the Appointments View button.
+     * @throws Exception
      */
     @FXML
     void onActionToAppointmentsView(ActionEvent event) throws Exception {
@@ -30,9 +34,9 @@ public class MainMenuController {
     }
 
     /**
-     *
-     * @param event the event of clicking the customer view button that navigate to that screen
-     * @throws Exception exception
+     * Method for navigating to the Customer View screen.
+     * @param event The event of clicking the Customer View button.
+     * @throws Exception
      */
     @FXML
     void onActionToCustomerView(ActionEvent event) throws Exception {
@@ -49,9 +53,9 @@ public class MainMenuController {
     }
 
     /**
-     *
-     * @param event the vent of clicking on the report view button that navigates to that screen
-     * @throws Exception exception
+     * Method for navigating to the Report View screen.
+     * @param event The event of clicking on the Report View button.
+     * @throws Exception
      */
     @FXML
     void onActionToReportsView(ActionEvent event) throws Exception {
@@ -67,9 +71,9 @@ public class MainMenuController {
     }
 
     /**
-     *
-     * @param event the event of clicking on the sign-off button that logs user out and navigates back to the login screen
-     * @throws Exception exception
+     * Method to log the user out and navigate back to the log-in screen.
+     * @param event The event of clicking on the sign-off button.
+     * @throws Exception
      */
     @FXML
     void onActionLogUserOut(ActionEvent event) throws Exception {

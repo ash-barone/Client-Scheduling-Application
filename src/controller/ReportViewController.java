@@ -16,14 +16,19 @@ import javafx.stage.Stage;
 
 import java.sql.SQLException;
 
+/**
+ * This class is the controller for the Report View screen. Included are methods for showing specific reports when its respective button is clicked.
+ * Navigation back to the Main Menu is also included.
+ */
 public class ReportViewController {
 
     @FXML
     private TextArea reportTxtArea;
 
     /**
-     * @param event the event of clicking on the back button to navigate back to main menu
-     * @throws Exception exception
+     * Method for navigating back to the Main Menu.
+     * @param event The event of clicking on the Back button.
+     * @throws Exception
      */
     @FXML
     void onActionBackToMainMenu(ActionEvent event) throws Exception {
@@ -35,6 +40,10 @@ public class ReportViewController {
         stage.show();
     }
 
+    /**
+     * Method for displaying the Type and Month Appointments report in the text area.
+     * @param event The event of clicking on the Appointment By Type and Month button.
+     */
     @FXML
     void onActionShowTypeAndMonthReport(ActionEvent event) {
 
@@ -49,6 +58,10 @@ public class ReportViewController {
         reportTxtArea.appendText(report);
     }
 
+    /**
+     * Method for displaying the Customer by Division report in the text area.
+     * @param event The event of clicking the Customers By Division button.
+     */
     @FXML
     void onActionShowCustomersByDivision(ActionEvent event) {
 
@@ -65,8 +78,9 @@ public class ReportViewController {
     }
 
     /**
-     * Lambda expression used in place of for loop to go through each contact in list and list their appointments.
-     * @param event the event of clicking the report button
+     * Method for displaying the Contact Schedule report in the text area.
+     * A Lambda expression is used in place of a for loop to go through each contact in list and list their appointments.
+     * @param event The event of clicking the Contact Schedule report button.
      * @throws SQLException
      */
     @FXML

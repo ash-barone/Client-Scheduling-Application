@@ -18,6 +18,12 @@ import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+
+/**
+ * This class is the controller for the Customer View Screen. Included are methods that display customers in a table view.
+ * Navigation to an add and update form is included as well as navigation back to the Main Menu.
+ * Included also is a method for deleting a selected customer as well as all of that selected customer's appointments.
+ */
 public class CustomerViewController implements Initializable {
 
     @FXML
@@ -41,11 +47,14 @@ public class CustomerViewController implements Initializable {
     @FXML
     private TableView<Customer> customerTableView;
 
+    /**
+     * Initialize method to populate the Customers TableView and style the TableView
+     * @param url The url
+     * @param resourceBundle The resource bundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        //ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
-        //ObservableList<Customer> allCustomers = DBACustomer.getAllCustomers();
         customerTableView.setStyle("-fx-selection-bar: #c2bff8");
 
         ObservableList<Customer> allCustomers = DBACustomer.getAllCustomers();
@@ -54,21 +63,10 @@ public class CustomerViewController implements Initializable {
 
     }
 
-    public void displayCustomers(ObservableList<Customer> customersList){
-        customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
-        customerNameCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
-        customerAddressCol.setCellValueFactory(new PropertyValueFactory<>("customerAddress"));
-        customerPostalCodeCol.setCellValueFactory(new PropertyValueFactory<>("customerPostalCode"));
-        customerPhoneCol.setCellValueFactory(new PropertyValueFactory<>("customerPhoneNumber"));
-        customerDivisionIdCol.setCellValueFactory(new PropertyValueFactory<>("customerDivisionId"));
-
-        customerTableView.setItems(customersList);
-    }
-
     /**
-     *
-     * @param event the event of clicking the back button to return to the main menu
-     * @throws Exception exception
+     * Method for exiting the Customer View and returning to the Main Menu
+     * @param event The event of clicking on the Back button.
+     * @throws Exception
      */
     @FXML
     void onActionBackToMainMenu(ActionEvent event) throws Exception {
@@ -82,51 +80,15 @@ public class CustomerViewController implements Initializable {
     }
 
     /**
-     *
-     * @param event the event of clicking the delete all appointment button while selecting a customer. deletes all appointments for that customer
-     */
-    @FXML
-    void onActionDeleteAllAppointmentsForSelectedCustomer(ActionEvent event) {
-
-        Customer selectedCustomer = customerTableView.getSelectionModel().getSelectedItem();
-
-        if(selectedCustomer == null){
-            Alert alert= new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Please select a customer.");
-            alert.showAndWait();
-
-            return;
-        }
-
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirm Cancellation");
-        alert.setHeaderText("You are about to cancel all appointments for customer " + selectedCustomer.getCustomerName() +".");
-        alert.setContentText("Are you sure?");
-
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.orElseThrow() == ButtonType.OK){
-            DBAAppointment.deleteAllSelectedCustomerAppointments(selectedCustomer.getCustomerId());
-        } else {
-            alert.close();
-        }
-        //DBAAppointment.deleteAppointment(selectedAppointment.getApptId());
-
-        Alert alert2 = new Alert((Alert.AlertType.CONFIRMATION));
-        alert2.setTitle("Appointments Cancelled");
-        alert2.setContentText("All appointments for " + selectedCustomer.getCustomerName() + " have been cancelled.");
-        alert2.showAndWait();
-
-    }
-
-    /**
-     *
-     * @param event the event of clicking the delete customer button while selecting a customer
+     * Method for deleting a customer that has been selected on the TableView. Gives user a confirmation message prompt.
+     * Gives an error if the selected customer has current appointments.
+     * Customer TableView will repopulate based on the deletion.
+     * @param event The event of clicking the Delete Customer button while having a customer selected.
      */
     @FXML
     void onActionDeleteSelectedCustomer(ActionEvent event) throws SQLException {
 
         Customer selectedCustomer = customerTableView.getSelectionModel().getSelectedItem();
-        //DBACustomer.deleteCustomer(selectedCustomer.getCustomerId());
 
         if(selectedCustomer == null){
             Alert alert= new Alert(Alert.AlertType.ERROR);
@@ -161,16 +123,67 @@ public class CustomerViewController implements Initializable {
             alert.close();
         }
 
-        //ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
         ObservableList<Customer> allCustomers = DBACustomer.getAllCustomers();
 
         displayCustomers(allCustomers);
     }
 
     /**
-     *
-     * @param event the event of clicking the add customer button to go to the add customer screen
-     * @throws Exception exception
+     * Method for deleting an appointment schedule for a customer that has been selected on the TableView. Gives user a confirmation message prompt.
+     * Appointment TableView will repopulate based on the deletion whenever the Appointment View screen is next accessed.
+     * @param event The event of clicking the Delete All Customer Appointments button while having a customer selected.
+     */
+    @FXML
+    void onActionDeleteAllAppointmentsForSelectedCustomer(ActionEvent event) {
+
+        Customer selectedCustomer = customerTableView.getSelectionModel().getSelectedItem();
+
+        if(selectedCustomer == null){
+            Alert alert= new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Please select a customer.");
+            alert.showAndWait();
+
+            return;
+        }
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Cancellation");
+        alert.setHeaderText("You are about to cancel all appointments for customer " + selectedCustomer.getCustomerName() +".");
+        alert.setContentText("Are you sure?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.orElseThrow() == ButtonType.OK){
+            DBAAppointment.deleteAllSelectedCustomerAppointments(selectedCustomer.getCustomerId());
+        } else {
+            alert.close();
+        }
+
+        Alert alert2 = new Alert((Alert.AlertType.CONFIRMATION));
+        alert2.setTitle("Appointments Cancelled");
+        alert2.setContentText("All appointments for " + selectedCustomer.getCustomerName() + " have been cancelled.");
+        alert2.showAndWait();
+
+    }
+
+    /**
+     * Method used to display customers.
+     * @param customersList The list of customers to display
+     */
+    public void displayCustomers(ObservableList<Customer> customersList){
+        customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        customerNameCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+        customerAddressCol.setCellValueFactory(new PropertyValueFactory<>("customerAddress"));
+        customerPostalCodeCol.setCellValueFactory(new PropertyValueFactory<>("customerPostalCode"));
+        customerPhoneCol.setCellValueFactory(new PropertyValueFactory<>("customerPhoneNumber"));
+        customerDivisionIdCol.setCellValueFactory(new PropertyValueFactory<>("customerDivisionId"));
+
+        customerTableView.setItems(customersList);
+    }
+
+    /**
+     * Method for navigating to the Add Customer Screen.
+     * @param event The event of clicking the Add New Customer button.
+     * @throws Exception
      */
     @FXML
     void onActionToAddCustomerScreen(ActionEvent event) throws Exception {
@@ -183,9 +196,10 @@ public class CustomerViewController implements Initializable {
     }
 
     /**
-     *
-     * @param event the event of clicking on the update customer button while selecting a customer to update. then send that customer info to update screen to be updated. navigate to update customer screen
-     * @throws Exception exception
+     * Method for navigating to the Update Customer Screen when a customer in the TableView is selected.
+     * Show error message for no selected customer.
+     * @param event The event of clicking the Update Customer button.
+     * @throws Exception
      */
     @FXML
     void onActionToUpdateCustomerScreen(ActionEvent event) throws Exception {
@@ -213,5 +227,4 @@ public class CustomerViewController implements Initializable {
         stage.setScene(new Scene(scene));
         stage.show();
     }
-
 }

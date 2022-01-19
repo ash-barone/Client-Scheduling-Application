@@ -19,6 +19,11 @@ import java.time.*;
 import java.time.format.DateTimeParseException;
 import java.util.ResourceBundle;
 
+/**
+ * This class is the controller for the Add Appointment screen. Included are methods that allow attempts to add a new appointment to the connected database.
+ * Navigation for exit to form back to the Appointment View is included as well.
+ *
+ */
 public class AddAppointmentController implements Initializable {
 
     @FXML
@@ -54,6 +59,12 @@ public class AddAppointmentController implements Initializable {
     @FXML
     private Label userTimeZoneLbl;
 
+    /**
+     * The initialize method changes a label on screen to display the user's time zone for reference when setting appointment times.
+     * This method also sets the items for the Type, Contact, Customer, and User combo boxes as well as limits on available dates within the Date Picker.
+     * @param url The url
+     * @param resourceBundle The resource bundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -69,15 +80,17 @@ public class AddAppointmentController implements Initializable {
     }
 
     /**
-     *
-     * @param event the event of clicking the add appointment button to add appointment to db and return to the appointment view screen
-     * @throws Exception issues
+     * This method allows an attempt to add an appointment to the database. There are custom error messages provided for any fields left blank as well as custom error messages for scheduling issues such as failure to follow business hours or scheduling an overlapping appointment for a customer.
+     * On a success, the application will change back to the Appointment View screen.
+     * @param event The event of clicking the Add button.
+     * @throws Exception
      */
     @FXML
     void onActionAddAppointment(ActionEvent event) throws Exception {
 
         try {
 
+            //check for fields left blank
             if (appointmentTitleTxt.getText().isEmpty()) {
                 Alert alert = new Alert((Alert.AlertType.ERROR));
                 alert.setTitle("Error");
@@ -120,13 +133,6 @@ public class AddAppointmentController implements Initializable {
                 alert.setContentText("Contact cannot be left blank. Please select a value.");
                 alert.showAndWait();
             }
-            //don't need to do contact twice
-            /*if (DBAContact.getContactIdFromName(appointmentContactNameComboBx.getValue()) == 0) {
-                Alert alert = new Alert((Alert.AlertType.ERROR));
-                alert.setTitle("Error");
-                alert.setContentText("Contact cannot be left blank. Please select a value.");
-                alert.showAndWait();
-            }*/
             if (apptDatePicker.getValue() == null) {
                 Alert alert = new Alert((Alert.AlertType.ERROR));
                 alert.setTitle("Error");
@@ -174,12 +180,9 @@ public class AddAppointmentController implements Initializable {
             String lastUpdatedBy = UserLoginSession.getUserLoggedIn().getUserName();
             String createdBy = UserLoginSession.getUserLoggedIn().getUserName();
 
-            //int apptCustomerId = 0;
             int apptCustomerId = DBACustomer.getCustomerIdFromName(appointmentCustomerNameComboBx.getValue());
-            //int apptUserId = 0;
             int apptUserId = DBAUser.getUserIdFromName(appointmentUserNameComboBx.getValue());
             String apptContactName = appointmentContactNameComboBx.getValue();
-            //int apptContactId = 0;
             int apptContactId = DBAContact.getContactIdFromName(apptContactName);
 
             //set business hours to check against input
@@ -189,7 +192,6 @@ public class AddAppointmentController implements Initializable {
             int apptID = 0; //0 bc adding new appointment there is not yet an appt id
 
             //input validation check for blank fields
-
 
 
             //time validation
@@ -205,6 +207,7 @@ public class AddAppointmentController implements Initializable {
                 alert.setContentText("Please ensure appointment is scheduled within business hours listed on form.\n");
                 alert.showAndWait();
             }
+            //add appointment if everything else checks out
             else {
                 DBAAppointment.addAppointment(apptTitle, apptDescription, apptLocation, apptType, apptStart, apptEnd, createdBy, lastUpdatedBy, apptCustomerId, apptUserId, apptContactId);
 
@@ -221,23 +224,19 @@ public class AddAppointmentController implements Initializable {
                 stage.show();
             }
 
-
-            //back to customer view after update
-
-
         } catch (DateTimeParseException throwables){
             Alert alert = new Alert((Alert.AlertType.ERROR));
             alert.setTitle("Error");
             alert.setContentText("Could not add appointment. Please ensure no fields are left blank.");
             alert.showAndWait();
-            //return;
+
         }
     }
 
     /**
-     *
-     * @param event the event of clicking on the cancel button to return to the appointment view screen
-     * @throws Exception exception
+     * The method to exit the Add form and return to the Appointment View
+     * @param event The event of clicking on the Cancel button.
+     * @throws Exception
      */
     @FXML
     void onActionCancelToAppointmentView(ActionEvent event) throws Exception {
@@ -249,11 +248,14 @@ public class AddAppointmentController implements Initializable {
         stage.show();
     }
 
+    /**
+     * The method for disabling days in the past from being selected for a new appointment.
+     * @return The update for disabled days
+     */
     private javafx.util.Callback<DatePicker, DateCell> getDayCellFactory() {
 
         return new Callback<>() {
 
-            //@Override
             public DateCell call(final DatePicker datePicker) {
                 return new DateCell() {
                     @Override

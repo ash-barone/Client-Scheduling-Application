@@ -16,11 +16,17 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import model.Appointment;
 import java.net.URL;
+import java.sql.SQLException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ResourceBundle;
 
+/**
+ * This class is the controller for the Update Appointment screen. Included are methods that allow attempts to update a selected appointment to the connected database that has been passed from the Appointment View screen.
+ * Navigation for exit to form back to the Appointment View is included as well.
+ *
+ */
 public class UpdateAppointmentController implements Initializable {
 
     @FXML
@@ -59,6 +65,12 @@ public class UpdateAppointmentController implements Initializable {
     @FXML
     private Label userTimeZoneLbl;
 
+    /**
+     * The initialize method changes a label on screen to display the user's time zone for reference when setting appointment times.
+     * This method sets available dates within the Date Picker.
+     * @param url The url
+     * @param resourceBundle The resource bundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -69,30 +81,17 @@ public class UpdateAppointmentController implements Initializable {
     }
 
     /**
-     *
-     * @param event the event of clicking on the cancel button to return to the appointment view screen
-     * @throws Exception exceptions
-     */
-    @FXML
-    void onActionCancelToAppointmentView(ActionEvent event) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/view/AppointmentView.fxml"));
-        Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setTitle("Appointment View");
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    /**
-     *
-     * @param event the event of clicking on the update appointment button to update the appointment in the db then go back to the appointment view screen
-     * @throws Exception exceptions
+     * This method allows an attempt to update an appointment to the database. There are custom error messages provided for any fields left blank as well as custom error messages for scheduling issues such as failure to follow business hours or scheduling an overlapping appointment for a customer.
+     * On a success, the application will change back to the Appointment View screen.
+     * @param event The event of clicking the Add button.
+     * @throws Exception
      */
     @FXML
     void onActionUpdateAppointment(ActionEvent event) throws Exception {
 
         try {
 
+            //check for blank fields
             if (appointmentTitleTxt.getText().isEmpty()) {
                 Alert alert = new Alert((Alert.AlertType.ERROR));
                 alert.setTitle("Error");
@@ -135,13 +134,6 @@ public class UpdateAppointmentController implements Initializable {
                 alert.setContentText("Contact cannot be left blank. Please select a value.");
                 alert.showAndWait();
             }
-            //don't need to do contact twice
-            /*if (DBAContact.getContactIdFromName(appointmentContactNameComboBx.getValue()) == 0) {
-                Alert alert = new Alert((Alert.AlertType.ERROR));
-                alert.setTitle("Error");
-                alert.setContentText("Contact cannot be left blank. Please select a value.");
-                alert.showAndWait();
-            }*/
             if (apptDatePicker.getValue() == null) {
                 Alert alert = new Alert((Alert.AlertType.ERROR));
                 alert.setTitle("Error");
@@ -178,13 +170,10 @@ public class UpdateAppointmentController implements Initializable {
             String lastUpdatedBy = UserLoginSession.getUserLoggedIn().getUserName();
 
 
-            int apptCustomerId = 0;
-            apptCustomerId = DBACustomer.getCustomerIdFromName(appointmentCustomerNameComboBx.getValue());
-            int apptUserId = 0;
-            apptUserId = DBAUser.getUserIdFromName(appointmentUserNameComboBx.getValue());
-            String apptContactName = appointmentContactNameComboBx.getValue();
-            int apptContactId = 0;
-            apptContactId = DBAContact.getContactIdFromName(appointmentContactNameComboBx.getValue());
+            int apptCustomerId = DBACustomer.getCustomerIdFromName(appointmentCustomerNameComboBx.getValue());
+            int apptUserId = DBAUser.getUserIdFromName(appointmentUserNameComboBx.getValue());
+            //String apptContactName = appointmentContactNameComboBx.getValue();
+            int apptContactId = DBAContact.getContactIdFromName(appointmentContactNameComboBx.getValue());
 
             //set business hours to check against input
             ZonedDateTime businessStartTime = ZonedDateTime.of(apptDatePicker.getValue(), LocalTime.of(8,0), ZoneId.of("America/New_York"));
@@ -203,6 +192,7 @@ public class UpdateAppointmentController implements Initializable {
                 alert.setContentText("Please ensure appointment is scheduled within business hours listed on form.\n");
                 alert.showAndWait();
             }
+            //update appointment if all else checks out
             else {
                 DBAAppointment.updateAppointment(apptTitle, apptDescription, apptLocation, apptType, apptStart, apptEnd, lastUpdatedBy, apptCustomerId, apptUserId, apptContactId, apptId);
 
@@ -219,20 +209,35 @@ public class UpdateAppointmentController implements Initializable {
                 stage.show();
             }
 
-
-            //back to customer view after update
-
-
         } catch (DateTimeParseException throwables){
             Alert alert = new Alert((Alert.AlertType.ERROR));
             alert.setTitle("Error");
             alert.setContentText("Could not update appointment. Please ensure no fields are left blank.");
             alert.showAndWait();
-            //return;
 
         }
     }
 
+    /**
+     * The method to exit the Update form and return to the Appointment View
+     * @param event The event of clicking on the Cancel button.
+     * @throws Exception
+     */
+    @FXML
+    void onActionCancelToAppointmentView(ActionEvent event) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/view/AppointmentView.fxml"));
+        Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setTitle("Appointment View");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    /**
+     * The Send Appointment method is used to set the text fields, date picker, and combo boxes to values taken from an appointment selected on the Appointment View.
+     * @param appointment The appointment selected for update.
+     * @throws SQLException The exception for SQL statement errors.
+     */
     public void sendAppointment (Appointment appointment) {
 
         //set temp part to be passed for removal upon saving
@@ -279,6 +284,10 @@ public class UpdateAppointmentController implements Initializable {
         }
     }
 
+    /**
+     * The method for disabling days in the past from being selected for an existing appointment.
+     * @return The update for disabled days
+     */
     private javafx.util.Callback<DatePicker, DateCell> getDayCellFactory() {
 
         return new Callback<>() {

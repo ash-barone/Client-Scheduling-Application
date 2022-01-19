@@ -16,6 +16,10 @@ import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * This class is the controller for the Log-in Screen. Included is a method to attempt log-in when clicking the log-in button.
+ * This class utilizes the UserLoginSession class.
+ */
 public class LoginScreenController implements Initializable {
 
     @FXML
@@ -39,6 +43,12 @@ public class LoginScreenController implements Initializable {
     @FXML
     private Label welcomeLbl;
 
+    /**
+     * Initialize method for setting language resource bundle based on the user's computer's setting.
+     * Will choose French or English depending on local machine settings.
+     * @param url The url
+     * @param resourceBundle The resource bundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //testing
@@ -61,9 +71,11 @@ public class LoginScreenController implements Initializable {
     }
 
     /**
-     * Lambda expression used in place of a for loop to go through each appointment in the appointments in 15 minutes list to display and alert for each appointment occuring in the next 15 minutes for that logged in user
-     * @param event the event of clicking the sign-in button to attempt a log-in and write the attempt to login_activity.txt
-     * @throws Exception exception
+     * Method to attempt user log-in using the text in the username and password fields.
+     * Lambda expression used in place of a for loop to go through each appointment in the appointments in 15 minutes list to display and alert for each appointment assigned to the successfully logged-in user in the next 15 minutes.
+     * PrintWriter used for each log-in attempt to store attempt in login_activity.txt.
+     * @param event The event of clicking the sign-in button.
+     * @throws Exception
      */
     @FXML
     void onActionAttemptLogin(ActionEvent event) throws Exception {
@@ -76,6 +88,7 @@ public class LoginScreenController implements Initializable {
         UserLoginSession.logUserActivity(successfulLogin, username);
         //test
         // System.out.println("user: " + username + " " + "pass: " + pass);
+
         if (successfulLogin) {
 
             ObservableList<Appointment> appointmentsIn15 = DBAAppointment.getAppointmentsIn15Minutes();
