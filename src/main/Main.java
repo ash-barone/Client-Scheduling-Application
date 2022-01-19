@@ -1,7 +1,6 @@
 package main;
 
-import DBAccess.*;
-import Utility.UserLoginSession;
+import dbaccess.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -9,11 +8,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 public class Main extends Application {
 
@@ -38,13 +32,13 @@ public class Main extends Application {
      */
     public static void main(String[] args) throws SQLException {
         //start connection
-        JDBC.openConnection();
+        JDBCAccess.openConnection();
 
         //launch args
         launch(args);
 
         //close database
-        JDBC.closeConnection();
+        JDBCAccess.closeConnection();
 
     }
 }

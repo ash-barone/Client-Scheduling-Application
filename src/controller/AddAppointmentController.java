@@ -1,10 +1,10 @@
 package controller;
 
-import DBAccess.DBAAppointment;
-import DBAccess.DBAContact;
-import DBAccess.DBACustomer;
-import DBAccess.DBAUser;
-import Utility.UserLoginSession;
+import dbaccess.DBAAppointment;
+import dbaccess.DBAContact;
+import dbaccess.DBACustomer;
+import dbaccess.DBAUser;
+import utility.UserLoginSession;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -74,6 +74,74 @@ public class AddAppointmentController implements Initializable {
 
         try {
 
+            if (appointmentTitleTxt.getText().isEmpty()) {
+                Alert alert = new Alert((Alert.AlertType.ERROR));
+                alert.setTitle("Error");
+                alert.setContentText("Title cannot be left blank. Please fill in a value.");
+                alert.showAndWait();
+            }
+            if (appointmentDescriptionTxt.getText().isEmpty()) {
+                Alert alert = new Alert((Alert.AlertType.ERROR));
+                alert.setTitle("Error");
+                alert.setContentText("Description cannot be left blank. Please fill in a value.");
+                alert.showAndWait();
+            }
+            if (appointmentLocationTxt.getText().isEmpty()) {
+                Alert alert = new Alert((Alert.AlertType.ERROR));
+                alert.setTitle("Error");
+                alert.setContentText("Location cannot be left blank. Please fill in a value.");
+                alert.showAndWait();
+            }
+            if (appointmentTypeComboBx.getValue() == null) {
+                Alert alert = new Alert((Alert.AlertType.ERROR));
+                alert.setTitle("Error");
+                alert.setContentText("Type cannot be left blank. Please select a value.");
+                alert.showAndWait();
+            }
+            if (DBACustomer.getCustomerIdFromName(appointmentCustomerNameComboBx.getValue()) == 0) {
+                Alert alert = new Alert((Alert.AlertType.ERROR));
+                alert.setTitle("Error");
+                alert.setContentText("Customer cannot be left blank. Please select a value.");
+                alert.showAndWait();
+            }
+            if (DBAUser.getUserIdFromName(appointmentUserNameComboBx.getValue()) == 0) {
+                Alert alert = new Alert((Alert.AlertType.ERROR));
+                alert.setTitle("Error");
+                alert.setContentText("User cannot be left blank. Please select a value.");
+                alert.showAndWait();
+            }
+            if (appointmentContactNameComboBx.getValue() == null) {
+                Alert alert = new Alert((Alert.AlertType.ERROR));
+                alert.setTitle("Error");
+                alert.setContentText("Contact cannot be left blank. Please select a value.");
+                alert.showAndWait();
+            }
+            //don't need to do contact twice
+            /*if (DBAContact.getContactIdFromName(appointmentContactNameComboBx.getValue()) == 0) {
+                Alert alert = new Alert((Alert.AlertType.ERROR));
+                alert.setTitle("Error");
+                alert.setContentText("Contact cannot be left blank. Please select a value.");
+                alert.showAndWait();
+            }*/
+            if (apptDatePicker.getValue() == null) {
+                Alert alert = new Alert((Alert.AlertType.ERROR));
+                alert.setTitle("Error");
+                alert.setContentText("Appointment Date cannot be left blank. Please select a value.");
+                alert.showAndWait();
+            }
+            if (apptStartTimeTxt.getText().isEmpty()) {
+                Alert alert = new Alert((Alert.AlertType.ERROR));
+                alert.setTitle("Error");
+                alert.setContentText("Start Time cannot be left blank. Please fill in a value.");
+                alert.showAndWait();
+            }
+            if (apptEndTimeTxt.getText().isEmpty()) {
+                Alert alert = new Alert((Alert.AlertType.ERROR));
+                alert.setTitle("Error");
+                alert.setContentText("End Time cannot be left blank. Please fill in a value.");
+                alert.showAndWait();
+            }
+
             String apptTitle = appointmentTitleTxt.getText();
             String apptDescription = appointmentDescriptionTxt.getText();
             String apptLocation = appointmentLocationTxt.getText();
@@ -116,6 +184,11 @@ public class AddAppointmentController implements Initializable {
 
             int apptID = 0; //0 bc adding new appointment there is not yet an appt id
 
+            //input validation check for blank fields
+
+
+
+            //time validation
             if (!DBAAppointment.checkForOverlappingCustomerAppointments(apptID, apptCustomerId, apptDate, apptStartUser, apptEndUser)) {
                 Alert alert = new Alert((Alert.AlertType.ERROR));
                 alert.setTitle("Error");
@@ -126,12 +199,6 @@ public class AddAppointmentController implements Initializable {
                 Alert alert = new Alert((Alert.AlertType.ERROR));
                 alert.setTitle("Error");
                 alert.setContentText("Please ensure appointment is scheduled within business hours listed on form.\n");
-                alert.showAndWait();
-            }
-            else if (apptTitle.isEmpty() || apptDescription.isEmpty() || apptLocation.isEmpty() || apptType == null || apptCustomerId == 0 || apptUserId == 0 || apptContactName == null || apptContactId == 0){
-                Alert alert = new Alert((Alert.AlertType.ERROR));
-                alert.setTitle("Error");
-                alert.setContentText("Please ensure all values are correct.");
                 alert.showAndWait();
             }
             else {
@@ -155,10 +222,9 @@ public class AddAppointmentController implements Initializable {
 
 
         } catch (DateTimeParseException throwables){
-
             Alert alert = new Alert((Alert.AlertType.ERROR));
             alert.setTitle("Error");
-            alert.setContentText("Could not add appointment. Ensure all values are correct.");
+            alert.setContentText("Could not add appointment. Please ensure no fields are left blank.");
             alert.showAndWait();
             //return;
         }
@@ -191,7 +257,7 @@ public class AddAppointmentController implements Initializable {
                         super.updateItem(theDay, blank);
 
                         LocalDate today = LocalDate.now();
-                        if (theDay.getDayOfWeek() == DayOfWeek.SATURDAY || theDay.getDayOfWeek() == DayOfWeek.SUNDAY || theDay.compareTo(today) < 0) {
+                        if (theDay.compareTo(today) < 0) {
                             setDisable(true);
                             setStyle("-fx-background-color: #c2bff8;");
                         }
@@ -200,6 +266,5 @@ public class AddAppointmentController implements Initializable {
             }
         };
     }
-
 }
 

@@ -1,6 +1,6 @@
 package controller;
 
-import DBAccess.DBACustomer;
+import dbaccess.DBACustomer;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -85,10 +85,40 @@ public class UpdateCustomerController implements Initializable {
             String customerCountry = customerCountryComboBx.getValue();
             String customerDivision = customerDivisionComboBox.getValue();
 
-            if (customerName.isEmpty() || customerAddress.isEmpty() || customerPostalCode.isEmpty() || customerPhoneNumber.isEmpty() || customerCountry == null|| customerDivision == null) {
+            if (customerName.isEmpty()) {
                 Alert alert = new Alert((Alert.AlertType.ERROR));
                 alert.setTitle("Error");
-                alert.setContentText("Please ensure all values are correct.");
+                alert.setContentText("Customer Name cannot be left blank. Please fill in a value.");
+                alert.showAndWait();
+            }
+            if (customerAddress.isEmpty()) {
+                Alert alert = new Alert((Alert.AlertType.ERROR));
+                alert.setTitle("Error");
+                alert.setContentText("Customer Address cannot be left blank. Please fill in a value.");
+                alert.showAndWait();
+            }
+            if (customerPostalCode.isEmpty()) {
+                Alert alert = new Alert((Alert.AlertType.ERROR));
+                alert.setTitle("Error");
+                alert.setContentText("Customer Postal Code cannot be left blank. Please fill in a value.");
+                alert.showAndWait();
+            }
+            if (customerPhoneNumber.isEmpty()) {
+                Alert alert = new Alert((Alert.AlertType.ERROR));
+                alert.setTitle("Error");
+                alert.setContentText("Customer Phone Number cannot be left blank. Please fill in a value.");
+                alert.showAndWait();
+            }
+            if (customerCountry == null) {
+                Alert alert = new Alert((Alert.AlertType.ERROR));
+                alert.setTitle("Error");
+                alert.setContentText("Customer Country cannot be left blank. Please select a value.");
+                alert.showAndWait();
+            }
+            if (customerDivision == null) {
+                Alert alert = new Alert((Alert.AlertType.ERROR));
+                alert.setTitle("Error");
+                alert.setContentText("Customer Division cannot be left blank. Please select a value.");
                 alert.showAndWait();
             }
             else {

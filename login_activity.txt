@@ -57,3 +57,32 @@ Attempted Log-in By User: test :: Time: 2022-01-18T23:13:06.219654400Z UTC :: Su
 Attempted Log-in By User: test :: Time: 2022-01-18T23:24:04.723720800Z UTC :: Successful: true
 Attempted Log-in By User: test :: Time: 2022-01-18T23:26:06.864868500Z UTC :: Successful: true
 Attempted Log-in By User: test :: Time: 2022-01-18T23:28:21.509521200Z UTC :: Successful: true
+Attempted Log-in By User: NO USERNAME ENTERED :: Time: 2022-01-18T23:35:55.463447200Z UTC :: Successful: false
+Attempted Log-in By User: test :: Time: 2022-01-18T23:36:57.980459300Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-18T23:42:44.025384500Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-18T23:57:25.634226300Z UTC :: Successful: true
+Attempted Log-in By User: NO USERNAME ENTERED :: Time: 2022-01-19T00:30:02.215320200Z UTC :: Successful: false
+Attempted Log-in By User: test :: Time: 2022-01-19T00:30:06.887671800Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-19T00:33:31.056138700Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-19T00:43:50.448161200Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-19T01:12:56.283963700Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-19T01:14:08.293162200Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-19T01:15:48.049169200Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-19T01:19:46.333449300Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-19T01:28:50.398183500Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-19T01:29:19.715898100Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-19T01:31:59.250985Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-19T01:33:10.613530400Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-19T01:33:47.590463600Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-19T01:57:10.319516400Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-19T01:59:31.221314300Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-19T02:06:25.061555Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-19T02:08:26.729240Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-19T02:34:25.198092Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-19T02:35:51.234677Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-19T02:36:48.271658800Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-19T02:39:55.090606700Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-19T02:43:00.003561200Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-19T02:45:02.454098200Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-19T02:53:26.440805500Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-19T02:54:41.841708Z UTC :: Successful: true

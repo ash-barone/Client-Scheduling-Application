@@ -1,4 +1,4 @@
-package DBAccess;
+package dbaccess;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,7 +20,7 @@ public class DBAUser {
         try {
             String sql = "SELECT User_ID from users";
 
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBCAccess.getConnection().prepareStatement(sql);
 
             ResultSet rs = ps.executeQuery();
 
@@ -53,7 +53,7 @@ public class DBAUser {
         try {
             String sql = "SELECT User_Name FROM users WHERE User_ID = ?";
 
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBCAccess.getConnection().prepareStatement(sql);
 
             ps.setInt(1, userId);
 
@@ -82,7 +82,7 @@ public class DBAUser {
         try {
             String sql = "SELECT User_Name from users";
 
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBCAccess.getConnection().prepareStatement(sql);
 
             ResultSet rs = ps.executeQuery();
 
@@ -118,7 +118,7 @@ public class DBAUser {
 
             String sql = "SELECT User_ID FROM users WHERE User_Name = ?";
 
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBCAccess.getConnection().prepareStatement(sql);
 
             ps.setString(1, username);
 

@@ -23,17 +23,17 @@
             <Insets />
         </opaqueInsets>
     </TableView>
-        <Button fx:id="updateSelectedCustomerBtn" layoutX="394.0" layoutY="336.0" mnemonicParsing="false" onAction="#onActionToUpdateCustomerScreen" prefHeight="40.0" prefWidth="343.0" style="-fx-background-color: #83aaf0; -fx-text-fill: #1b1e23;" text="Update Customer">
+        <Button fx:id="updateSelectedCustomerBtn" layoutX="392.0" layoutY="279.0" mnemonicParsing="false" onAction="#onActionToUpdateCustomerScreen" prefHeight="40.0" prefWidth="343.0" style="-fx-background-color: #83aaf0; -fx-text-fill: #1b1e23;" text="Update Customer">
             <font>
                 <Font size="16.0" />
             </font>
         </Button>
-        <Button fx:id="deleteCustomerBtn" layoutX="17.0" layoutY="336.0" mnemonicParsing="false" onAction="#onActionDeleteSelectedCustomer" prefHeight="40.0" prefWidth="343.0" style="-fx-background-color: #83aaf0; -fx-text-fill: #1b1e23;" text="Delete Customer">
+        <Button fx:id="deleteCustomerBtn" layoutX="392.0" layoutY="334.0" mnemonicParsing="false" onAction="#onActionDeleteSelectedCustomer" prefHeight="40.0" prefWidth="343.0" style="-fx-background-color: #83aaf0; -fx-text-fill: #1b1e23;" text="Delete Customer">
             <font>
                 <Font size="16.0" />
             </font>
         </Button>
-        <Button fx:id="deleteAllAppointmentForCustomerBtn" layoutX="17.0" layoutY="279.0" mnemonicParsing="false" onAction="#onActionDeleteAllAppointmentsForSelectedCustomer" prefHeight="40.0" prefWidth="343.0" style="-fx-background-color: #83aaf0; -fx-text-fill: #1b1e23;" text="Cancel All Selected Customer Appointments">
+        <Button fx:id="deleteAllAppointmentForCustomerBtn" layoutX="27.0" layoutY="334.0" mnemonicParsing="false" onAction="#onActionDeleteAllAppointmentsForSelectedCustomer" prefHeight="40.0" prefWidth="343.0" style="-fx-background-color: #83aaf0; -fx-text-fill: #1b1e23;" text="Cancel All Selected Customer Appointments">
          <font>
             <Font size="16.0" />
          </font>
@@ -48,7 +48,7 @@
                 <Font size="24.0" />
             </font>
         </Label>
-      <Button fx:id="addNewCustomerBtn" layoutX="394.0" layoutY="279.0" mnemonicParsing="false" onAction="#onActionToAddCustomerScreen" prefHeight="40.0" prefWidth="343.0" style="-fx-background-color: #83aaf0; -fx-text-fill: #1b1e23;" text="Add New Customer">
+      <Button fx:id="addNewCustomerBtn" layoutX="27.0" layoutY="279.0" mnemonicParsing="false" onAction="#onActionToAddCustomerScreen" prefHeight="40.0" prefWidth="343.0" style="-fx-background-color: #83aaf0; -fx-text-fill: #1b1e23;" text="Add New Customer">
          <font>
             <Font size="16.0" />
          </font>

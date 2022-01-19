@@ -1,6 +1,6 @@
 package controller;
 
-import DBAccess.DBAAppointment;
+import dbaccess.DBAAppointment;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,7 +13,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointment;
 import java.net.URL;
-import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.ResourceBundle;

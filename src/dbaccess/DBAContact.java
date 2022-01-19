@@ -1,4 +1,4 @@
-package DBAccess;
+package dbaccess;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,7 +22,7 @@ public class DBAContact {
             //sql statement to get contact names
             String sql = "SELECT Contact_Name from contacts";
 
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBCAccess.getConnection().prepareStatement(sql);
 
             ResultSet rs = ps.executeQuery();
 
@@ -53,7 +53,7 @@ public class DBAContact {
             //sql statement to get contact id from name
             String sql = "SELECT Contact_ID FROM contacts WHERE Contact_Name = ?";
 
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBCAccess.getConnection().prepareStatement(sql);
 
             ps.setString(1, contactName);
 
@@ -85,7 +85,7 @@ public class DBAContact {
             //sql statement to get contact name from id
             String sql = "SELECT Contact_Name FROM contacts WHERE Contact_ID = ?";
 
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBCAccess.getConnection().prepareStatement(sql);
 
             ps.setInt(1, contactId);
 
@@ -120,7 +120,7 @@ public class DBAContact {
             //sql statement to select appts for specific contact
             String sql = "SELECT * FROM appointments WHERE Contact_ID = ?";
 
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBCAccess.getConnection().prepareStatement(sql);
 
             ps.setInt(1, contactID);
 

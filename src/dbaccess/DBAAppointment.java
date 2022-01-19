@@ -1,6 +1,6 @@
-package DBAccess;
+package dbaccess;
 
-import Utility.UserLoginSession;
+import utility.UserLoginSession;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Appointment;
@@ -32,7 +32,7 @@ public class DBAAppointment {
             //sql statement to get all appts
             String sql = "SELECT * from appointments JOIN contacts ON appointments.Contact_ID = contacts.Contact_ID";
 
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBCAccess.getConnection().prepareStatement(sql);
 
             ResultSet rs = ps.executeQuery();
 
@@ -86,7 +86,7 @@ public class DBAAppointment {
             //sql statement to update appt
             String sql = "UPDATE appointments SET Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Last_Update = ?, Last_Updated_By = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ? WHERE Appointment_ID = ?";
 
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBCAccess.getConnection().prepareStatement(sql);
 
             ps.setString(1, apptTitle);
             ps.setString(2, apptDescription);
@@ -138,7 +138,7 @@ public class DBAAppointment {
             //sql statement to add new appt
             String sql = "INSERT INTO appointments (Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBCAccess.getConnection().prepareStatement(sql);
 
             ps.setString(1, apptTitle);
             ps.setString(2, apptDescription);
@@ -177,7 +177,7 @@ public class DBAAppointment {
             //sql statement to delete appts for specific customer id
             String sql = "DELETE FROM appointments WHERE Customer_ID = ?";
 
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBCAccess.getConnection().prepareStatement(sql);
 
             ps.setInt(1, customerID);
 
@@ -203,7 +203,7 @@ public class DBAAppointment {
             //sql statement for deleting appt
             String sql = "DELETE FROM appointments WHERE Appointment_ID = ?";
 
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBCAccess.getConnection().prepareStatement(sql);
 
             ps.setInt(1, apptID);
 
@@ -249,7 +249,7 @@ public class DBAAppointment {
             //sql statement to select appointments within a 15 minutes range
             String sql = "SELECT * FROM appointments JOIN contacts ON appointments.Contact_ID = contacts.Contact_ID WHERE User_ID = ? AND Start BETWEEN ? AND ?";
 
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBCAccess.getConnection().prepareStatement(sql);
 
             ps.setInt(1, userID);
             ps.setString(2, start);
@@ -300,7 +300,7 @@ public class DBAAppointment {
             //sql statement to select appts within a date range for diff tableviews
             String sql = "SELECT * FROM appointments JOIN contacts ON appointments.Contact_ID = contacts.Contact_ID WHERE YEAR(Start) = YEAR(CURDATE()) AND MONTH(Start) = MONTH(CURDATE()) AND WEEK(Start) = WEEK(CURDATE());";
 
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBCAccess.getConnection().prepareStatement(sql);
 
             //ps.setString(1, String.valueOf(start));
             //ps.setString(2, String.valueOf(end));
@@ -347,7 +347,7 @@ public class DBAAppointment {
             //sql statement to select appts within a date range for diff tableviews
             String sql = "SELECT * FROM appointments JOIN contacts ON appointments.Contact_ID = contacts.Contact_ID WHERE YEAR(Start) = YEAR(CURDATE()) AND MONTH(Start) = MONTH(CURDATE())";//Start BETWEEN ? AND ?";
 
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBCAccess.getConnection().prepareStatement(sql);
 
             ResultSet rs = ps.executeQuery();
 
@@ -390,7 +390,7 @@ public class DBAAppointment {
         //sql statement to get all selected customer appts
         String sql = "SELECT * FROM appointments JOIN contacts ON appointments.Contact_ID = contacts.Contact_ID WHERE Customer_ID = ?";
 
-        PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+        PreparedStatement ps = JDBCAccess.getConnection().prepareStatement(sql);
 
         ps.setInt(1, customerID);
 
@@ -433,7 +433,7 @@ public class DBAAppointment {
         //sql statement for getting all selected customer appointments by date
         String sql = "SELECT * FROM appointments JOIN contacts ON appointments.Contact_ID = contacts.Contact_ID WHERE Customer_ID = ? AND DATEDIFF(appointments.Start, ?) = 0 AND appointments.Appointment_ID <> ?";
 
-        PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+        PreparedStatement ps = JDBCAccess.getConnection().prepareStatement(sql);
 
         ps.setInt(1, apptCustomerID);
         ps.setString(2, apptStartDate.toString());
@@ -503,7 +503,7 @@ public class DBAAppointment {
             //sql statement to get each distinct appt type for combo box
             String sql = "SELECT DISTINCT Type FROM appointments";
 
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBCAccess.getConnection().prepareStatement(sql);
 
             ResultSet rs = ps.executeQuery();
 
@@ -535,7 +535,7 @@ public class DBAAppointment {
             //sql statement for getting count of all appointments in each month // no longer needed because of report cleanup
             //String sql2 = "SELECT MONTHNAME(Start), COUNT(MONTH(Start)) FROM appointments GROUP BY MONTHNAME(Start)";
 
-            PreparedStatement psType = JDBC.getConnection().prepareStatement(sql);
+            PreparedStatement psType = JDBCAccess.getConnection().prepareStatement(sql);
 
             //PreparedStatement psMonth = JDBC.getConnection().prepareStatement(sql2);
 

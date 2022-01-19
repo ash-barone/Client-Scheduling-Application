@@ -1,8 +1,8 @@
 package controller;
 
-import DBAccess.DBAAppointment;
-import DBAccess.DBAContact;
-import DBAccess.DBACustomer;
+import dbaccess.DBAAppointment;
+import dbaccess.DBAContact;
+import dbaccess.DBACustomer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;

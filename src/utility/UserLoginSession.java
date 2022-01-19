@@ -1,9 +1,8 @@
-package Utility;
+package utility;
 
-import DBAccess.JDBC;
+import dbaccess.JDBCAccess;
 import model.User;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,7 +16,7 @@ import java.time.ZonedDateTime;
 import java.util.Locale;
 
 /**
- * user login utility used to manage logged-in user info like time zone, locale, and user id for CRUD operations
+ * Utility class to store information regarding current user log-in session.
  */
 public class UserLoginSession {
 
@@ -70,7 +69,7 @@ public class UserLoginSession {
             try {
                 String sql = "SELECT * FROM users WHERE User_Name = ? AND Password = ?";
 
-                PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+                PreparedStatement ps = JDBCAccess.getConnection().prepareStatement(sql);
 
                 ps.setString(1, username);
                 ps.setString(2, pass);

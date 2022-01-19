@@ -1,9 +1,8 @@
-package DBAccess;
+package dbaccess;
 
-import Utility.UserLoginSession;
+import utility.UserLoginSession;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Alert;
 import model.Customer;
 
 import java.sql.PreparedStatement;
@@ -31,7 +30,7 @@ public class DBACustomer {
             //sql statement to get all customers
             String sql = "SELECT * from customers JOIN first_level_divisions ON customers.Division_ID = first_level_divisions.Division_ID INNER JOIN countries ON first_level_divisions.Country_ID = countries.Country_ID";
 
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBCAccess.getConnection().prepareStatement(sql);
 
             ResultSet rs = ps.executeQuery();
 
@@ -76,7 +75,7 @@ public class DBACustomer {
             //sql statement to update customer row
             String sql = "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Last_Update = ?, Last_Updated_By = ?, Division_ID = ? WHERE Customer_ID = ?";
 
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBCAccess.getConnection().prepareStatement(sql);
 
             ps.setString(1, customerName);
             ps.setString(2, customerAddress);
@@ -111,7 +110,7 @@ public class DBACustomer {
             //sql statement to add customer row
             String sql = "INSERT INTO customers (Customer_Name, Address, Postal_Code, Phone, Create_date, Created_By, Last_Update, Last_Updated_By, Division_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBCAccess.getConnection().prepareStatement(sql);
 
             ps.setString(1, customerName);
             ps.setString(2, customerAddress);
@@ -146,7 +145,7 @@ public class DBACustomer {
         //sql statement for select distinct countries in countries table
         String sql = "SELECT DISTINCT Country FROM countries";
 
-        PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+        PreparedStatement ps = JDBCAccess.getConnection().prepareStatement(sql);
 
         ResultSet rs = ps.executeQuery();
 
@@ -177,7 +176,7 @@ public class DBACustomer {
             //sql statement to get all divisions for specific country
             String sql = "SELECT countries.Country, countries.Country_ID, first_level_divisions.Division, first_level_divisions.Division_ID FROM countries JOIN first_level_divisions ON countries.Country_ID = first_level_divisions.Country_ID WHERE countries.Country = ?";
 
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBCAccess.getConnection().prepareStatement(sql);
 
             ps.setString(1, countryName);
 
@@ -213,7 +212,7 @@ public class DBACustomer {
             //sql statement to select division id from a name
             String sql = "SELECT Division, Division_ID FROM first_level_divisions WHERE Division = ?";
 
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBCAccess.getConnection().prepareStatement(sql);
 
             ps.setString(1, division);
 
@@ -258,7 +257,7 @@ public class DBACustomer {
                 //sql statement to delete customer row
                 String sql = "DELETE FROM customers WHERE Customer_ID = ?";
 
-                PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+                PreparedStatement ps = JDBCAccess.getConnection().prepareStatement(sql);
 
                 ps.setInt(1, customerID);
 
@@ -289,7 +288,7 @@ public class DBACustomer {
             //sql statement to get all customer names
             String sql = "SELECT Customer_Name from customers";
 
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBCAccess.getConnection().prepareStatement(sql);
 
             ResultSet rs = ps.executeQuery();
 
@@ -326,7 +325,7 @@ public class DBACustomer {
             //sql statement to get customer name from id
             String sql = "SELECT Customer_Name FROM customers WHERE Customer_ID = ?";
 
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBCAccess.getConnection().prepareStatement(sql);
 
             ps.setInt(1, customerId);
 
@@ -357,7 +356,7 @@ public class DBACustomer {
             //sql statement to get customer id from name
             String sql = "SELECT Customer_ID FROM customers WHERE Customer_Name = ?";
 
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBCAccess.getConnection().prepareStatement(sql);
 
             ps.setString(1, apptCustomerName);
 
@@ -385,7 +384,7 @@ public class DBACustomer {
             //sql statement to get number of customers per distinct divisions
             String sql = "SELECT first_level_divisions.Division, COUNT(customers.Division_ID) FROM first_level_divisions JOIN customers ON first_level_divisions.Division_ID = customers.Division_ID GROUP BY customers.Division_ID;\n";
 
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBCAccess.getConnection().prepareStatement(sql);
 
             ResultSet rs = ps.executeQuery();
 

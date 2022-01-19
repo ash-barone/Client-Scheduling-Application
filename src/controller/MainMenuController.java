@@ -1,6 +1,6 @@
 package controller;
 
-import Utility.UserLoginSession;
+import utility.UserLoginSession;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,6 +25,8 @@ public class MainMenuController {
         stage.setTitle("Appointment View");
         stage.setScene(scene);
         stage.show();
+        stage.centerOnScreen();
+
     }
 
     /**
@@ -42,6 +44,8 @@ public class MainMenuController {
         stage.setTitle("Customer View");
         stage.setScene(scene);
         stage.show();
+        stage.centerOnScreen();
+
     }
 
     /**
@@ -58,6 +62,8 @@ public class MainMenuController {
         stage.setTitle("Report View");
         stage.setScene(scene);
         stage.show();
+        stage.centerOnScreen();
+
     }
 
     /**

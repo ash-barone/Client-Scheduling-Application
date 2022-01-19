@@ -1,7 +1,7 @@
 package controller;
 
-import DBAccess.DBAAppointment;
-import Utility.UserLoginSession;
+import dbaccess.DBAAppointment;
+import utility.UserLoginSession;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -43,7 +43,7 @@ public class LoginScreenController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //testing
         //set language
-        ResourceBundle rb = ResourceBundle.getBundle("Utility/languageproperties", Locale.getDefault());
+        ResourceBundle rb = ResourceBundle.getBundle("utility/languageproperties", Locale.getDefault());
 
         if (Locale.getDefault().getLanguage().equals("fr") || Locale.getDefault().getLanguage().equals("en")) {
             welcomeLbl.setText(rb.getString("Welcome!"));
@@ -110,7 +110,7 @@ public class LoginScreenController implements Initializable {
 
         } else {
 
-            ResourceBundle rb = ResourceBundle.getBundle(/*string is the rb prop file name*/ "Utility/languageproperties", Locale.getDefault());
+            ResourceBundle rb = ResourceBundle.getBundle(/*string is the rb prop file name*/ "utility/languageproperties", Locale.getDefault());
 
             if (Locale.getDefault().getLanguage().equals("fr") || Locale.getDefault().getLanguage().equals("en")) {
 
