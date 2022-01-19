@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="635.0" style="-fx-background-color: #bfd3f8;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddAppointmentController">
+<AnchorPane prefHeight="415.0" prefWidth="650.0" style="-fx-background-color: #bfd3f8;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddAppointmentController">
    <children>
       <Label layoutX="344.0" layoutY="139.0" style="-fx-text-fill: #1b1e23;" text="Contact Name:" />
       <Label layoutX="359.0" layoutY="103.0" style="-fx-text-fill: #1b1e23;" text="User Name:" />
@@ -21,7 +21,7 @@
       <Label layoutX="62.0" layoutY="139.0" style="-fx-text-fill: #1b1e23;" text="Description:" />
       <Label layoutX="98.0" layoutY="104.0" style="-fx-text-fill: #1b1e23;" text="Title:" />
       <Label layoutX="38.0" layoutY="69.0" style="-fx-text-fill: #1b1e23;" text="Appointment ID:" />
-      <Label layoutX="210.0" layoutY="14.0" style="-fx-text-fill: #1b1e23;" text="Add New Appointment">
+      <Label layoutX="223.0" layoutY="14.0" style="-fx-text-fill: #1b1e23;" text="Add New Appointment">
          <font>
             <Font size="20.0" />
          </font>
@@ -38,17 +38,16 @@
       <ComboBox fx:id="appointmentTypeComboBx" layoutX="138.0" layoutY="215.0" prefWidth="150.0" promptText="Type" style="-fx-text-fill: #1b1e23; -fx-background-color: #f6cce2;" />
       <Label layoutX="357.0" layoutY="316.0" style="-fx-text-fill: #1b1e23;" text="End Time:" />
       <DatePicker fx:id="apptDatePicker" layoutX="328.0" layoutY="268.0" promptText="Start Date" style="-fx-text-fill: #1b1e23;" />
-      <Button fx:id="addAppointmentBtn" layoutX="433.0" layoutY="361.0" mnemonicParsing="false" onAction="#onActionAddAppointment" style="-fx-background-color: #83aaf0; -fx-text-fill: #0a0f18;" text="Add Appointment" />
-      <Button fx:id="cancelBtn" layoutX="569.0" layoutY="361.0" mnemonicParsing="false" onAction="#onActionCancelToAppointmentView" style="-fx-background-color: #8783f0; -fx-text-fill: #0a0f18;" text="Cancel" />
+      <Button fx:id="addAppointmentBtn" layoutX="433.0" layoutY="374.0" mnemonicParsing="false" onAction="#onActionAddAppointment" style="-fx-background-color: #83aaf0; -fx-text-fill: #0a0f18;" text="Add Appointment" />
+      <Button fx:id="cancelBtn" layoutX="569.0" layoutY="374.0" mnemonicParsing="false" onAction="#onActionCancelToAppointmentView" style="-fx-background-color: #8783f0; -fx-text-fill: #0a0f18;" text="Cancel" />
       <TextField fx:id="appointmentIdTxt" editable="false" layoutX="139.0" layoutY="65.0" promptText="auto-gen ID" style="-fx-text-fill: #1b1e23;" />
       <TextField fx:id="apptEndTimeTxt" layoutX="422.0" layoutY="312.0" prefHeight="25.0" prefWidth="79.0" promptText="End Time" style="-fx-text-fill: #1b1e23;" />
       <TextField fx:id="apptStartTimeTxt" layoutX="258.0" layoutY="312.0" prefHeight="25.0" prefWidth="79.0" promptText="Start Time" style="-fx-text-fill: #1b1e23;" />
-      <Label layoutX="14.0" layoutY="365.0" style="-fx-text-fill: #0a0f18;" text="Appointment must be in 24hr time format! (HH:mm with leading zeros)" textFill="#000000d6" />
-      <Label layoutX="14.0" layoutY="306.0" style="-fx-text-fill: #0a0f18;" text="Business Hours:">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="14.0" layoutY="337.0" style="-fx-text-fill: #0a0f18;" text="08:00AM - 22:00PM EST" />
+      <Label layoutX="8.0" layoutY="387.0" style="-fx-text-fill: #0a0f18;" text="Appointment must be in 24hr time format! (HH:mm with leading zeros)" textFill="#000000d6" />
+      <Label layoutX="197.0" layoutY="341.0" style="-fx-text-fill: #0a0f18;" text="Business Hours:" />
+      <Label layoutX="288.0" layoutY="341.0" style="-fx-text-fill: #0a0f18;" text="08:00AM - 22:00PM America/NewYork" />
+      <Label layoutX="193.0" layoutY="366.0" style="-fx-text-fill: #0a0f18;" text="Your Time Zone: " />
+      <Label layoutX="8.0" layoutY="366.0" style="-fx-text-fill: #0a0f18;" text="Input times using your time zone!" />
+      <Label fx:id="userTimeZoneLbl" layoutX="290.0" layoutY="366.0" style="-fx-text-fill: #0a0f18;" text="UserTimeZone" />
    </children>
 </AnchorPane>

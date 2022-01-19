@@ -56,8 +56,13 @@ public class UpdateAppointmentController implements Initializable {
     @FXML
     private TextField apptStartTimeTxt;
 
+    @FXML
+    private Label userTimeZoneLbl;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        userTimeZoneLbl.setText(String.valueOf(UserLoginSession.getLoggedInUserTimeZone()));
 
         javafx.util.Callback<DatePicker, DateCell> dayCellFactory= this.getDayCellFactory();
         apptDatePicker.setDayCellFactory(dayCellFactory);

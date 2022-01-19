@@ -51,9 +51,13 @@ public class AddAppointmentController implements Initializable {
     @FXML
     private TextField apptStartTimeTxt;
 
+    @FXML
+    private Label userTimeZoneLbl;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        userTimeZoneLbl.setText(String.valueOf(UserLoginSession.getLoggedInUserTimeZone()));
 
         appointmentContactNameComboBx.setItems(DBAContact.getAllContactNames());
         appointmentTypeComboBx.setItems(DBAAppointment.getAllApptTypes());
