@@ -18,9 +18,7 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 /**
- * This class is the controller class for the Update Customer form. Inside are methods which allow population of customer data into specific fields as well as ability to update said customer.
- * Navigation back to Customer View is included as well as a method that is used on the Customer View Controller for sending a selected customer's data to the Update Customer form.
- *
+ * This class is the controller class for the Update Customer form. Inside are methods which allow population of customer data into specific fields as well as ability to update said customer. Navigation back to Customer View is included as well as a method that is used on the Customer View Controller for sending a selected customer's data to the Update Customer form.
  */
 public class UpdateCustomerController implements Initializable {
 
@@ -46,8 +44,7 @@ public class UpdateCustomerController implements Initializable {
     private ComboBox<String> customerDivisionComboBox;
 
     /**
-     * Initialize method used to set items for the Country and Division combo boxes.
-     * A Lambda expression is used to add a listener that sets Division combo box items based on Country combo box selection.
+     * ***LAMBDA EXPRESSION*** Initialize method used to set items for the Country and Division combo boxes. A Lambda expression is used to add a listener that sets Division combo box items based on Country combo box selection.
      * @param url The url
      * @param resourceBundle The resource bundle
      */
@@ -73,9 +70,7 @@ public class UpdateCustomerController implements Initializable {
     }
 
     /**
-     * Update customer method for saving any updates made on the form for the populated customer to the connected database when the Update button is clicked.
-     * Provides customer error messages for blank fields or issues updating the customer.
-     * When update is successful, the application returns to the Customer View screen.
+     * Update customer method for saving any updates made on the form for the populated customer to the connected database when the Update button is clicked. Provides customer error messages for blank fields or issues updating the customer. When update is successful, the application returns to the Customer View screen.
      * @param event The event of clicking on the Update button.
      */
     @FXML

@@ -23,9 +23,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ResourceBundle;
 
 /**
- * This class is the controller for the Update Appointment screen. Included are methods that allow attempts to update a selected appointment to the connected database that has been passed from the Appointment View screen.
- * Navigation for exit to form back to the Appointment View is included as well.
- *
+ * This class is the controller for the Update Appointment screen. Included are methods that allow attempts to update a selected appointment to the connected database that has been passed from the Appointment View screen. Navigation for exit to form back to the Appointment View is included as well.
  */
 public class UpdateAppointmentController implements Initializable {
 
@@ -66,8 +64,7 @@ public class UpdateAppointmentController implements Initializable {
     private Label userTimeZoneLbl;
 
     /**
-     * The initialize method changes a label on screen to display the user's time zone for reference when setting appointment times.
-     * This method sets available dates within the Date Picker.
+     * The initialize method changes a label on screen to display the user's time zone for reference when setting appointment times. This method sets available dates within the Date Picker.
      * @param url The url
      * @param resourceBundle The resource bundle
      */
@@ -81,10 +78,9 @@ public class UpdateAppointmentController implements Initializable {
     }
 
     /**
-     * This method allows an attempt to update an appointment to the database. There are custom error messages provided for any fields left blank as well as custom error messages for scheduling issues such as failure to follow business hours or scheduling an overlapping appointment for a customer.
-     * On a success, the application will change back to the Appointment View screen.
+     * This method allows an attempt to update an appointment to the database. There are custom error messages provided for any fields left blank as well as custom error messages for scheduling issues such as failure to follow business hours or scheduling an overlapping appointment for a customer. On a success, the application will change back to the Appointment View screen.
      * @param event The event of clicking the Add button.
-     * @throws Exception
+     * @throws Exception exception
      */
     @FXML
     void onActionUpdateAppointment(ActionEvent event) throws Exception {
@@ -221,7 +217,7 @@ public class UpdateAppointmentController implements Initializable {
     /**
      * The method to exit the Update form and return to the Appointment View
      * @param event The event of clicking on the Cancel button.
-     * @throws Exception
+     * @throws Exception exception
      */
     @FXML
     void onActionCancelToAppointmentView(ActionEvent event) throws Exception {
@@ -236,7 +232,6 @@ public class UpdateAppointmentController implements Initializable {
     /**
      * The Send Appointment method is used to set the text fields, date picker, and combo boxes to values taken from an appointment selected on the Appointment View.
      * @param appointment The appointment selected for update.
-     * @throws SQLException The exception for SQL statement errors.
      */
     public void sendAppointment (Appointment appointment) {
 

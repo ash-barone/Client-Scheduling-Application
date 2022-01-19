@@ -20,9 +20,7 @@ import java.util.ResourceBundle;
 
 
 /**
- * This class is the controller for the Customer View Screen. Included are methods that display customers in a table view.
- * Navigation to an add and update form is included as well as navigation back to the Main Menu.
- * Included also is a method for deleting a selected customer as well as all of that selected customer's appointments.
+ * This class is the controller for the Customer View Screen. Included are methods that display customers in a table view. Navigation to an add and update form is included as well as navigation back to the Main Menu. Included also is a method for deleting a selected customer as well as all of that selected customer's appointments.
  */
 public class CustomerViewController implements Initializable {
 
@@ -66,7 +64,7 @@ public class CustomerViewController implements Initializable {
     /**
      * Method for exiting the Customer View and returning to the Main Menu
      * @param event The event of clicking on the Back button.
-     * @throws Exception
+     * @throws Exception exception
      */
     @FXML
     void onActionBackToMainMenu(ActionEvent event) throws Exception {
@@ -80,10 +78,9 @@ public class CustomerViewController implements Initializable {
     }
 
     /**
-     * Method for deleting a customer that has been selected on the TableView. Gives user a confirmation message prompt.
-     * Gives an error if the selected customer has current appointments.
-     * Customer TableView will repopulate based on the deletion.
+     * Method for deleting a customer that has been selected on the TableView. Gives user a confirmation message prompt. Gives an error if the selected customer has current appointments. Customer TableView will repopulate based on the deletion.
      * @param event The event of clicking the Delete Customer button while having a customer selected.
+     * @throws SQLException exception
      */
     @FXML
     void onActionDeleteSelectedCustomer(ActionEvent event) throws SQLException {
@@ -129,8 +126,7 @@ public class CustomerViewController implements Initializable {
     }
 
     /**
-     * Method for deleting an appointment schedule for a customer that has been selected on the TableView. Gives user a confirmation message prompt.
-     * Appointment TableView will repopulate based on the deletion whenever the Appointment View screen is next accessed.
+     * Method for deleting an appointment schedule for a customer that has been selected on the TableView. Gives user a confirmation message prompt. Appointment TableView will repopulate based on the deletion whenever the Appointment View screen is next accessed.
      * @param event The event of clicking the Delete All Customer Appointments button while having a customer selected.
      */
     @FXML
@@ -183,7 +179,7 @@ public class CustomerViewController implements Initializable {
     /**
      * Method for navigating to the Add Customer Screen.
      * @param event The event of clicking the Add New Customer button.
-     * @throws Exception
+     * @throws Exception exception
      */
     @FXML
     void onActionToAddCustomerScreen(ActionEvent event) throws Exception {
@@ -196,10 +192,9 @@ public class CustomerViewController implements Initializable {
     }
 
     /**
-     * Method for navigating to the Update Customer Screen when a customer in the TableView is selected.
-     * Show error message for no selected customer.
+     * Method for navigating to the Update Customer Screen when a customer in the TableView is selected. Show error message for no selected customer.
      * @param event The event of clicking the Update Customer button.
-     * @throws Exception
+     * @throws Exception exception
      */
     @FXML
     void onActionToUpdateCustomerScreen(ActionEvent event) throws Exception {

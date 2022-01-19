@@ -22,9 +22,7 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 /**
- * This class is the controller class for the Add Customer form. Inside are methods which allow the user to add a new customer to the connected database.
- * Navigation back to Customer View is included as well.
- *
+ * This class is the controller class for the Add Customer form. Inside are methods which allow the user to add a new customer to the connected database. Navigation back to Customer View is included as well.
  */
 public class AddCustomerController implements Initializable {
 
@@ -47,8 +45,7 @@ public class AddCustomerController implements Initializable {
     private TextField customerPostalCodeTxt;
 
     /**
-     * The initialize method is used here to set the items for the Country combo box and the Division combo box.
-     * A Lambda Expression is used for adding a listener that changes the Division combo box items based on selection in the Country combo box.
+     * ***LAMBDA EXPRESSION*** The initialize method is used here to set the items for the Country combo box and the Division combo box. A Lambda Expression is used for adding a listener that changes the Division combo box items based on selection in the Country combo box.
      * @param url The url
      * @param resourceBundle The resource bundle
      */
@@ -84,11 +81,8 @@ public class AddCustomerController implements Initializable {
     }
 
     /**
-     * Add customer method for saving an added Customer to the connected database when the Add button is clicked.
-     * Provides customer error messages for blank fields or issues adding the customer.
-     * When add is successful, the application returns to the Customer View screen.
+     * Add customer method for saving an added Customer to the connected database when the Add button is clicked. Provides customer error messages for blank fields or issues adding the customer. When add is successful, the application returns to the Customer View screen.
      * @param event The event of clicking on the Add button.
-     * @throws Exception
      */
     @FXML
     void onActionAddCustomer(ActionEvent event) {

@@ -9,12 +9,15 @@ import javafx.stage.Stage;
 
 import java.sql.SQLException;
 
+/**
+ * This class is the main application class for running the application. This class runs the start arguments, starts and ends the connection to the db as needed, and opens the log-in screen when launched.
+ */
 public class Main extends Application {
 
     /**
      * start begins at the login screen
-     * @param stage
-     * @throws Exception
+     * @param stage the stage
+     * @throws Exception exception
      */
     @Override
     public void start(Stage stage) throws Exception {
@@ -28,7 +31,8 @@ public class Main extends Application {
 
     /**
      * connection to db starts and ends here
-     * @param args
+     * @param args the args
+     * @throws SQLException exception
      */
     public static void main(String[] args) throws SQLException {
         //start connection

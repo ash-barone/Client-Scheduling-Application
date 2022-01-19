@@ -13,13 +13,12 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * class for db access for customers
+ * This class is the Database Access management class for CRUD operations of customers. Included are methods to get specific lists of customers, add and update appointment, and get lists of specific data as required for operations.
  */
 public class DBACustomer {
 
     /**
-     * method to get all customer info from customer table in db
-     *
+     * Method to get all customer rows.
      * @return list of all customers
      */
     public static ObservableList<Customer> getAllCustomers() {
@@ -62,44 +61,13 @@ public class DBACustomer {
     }
 
     /**
-     * method to update customer on db table
-     *
-     * @return bool for whether it worked or not
-     */
-    public static boolean updateCustomer(String customerName, String customerAddress, String customerPostalCode, String customerPhoneNumber, String customerDivision, int customerID) {
-
-        try {
-            //set date pattern to match db table
-            DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-            //sql statement to update customer row
-            String sql = "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Last_Update = ?, Last_Updated_By = ?, Division_ID = ? WHERE Customer_ID = ?";
-
-            PreparedStatement ps = JDBCAccess.getConnection().prepareStatement(sql);
-
-            ps.setString(1, customerName);
-            ps.setString(2, customerAddress);
-            ps.setString(3, customerPostalCode);
-            ps.setString(4, customerPhoneNumber);
-            ps.setString(5, ZonedDateTime.now(ZoneOffset.UTC).format(dateTimeFormat));
-            ps.setString(6, UserLoginSession.getUserLoggedIn().getUserName());
-            ps.setInt(7, DBACustomer.getDivisionIDFromName(customerDivision));
-            ps.setInt(8, customerID);
-
-            ps.executeUpdate();
-
-            return true;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            return false;
-        }
-        //return true;
-    }
-
-    /**
-     * method to add customer to db table
-     *
-     * @return bool for if it worked
+     * Method to add customer row.
+     * @param customerName the customer name
+     * @param customerAddress the customer address
+     * @param customerPostalCode the customer postal code
+     * @param customerPhoneNumber the customer phone number
+     * @param customerDivisionId the customer division id
+     * @return bool for if it worked or not
      */
     public static boolean addCustomer(String customerName, String customerAddress, String customerPostalCode, String customerPhoneNumber, int customerDivisionId) {
 
@@ -130,13 +98,52 @@ public class DBACustomer {
             return false;
         }
 
-        //return true;
     }
 
     /**
-     * method to get all distinct countries
-     *
+     * Method to update customer row
+     * @param customerName the customer name
+     * @param customerAddress the customer address
+     * @param customerPostalCode the customer postal code
+     * @param customerPhoneNumber the customer phone number
+     * @param customerDivision the customer division
+     * @param customerID the customer id
+     * @return bool for whether it worked or not
+     */
+    public static boolean updateCustomer(String customerName, String customerAddress, String customerPostalCode, String customerPhoneNumber, String customerDivision, int customerID) {
+
+        try {
+            //set date pattern to match db table
+            DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+            //sql statement to update customer row
+            String sql = "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Last_Update = ?, Last_Updated_By = ?, Division_ID = ? WHERE Customer_ID = ?";
+
+            PreparedStatement ps = JDBCAccess.getConnection().prepareStatement(sql);
+
+            ps.setString(1, customerName);
+            ps.setString(2, customerAddress);
+            ps.setString(3, customerPostalCode);
+            ps.setString(4, customerPhoneNumber);
+            ps.setString(5, ZonedDateTime.now(ZoneOffset.UTC).format(dateTimeFormat));
+            ps.setString(6, UserLoginSession.getUserLoggedIn().getUserName());
+            ps.setInt(7, DBACustomer.getDivisionIDFromName(customerDivision));
+            ps.setInt(8, customerID);
+
+            ps.executeUpdate();
+
+            return true;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return false;
+        }
+
+    }
+
+    /**
+     * Method to get all distinct countries from the countries table for use in add update customer forms
      * @return list of all distinct countries
+     * @throws SQLException exception
      */
     public static ObservableList<String> getAllDistinctCountries() throws SQLException {
 
@@ -162,8 +169,8 @@ public class DBACustomer {
     }
 
     /**
-     * method to get divisions by country
-     *
+     * Method to get divisions by country for use in add and update customer forms.
+     * @param countryName the country name
      * @return list of divisions by country
      */
     public static ObservableList<String> getDivisionsByCountry(String countryName) {
@@ -198,8 +205,7 @@ public class DBACustomer {
     }
 
     /**
-     * method to get name of a division using the name input
-     *
+     * Method to get id of a division using the name.
      * @param division the name of the division
      * @return the division id
      * @throws SQLException exception
@@ -216,7 +222,6 @@ public class DBACustomer {
 
             ps.setString(1, division);
 
-            //int divisionId;
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -232,24 +237,14 @@ public class DBACustomer {
     }
 
     /**
-     * method to delete customer from db table
-     *
+     * Method to delete customer row.
+     * @param customerID the customer id
      * @return bool for if it worked
+     * @throws SQLException exception
      */
     public static boolean deleteCustomer(int customerID) throws SQLException {
 
-        //Boolean cannotDelete = true;
         boolean deleted;
-
-        /*if (!DBAAppointment.getAllSelectedCustomerAppointments(customerID).isEmpty()) {
-            Alert alert = new Alert((Alert.AlertType.WARNING));
-            alert.setTitle("Cannot delete customer");
-            alert.setContentText("Cannot delete a customer to has active appointments. \n Please delete all customer appointments first.");
-            alert.showAndWait();
-            deleted = false;
-        } else {
-            deleted = true;
-        }*/
 
         if (DBAAppointment.getAllSelectedCustomerAppointments(customerID).isEmpty()) {
 
@@ -269,17 +264,15 @@ public class DBACustomer {
                 throwables.printStackTrace();
                 deleted = false;
             }
-            //deleted = true;
         } else {
             deleted = false;
         }
-        //return true;
         return deleted;
     }
 
     /**
-     * method to get customer names for use in combo box
-     *
+     * Method to get all customer names for use in combo box
+     * @return list of all customer names
      */
     public static ObservableList<String> getAllCustomerNames() {
         ObservableList<String> allCustomerNamesList = FXCollections.observableArrayList();
@@ -312,14 +305,13 @@ public class DBACustomer {
     }
 
     /**
-     * method to get customer name from id for combo boxes
+     * Method to get customer name from id for use in combo boxes.
      * @param customerId the id of the customer
      * @return the customer name
      */
     public static String getCustomerNameFromId(int customerId) {
 
         String customerName = " ";
-        //int customerID;
 
         try {
             //sql statement to get customer name from id
@@ -333,7 +325,7 @@ public class DBACustomer {
 
             while (rs.next()) {
                 customerName = rs.getString("Customer_Name");
-                //customerID = rs.getInt("Customer_ID"); //for testing
+                //int customerID = rs.getInt("Customer_ID"); //for testing
 
             }
 
@@ -344,12 +336,11 @@ public class DBACustomer {
     }
 
     /**
-     * method to get customer id from name for storing
+     * Method to get customer id from name.
      * @param apptCustomerName the name of the customer
      * @return the customer id
      */
     public static Integer getCustomerIdFromName(String apptCustomerName) {
-        //String customerName = " ";
         int customerID = 0;
 
         try {
@@ -363,7 +354,7 @@ public class DBACustomer {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                //customerName = rs.getString("Customer_Name"); //for testing
+                //String customerName = rs.getString("Customer_Name"); //for testing
                 customerID = rs.getInt("Customer_ID");
 
             }
@@ -374,6 +365,10 @@ public class DBACustomer {
         return customerID;
     }
 
+    /**
+     * Method to get number of customers in each distinct division.
+     * @return list with count of customers in each division
+     */
     public static ObservableList<String> getAllCustomerCountByDivision() {
 
         ObservableList<String> customerCountByDivision = FXCollections.observableArrayList();

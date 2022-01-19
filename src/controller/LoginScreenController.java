@@ -17,8 +17,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
- * This class is the controller for the Log-in Screen. Included is a method to attempt log-in when clicking the log-in button.
- * This class utilizes the UserLoginSession class.
+ * This class is the controller for the Log-in Screen. Included is a method to attempt log-in when clicking the log-in button. This class utilizes the UserLoginSession class.
  */
 public class LoginScreenController implements Initializable {
 
@@ -44,8 +43,7 @@ public class LoginScreenController implements Initializable {
     private Label welcomeLbl;
 
     /**
-     * Initialize method for setting language resource bundle based on the user's computer's setting.
-     * Will choose French or English depending on local machine settings.
+     * Initialize method for setting language resource bundle based on the user's computer's setting. Will choose French or English depending on local machine settings.
      * @param url The url
      * @param resourceBundle The resource bundle
      */
@@ -71,11 +69,9 @@ public class LoginScreenController implements Initializable {
     }
 
     /**
-     * Method to attempt user log-in using the text in the username and password fields.
-     * Lambda expression used in place of a for loop to go through each appointment in the appointments in 15 minutes list to display and alert for each appointment assigned to the successfully logged-in user in the next 15 minutes.
-     * PrintWriter used for each log-in attempt to store attempt in login_activity.txt.
+     * *** LAMBDA EXPRESSION *** Method to attempt user log-in using the text in the username and password fields. Lambda expression used in place of a for loop to go through each appointment in the appointments in 15 minutes list to display and alert for each appointment assigned to the successfully logged-in user in the next 15 minutes. PrintWriter used for each log-in attempt to store attempt in login_activity.txt.
      * @param event The event of clicking the sign-in button.
-     * @throws Exception
+     * @throws Exception exception
      */
     @FXML
     void onActionAttemptLogin(ActionEvent event) throws Exception {

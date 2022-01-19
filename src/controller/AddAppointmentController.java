@@ -20,9 +20,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ResourceBundle;
 
 /**
- * This class is the controller for the Add Appointment screen. Included are methods that allow attempts to add a new appointment to the connected database.
- * Navigation for exit to form back to the Appointment View is included as well.
- *
+ * This class is the controller for the Add Appointment screen. Included are methods that allow attempts to add a new appointment to the connected database. Navigation for exit to form back to the Appointment View is included as well.
  */
 public class AddAppointmentController implements Initializable {
 
@@ -60,8 +58,7 @@ public class AddAppointmentController implements Initializable {
     private Label userTimeZoneLbl;
 
     /**
-     * The initialize method changes a label on screen to display the user's time zone for reference when setting appointment times.
-     * This method also sets the items for the Type, Contact, Customer, and User combo boxes as well as limits on available dates within the Date Picker.
+     * The initialize method changes a label on screen to display the user's time zone for reference when setting appointment times. This method also sets the items for the Type, Contact, Customer, and User combo boxes as well as limits on available dates within the Date Picker.
      * @param url The url
      * @param resourceBundle The resource bundle
      */
@@ -80,10 +77,9 @@ public class AddAppointmentController implements Initializable {
     }
 
     /**
-     * This method allows an attempt to add an appointment to the database. There are custom error messages provided for any fields left blank as well as custom error messages for scheduling issues such as failure to follow business hours or scheduling an overlapping appointment for a customer.
-     * On a success, the application will change back to the Appointment View screen.
+     * This method allows an attempt to add an appointment to the database. There are custom error messages provided for any fields left blank as well as custom error messages for scheduling issues such as failure to follow business hours or scheduling an overlapping appointment for a customer. On a success, the application will change back to the Appointment View screen.
      * @param event The event of clicking the Add button.
-     * @throws Exception
+     * @throws Exception exception
      */
     @FXML
     void onActionAddAppointment(ActionEvent event) throws Exception {
@@ -236,7 +232,7 @@ public class AddAppointmentController implements Initializable {
     /**
      * The method to exit the Add form and return to the Appointment View
      * @param event The event of clicking on the Cancel button.
-     * @throws Exception
+     * @throws Exception exception
      */
     @FXML
     void onActionCancelToAppointmentView(ActionEvent event) throws Exception {

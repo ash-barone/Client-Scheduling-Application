@@ -16,7 +16,7 @@ import java.time.ZonedDateTime;
 import java.util.Locale;
 
 /**
- * Utility class to store information regarding current user log-in session.
+ * Utility class to store information regarding current user log-in session. Methods include creating a user object for the logged-in user and storage of user time zone and locale.
  */
 public class UserLoginSession {
 
@@ -28,8 +28,8 @@ public class UserLoginSession {
     String loggedInPassword = " ";
 
     /**
-     *
-     * @return userLoggedIn to be used to see which user is logged in
+     * Method to get the user object that is logged-in.
+     * @return userLoggedIn to be used to see which user is logged-in
      */
     public static User getUserLoggedIn() {
 
@@ -37,7 +37,7 @@ public class UserLoginSession {
     }
 
     /**
-     *
+     * Method to get the logged-in user's locale.
      * @return user locale to determine where user is located
      */
     public static Locale getLoggedInUserLocale() {
@@ -46,7 +46,7 @@ public class UserLoginSession {
     }
 
     /**
-     *
+     * Method to get the time zone for the logged-in user.
      * @return user time zone for CRUD operations
      */
     public static ZoneId getLoggedInUserTimeZone() {
@@ -55,7 +55,7 @@ public class UserLoginSession {
     }
 
     /**
-     *
+     * Method for checking input username and password against the database user rows to ensure access should be granted. Creates a new user object to be stored as the logged-in user for time zone and other access
      * @param username the username from the text field on login screen
      * @param pass the password from the text field on login screen
      * @return true or false for if the user was logged in successfully
@@ -109,7 +109,7 @@ public class UserLoginSession {
     }
 
     /**
-     * method to clear logged-in user info
+     * Method to clear logged-in user info when signing out.
      */
     public static void logUserOff(){
 
@@ -122,6 +122,12 @@ public class UserLoginSession {
 
     }
 
+    /**
+     * Method for creating and using a PrintWriter to write log-in attempt info to a file named login_activity.txt.
+     * @param attemptToLogInUser bool for whether or not the user was successfully logged in
+     * @param username the username entered
+     * @throws IOException exception
+     */
     public static void logUserActivity(boolean attemptToLogInUser, String username) throws IOException {
 
         try {

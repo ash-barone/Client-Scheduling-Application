@@ -17,8 +17,7 @@ import javafx.stage.Stage;
 import java.sql.SQLException;
 
 /**
- * This class is the controller for the Report View screen. Included are methods for showing specific reports when its respective button is clicked.
- * Navigation back to the Main Menu is also included.
+ * This class is the controller for the Report View screen. Included are methods for showing specific reports when its respective button is clicked. Navigation back to the Main Menu is also included.
  */
 public class ReportViewController {
 
@@ -28,7 +27,7 @@ public class ReportViewController {
     /**
      * Method for navigating back to the Main Menu.
      * @param event The event of clicking on the Back button.
-     * @throws Exception
+     * @throws Exception exception
      */
     @FXML
     void onActionBackToMainMenu(ActionEvent event) throws Exception {
@@ -78,10 +77,9 @@ public class ReportViewController {
     }
 
     /**
-     * Method for displaying the Contact Schedule report in the text area.
-     * A Lambda expression is used in place of a for loop to go through each contact in list and list their appointments.
+     * *** LAMBDA EXPRESSION*** Method for displaying the Contact Schedule report in the text area. A Lambda expression is used in place of a for loop to go through each contact in list and list their appointments.
      * @param event The event of clicking the Contact Schedule report button.
-     * @throws SQLException
+     * @throws SQLException exception
      */
     @FXML
     void onActionShowContactSchedule(ActionEvent event) throws SQLException {

@@ -3,6 +3,9 @@ package dbaccess;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+/**
+ *  This class is the main JDBC access class which connects the application to the chosen database. This allows access for all other DBA classes and is necessary for application to run.
+ */
 public abstract class JDBCAccess {
 
     //connect to database from code repository
@@ -17,6 +20,9 @@ public abstract class JDBCAccess {
     private static final String password = "Passw0rd!"; // Password
     public static Connection connection;  // Connection Interface
 
+    /**
+     * Method for starting the connection to the db.
+     */
     public static void openConnection() {
         try {
             Class.forName(driver); // Locate Driver
@@ -28,22 +34,19 @@ public abstract class JDBCAccess {
         catch(Exception e) {
             System.out.println("Error:" + e.getMessage());
         }
-        /*
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        catch (ClassNotFoundException e){
-            e.printStackTrace();
-        }
-         return connection;
-         */
     }
 
+    /**
+     * Method to get the connection.
+     * @return the connection to the db
+     */
     public static Connection getConnection(){
         return connection;
     }
 
+    /**
+     * Method to end the connection to the db.
+     */
     public static void closeConnection() {
         try {
             connection.close();

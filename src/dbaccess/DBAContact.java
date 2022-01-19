@@ -7,13 +7,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * class for access methods for contacts
+ * This class is the Database Access management class for CRUD operations of contacts. Included are methods to get specific lists of contacts and get lists of specific data as required for operations.
  */
 public class DBAContact {
 
     /**
-     * method to get all contact names
-     * @return all contact names
+     * Method to get all contact names.
+     * @return all contact names list
      */
     public static ObservableList<String> getAllContactNames(){
         ObservableList<String> allContactNamesList = FXCollections.observableArrayList();
@@ -31,6 +31,7 @@ public class DBAContact {
 
                 allContactNamesList.add(contactName);
 
+                //test
                 //System.out.println("Contact Name: " + contactName);
             }
         } catch (SQLException throwables) {
@@ -41,7 +42,7 @@ public class DBAContact {
     }
 
     /**
-     * method to get contact id from name
+     * Method to get contact id from name.
      * @param contactName the name of the contact
      * @return contact id int
      */
@@ -57,7 +58,6 @@ public class DBAContact {
 
             ps.setString(1, contactName);
 
-            //int divisionId;
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -73,7 +73,7 @@ public class DBAContact {
     }
 
     /**
-     * method to get contact name from an id
+     * Method to get contact name from an id.
      * @param contactId the id of the contact
      * @return the name of the contact
      */
@@ -89,7 +89,6 @@ public class DBAContact {
 
             ps.setInt(1, contactId);
 
-            //int divisionId;
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -105,16 +104,14 @@ public class DBAContact {
     }
 
     /**
-     * method to get all appointments for a specific contact
+     * Method to get all appointments for a specific contact.
      * @param contactID the id of the contact
      * @return list of all appts for that contact
      */
     public static ObservableList<String> getAllAppointmentsForContact(int contactID) {
         ObservableList<String> allAppointmentsForContactList = FXCollections.observableArrayList();
 
-        String contactName = DBAContact.getContactNameFromId(contactID);
-
-        //allAppointmentsForContactList.add("Appointment Schedule:");// + contactName + ":");
+        //String contactName = DBAContact.getContactNameFromId(contactID);
 
         try {
             //sql statement to select appts for specific contact

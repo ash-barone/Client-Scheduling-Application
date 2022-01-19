@@ -18,9 +18,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
- * This class is the controller for the Appointment View Screen. Included are methods that display appointments in a table view.
- * Navigation to an add and update form is included as well as navigation back to the Main Menu.
- * Included also is a method for deleting a selected appointment.
+ * This class is the controller for the Appointment View Screen. Included are methods that display appointments in a table view. Navigation to an add and update form is included as well as navigation back to the Main Menu. Included also is a method for deleting a selected appointment.
  */
 public class AppointmentViewController implements Initializable {
 
@@ -90,7 +88,7 @@ public class AppointmentViewController implements Initializable {
     /**
      * Method for exiting the Appointment View and returning to the Main Menu
      * @param event The event of clicking on the Back button.
-     * @throws Exception
+     * @throws Exception exception
      */
     @FXML
     void onActionBackToMainMenu(ActionEvent event) throws Exception {
@@ -103,8 +101,7 @@ public class AppointmentViewController implements Initializable {
     }
 
     /**
-     * Method for deleting an appointment that has been selected on the TableView. Gives user a confirmation message prompt.
-     * Appointments TableView will repopulate based on the deletion.
+     * Method for deleting an appointment that has been selected on the TableView. Gives user a confirmation message prompt. Appointments TableView will repopulate based on the deletion.
      * @param event The event of clicking the Delete Appointment button while having an appointment selected.
      */
     @FXML
@@ -227,7 +224,7 @@ public class AppointmentViewController implements Initializable {
     /**
      * Method for navigating to the Add Appointment Screen.
      * @param event The event of clicking the Add Appointment button.
-     * @throws Exception
+     * @throws Exception exception
      */
     @FXML
     void onActionToAddAppointmentScreen(ActionEvent event) throws Exception {
@@ -240,10 +237,9 @@ public class AppointmentViewController implements Initializable {
     }
 
     /**
-     * Method for navigating to the Update Appointment Screen when an appointment in the TableView is selected.
-     * Show error message for no selected appointment.
+     * Method for navigating to the Update Appointment Screen when an appointment in the TableView is selected. Show error message for no selected appointment.
      * @param event The event of clicking the Update Appointment button.
-     * @throws Exception
+     * @throws Exception exception
      */
     @FXML
     void onActionToUpdateAppointmentScreen(ActionEvent event) throws Exception {
