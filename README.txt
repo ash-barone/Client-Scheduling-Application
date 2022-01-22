@@ -1,7 +1,7 @@
 ::Title and Purpose of Application::
 C195 Software II Performance Assessment
-This application is meant for use in scheduling and managing appointment schedules and customer records.
-The application also features a reports page for specific business use reports.
+This application is meant for use in managing appointment schedules and customer records.
+This application also features a reports page for specific business use reports.
 
 ::Author Information::
 Author: Ashley Barone
@@ -28,8 +28,8 @@ JavaFX version: JavaFX-SDK-17.0.1
 JDBC version: MySQL-Connector-Java-8.0.26
 
 ::Running the Program::
-To run this program, first, open the folder in IntelliJ. Next, you have to update your IDE settings to the program,
-To do this, you will access File>Project Structure to create a PATH_TO_FX leading to your JavaFX SDK.
+To run this program, first, open the folder in IntelliJ. Next, you have to update your IDE settings to the program.
+To do this, you will access File>Project Structure to create a PATH_TO_FX leading to your JavaFX SDK library.
 Then, you will access File>Settings to add your JavaFX SDK library and MySQL Connector library.
 Finally you will create a new Application configuration with the following format:
  - Select main.Main as your Main class.
@@ -41,4 +41,4 @@ If you need to change the Database credentials and information, you can do so in
 
 ::Additional Report::
 In addition to the two reports required for this application, I have included a third report to calculate the number of customers in each distinct division.
-This report will allow the business to better serve their customers in each division by adjusting to any increase or decrease in counts.
+This report will allow the business to better serve their customers in each division by adjusting to any increase or decrease in customer counts.

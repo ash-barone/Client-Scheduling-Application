@@ -13,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.Appointment;
 import java.net.URL;
+import java.time.ZoneId;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -65,7 +66,7 @@ public class LoginScreenController implements Initializable {
             // System.out.println("language not detected");
         }
 
-        userZoneIdLbl.setText(String.valueOf(Locale.getDefault()));
+        userZoneIdLbl.setText(String.valueOf(ZoneId.systemDefault()));
     }
 
     /**
