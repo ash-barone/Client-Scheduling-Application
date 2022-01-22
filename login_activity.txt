@@ -90,3 +90,24 @@ Attempted Log-in By User: test :: Time: 2022-01-19T03:07:39.017303100Z UTC :: Su
 Attempted Log-in By User: test :: Time: 2022-01-19T03:19:12.349479100Z UTC :: Successful: true
 Attempted Log-in By User: test :: Time: 2022-01-19T18:13:31.855702100Z UTC :: Successful: true
 Attempted Log-in By User: test :: Time: 2022-01-19T18:38:28.418960500Z UTC :: Successful: true
+Attempted Log-in By User: NO USERNAME ENTERED :: Time: 2022-01-19T21:09:16.215391400Z UTC :: Successful: false
+Attempted Log-in By User: test :: Time: 2022-01-19T21:10:57.672148200Z UTC :: Successful: true
+Attempted Log-in By User: admin :: Time: 2022-01-19T21:11:05.574969400Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-19T21:11:11.835245100Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-19T21:19:35.829794800Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-19T21:21:09.231879100Z UTC :: Successful: false
+Attempted Log-in By User: test :: Time: 2022-01-19T21:21:12.583072800Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-19T21:24:06.278416Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-19T21:24:34.101699100Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-19T21:29:30.901277800Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-19T21:33:42.217815700Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-19T21:34:46.974064300Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-19T21:36:19.594725200Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-19T21:37:23.638954500Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-19T21:42:05.873805700Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-19T21:44:40.997313900Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-22T19:44:45.464223200Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-22T19:45:27.407047600Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-22T19:46:18.453877300Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-22T19:46:42.028257700Z UTC :: Successful: true
+Attempted Log-in By User: test :: Time: 2022-01-22T19:52:58.055388800Z UTC :: Successful: true

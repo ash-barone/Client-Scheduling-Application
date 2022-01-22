@@ -510,6 +510,22 @@ public class DBAAppointment {
     }
 
     /**
+     * Method to get a preset list of appt types for use in combo box on add and update form
+     * @return the list of all preset appt types
+     */
+    public static ObservableList<String> getAllApptTypesPresetList() {
+        ObservableList<String> allApptTypesPresetList = FXCollections.observableArrayList();
+
+        allApptTypesPresetList.add("Planning");
+        allApptTypesPresetList.add("Debriefing");
+        allApptTypesPresetList.add("Budget");
+        allApptTypesPresetList.add("Team-building");
+        allApptTypesPresetList.add("Follow-up");
+
+        return allApptTypesPresetList;
+    }
+
+    /**
      * Method to return a report of appointments by type and month
      * @return the list of appointments by type and month
      */

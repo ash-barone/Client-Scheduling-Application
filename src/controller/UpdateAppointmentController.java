@@ -255,8 +255,8 @@ public class UpdateAppointmentController implements Initializable {
 
 
             //set combo boxes
-            appointmentTypeComboBx.setItems(DBAAppointment.getAllApptTypes());
-            appointmentCustomerNameComboBx.setItems(DBACustomer.getAllCustomerNames());
+            //appointmentTypeComboBx.setItems(DBAAppointment.getAllApptTypes()); //revision
+            appointmentTypeComboBx.setItems(DBAAppointment.getAllApptTypesPresetList());            appointmentCustomerNameComboBx.setItems(DBACustomer.getAllCustomerNames());
             appointmentUserNameComboBx.setItems(DBAUser.getAllUserNames());
             appointmentContactNameComboBx.setItems(DBAContact.getAllContactNames());
 

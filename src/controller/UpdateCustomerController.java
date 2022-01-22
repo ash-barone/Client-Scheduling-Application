@@ -86,44 +86,60 @@ public class UpdateCustomerController implements Initializable {
             String customerCountry = customerCountryComboBx.getValue();
             String customerDivision = customerDivisionComboBox.getValue();
 
+            boolean fieldsNotBlank = true;
+
             //custom error messages for blank fields
             if (customerName.isEmpty()) {
+                fieldsNotBlank = false;
+
                 Alert alert = new Alert((Alert.AlertType.ERROR));
                 alert.setTitle("Error");
                 alert.setContentText("Customer Name cannot be left blank. Please fill in a value.");
                 alert.showAndWait();
             }
             if (customerAddress.isEmpty()) {
+                fieldsNotBlank = false;
+
                 Alert alert = new Alert((Alert.AlertType.ERROR));
                 alert.setTitle("Error");
                 alert.setContentText("Customer Address cannot be left blank. Please fill in a value.");
                 alert.showAndWait();
             }
             if (customerPostalCode.isEmpty()) {
+                fieldsNotBlank = false;
+
                 Alert alert = new Alert((Alert.AlertType.ERROR));
                 alert.setTitle("Error");
                 alert.setContentText("Customer Postal Code cannot be left blank. Please fill in a value.");
                 alert.showAndWait();
             }
             if (customerPhoneNumber.isEmpty()) {
+                fieldsNotBlank = false;
+
                 Alert alert = new Alert((Alert.AlertType.ERROR));
                 alert.setTitle("Error");
                 alert.setContentText("Customer Phone Number cannot be left blank. Please fill in a value.");
                 alert.showAndWait();
             }
             if (customerCountry == null) {
+                fieldsNotBlank = false;
+
                 Alert alert = new Alert((Alert.AlertType.ERROR));
                 alert.setTitle("Error");
                 alert.setContentText("Customer Country cannot be left blank. Please select a value.");
                 alert.showAndWait();
             }
             if (customerDivision == null) {
+                fieldsNotBlank = false;
+
                 Alert alert = new Alert((Alert.AlertType.ERROR));
                 alert.setTitle("Error");
                 alert.setContentText("Customer Division cannot be left blank. Please select a value.");
                 alert.showAndWait();
             }
-            //when no fields are blank, update the customer
+            if (!fieldsNotBlank) {
+                //do not update customer
+            }
             else {
                 DBACustomer.updateCustomer(customerName, customerAddress, customerPostalCode, customerPhoneNumber, customerDivision, customerId);
 
@@ -144,7 +160,7 @@ public class UpdateCustomerController implements Initializable {
             throwables.printStackTrace();
             Alert alert = new Alert((Alert.AlertType.ERROR));
             alert.setTitle("Error");
-            alert.setContentText("Could not update customer.");
+            alert.setContentText("Could not update customer. Please ensure all values are correct.");
             alert.showAndWait();
 
         }
